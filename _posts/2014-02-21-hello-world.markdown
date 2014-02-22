@@ -2,6 +2,7 @@
 layout: post
 title:  "Hello World!"
 date:   2014-02-21 14:19:03
+excerpt: "First Blog.Welcome Page."
 categories: life 
 ---
 
