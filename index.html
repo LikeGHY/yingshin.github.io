@@ -4,11 +4,13 @@ title: Ying's Blog
 ---
 
 <div id="home">
+  <img src="./assets/images/index.jpg" title = "Who am I?" alt = "missing" width = "90" height = "120" 
+        style = "background-position: right top;float: right;margin: auto"/>
   <h1>Blog Posts</h1>
   <ul class="posts">
     {% for post in site.posts %}
       <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
-      <div style = "text-indent: 2em;background-color:green">
+      <div style = "text-indent: 2em;background-color:green; margin-right: 20%">
       <i>{{ post.excerpt }}</i>
       </div>
     {% endfor %}
