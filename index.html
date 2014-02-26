@@ -2,6 +2,9 @@
 layout: default
 title: Ying's Blog(生活,IT,笔记)
 ---
+<head>
+<link rel="stylesheet" type="text/css" href="./css/mycustom.css"/>
+</head>
 
 <div id="home">
   <img src="./assets/images/index.jpg" title = "Who am I?" alt = "missing" width = "90" height = "120" 
@@ -10,8 +13,8 @@ title: Ying's Blog(生活,IT,笔记)
   <ul class="posts">
     {% for post in site.posts %}
       <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></li>
-      <div style = "text-indent: 2em;background-color:green; margin-right: 20%">
-      <i>{{ post.excerpt }}</i>
+      <div class="excerpt_box">
+          <i>{{ post.excerpt }}</i>
       </div>
     {% endfor %}
   </ul>
