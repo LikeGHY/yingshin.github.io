@@ -2,7 +2,9 @@
 layout: default
 title: Ying's Blog(生活,IT,笔记)
 ---
-
-<p>HomePage</p>
-<img src="./assets/images/index.jpg" title = "Who am I?" alt = "missing" width = "90" height = "120"
-style = "background-position: right top;float: right;margin: auto"/>
+<div class="page-header">
+    <h1>{{ site.posts.last.title }}</h1>
+</div>
+<div class="hero-unit">
+    {{ site.posts.last.content }}
+</div>
