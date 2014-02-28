@@ -1,3 +1,14 @@
 name: Ying's Blog 
 markdown: redcarpet
 pygments: true
+title: Ying's World 
+
+author :
+  name : ying
+  email : zhy198606@gmail.com
+  github : yingshin 
+
+home_path: /index.html
+archive_path: /archive.html
+books_path: /books.html
+about_path: /about.html
