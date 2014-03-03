@@ -1,6 +1,7 @@
 .excerpt_box {
     border-radius:10px 0px 10px 0px;
     text-indent: 2em;
-    background-color: green;
+    background-color: #FFFFCC;
     margin-right: 20%;
+    padding:10px 5px 10px 5px;
 }
