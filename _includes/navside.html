@@ -1,10 +1,13 @@
-<div class="col-md-3">
-    <div class="well">
-        <ul class="nav nav-stacked">
-            <li>test1</li>
-            <li>test2</li>
-            <li>test3</li>
-            <li>test4</li>
+<div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+    <div class="sidebar-module sidebar-module-inset">
+        <p>工欲善其事，必先利其器<br/>如非说明转载皆为原创，转载请<em>注明</em>出处。</p>
+    </div>
+    <div class="sidebar-module">
+        <h4>Categories</h4>
+        <ul >
+            {% for category in site.categories %}
+            <li><a href="#">{{ category[0] | join("/") }}<sup>{{ category[1].size() }}</sup></a></li>
+            {% endfor %}
         </ul>
     </div>
 </div>

@@ -5,23 +5,10 @@ layout: default
 <p class="meta">{{ page.date | date_to_string }}</p>
 
 <div class="row">
-    <div class="col-sm-8 blog-main">
+    <div class="col-sm-8">
         {{ content }}
     </div>
-    <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-        <div class="sidebar-module sidebar-module-inset">
-            <p>工欲善其事，必先利其器<br/>如非说明转载皆为原创，转载请<em>注明</em>出处。</p>
-        </div>
-        <div class="sidebar-module">
 
-            <!--sort by date-->
-            <h4>Categories</h4>
-            <ol class="list-unstyled">
-                {% for category in site.categories %}
-                <li><a href="#">{{ category[0] | join("/") }}</a></li>
-                {% endfor %}
-            </ol>
-        </div>
-    </div>
+    {% include navside.html %}
 </div>
 
