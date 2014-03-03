@@ -13,7 +13,7 @@ tags: [sort]
 
 由于算法都非常基础，直接贴下程序了。
 
-{% highlight C %}
+```
 /*
  * =====================================================================================
  *       Filename:  sort.cpp
@@ -249,10 +249,9 @@ int main(int argc, char* argv[])
 
     return 0;
 }
-{% endhighlight %}
-
+```
+```
 数据的生成采用python语句
-{% highlight python %}
 #!/usr/bin/python
 import os, random, sys
 
@@ -266,4 +265,4 @@ def run(num):
 if __name__ == '__main__':
     if (len(sys.argv) == 2):
         run(int(sys.argv[1]))
-{% endhighlight %}
+```
