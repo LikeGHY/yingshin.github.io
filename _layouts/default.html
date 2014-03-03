@@ -11,28 +11,11 @@
 
         <link rel="stylesheet" href="/css/mycustom.css">
         <!--Bootstrap CSS-->
+        <link rel="stylesheet" href="/css/bootstrap/css/blog.css">
         <link rel="stylesheet" href="/css/bootstrap/css/bootstrap.min.css">
-        <style>
-            body {
-                padding-top: 60px;/* 60px to make the container go all the way to the bottom of the topbar*/
-            }
-        </style>
     </head>
     <body>
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="brand" href="{{ site.home_path }}">{{ site.title }}</a>
-                    <div class="nav-collapse collapse">
-                        <ul class="nav">
-                            <li><a href="{{ site.archive_path }}">Archive</a></li>
-                            <li><a href="{{ site.books_path }}">Books</a></li>
-                            <li><a href="{{ site.about_path }}">About</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {% include navbar.html %}
 
         <div class="container">
             {{ content }}
