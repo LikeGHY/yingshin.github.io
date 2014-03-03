@@ -1,9 +1,9 @@
 .excerpt_box {
-    border-radius:10px 0px 10px 0px;
+    border-radius:15px 0px 15px 0px;
     text-indent: 2em;
-    background-color: #FFFFCC;
+    background-color: #ADD8E6;
     margin-right: 20%;
-    padding:10px 5px 10px 5px;
+    padding:5px 1px 5px 1px;
 }
 
 /* Sidebar modules for boxing content */
