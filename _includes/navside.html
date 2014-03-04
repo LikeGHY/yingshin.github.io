@@ -6,7 +6,7 @@
         <h4>Categories</h4>
         <ul>
             {% for category in site.categories %}
-            <li><a href="#">{{ category[0] | join("/") }}<sup>{{ category[1].size() }}</sup></a></li>
+            <li><a href="{{ BASE_PATH }}{{ site.JB.categories_path }}#{{ category[0] }}-ref">{{ category[0] | join("/") }}<sup>{{ category[1].size() }}</sup></a></li>
             {% endfor %}
         </ul>
     </div>
@@ -14,7 +14,7 @@
         <h4>Tags</h4>
         <ul>
             {% for tag in site.tags %}
-            <li><a href="#">{{ tag[0] | join("/") }}<sup>{{ tag[1].size() }}</sup></a></li>
+            <li><a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag[0] }}-ref">{{ tag[0] | join("/") }}<sup>{{ tag[1].size() }}</sup></a></li>
             {% endfor %}
         </ul>
     </div>

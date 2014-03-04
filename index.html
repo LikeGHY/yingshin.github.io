@@ -15,7 +15,7 @@ title: Ying's Blog(生活,IT,笔记)
     <div style="padding: 5px 10px;border-radius: 25px; border: 1px outset; background-color: #dddddd; margin-top: 5px">
         <span class="glyphicon glyphicon-folder-open"></span>
         {% for category in post.categories %}
-            <a href="{{ categories_path}}">{{ category }}</a>
+            <a href="{{ BASE_PATH }}{{ site.JB.categories_path }}#{{ category }}-ref">{{ category }}</a>
         {% endfor %}
           
     {% unless post.tags == empty %}
@@ -26,7 +26,7 @@ title: Ying's Blog(生活,IT,笔记)
             <span class="glyphicon glyphicon-tags" style="margin-left: 5px"></span>
         {% endif %}
         {% for tag in post.tags %}
-            <a href="{{ tags_path }}">{{ tag }}</a>
+            <a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag }}-ref">{{ tag }}</a>
         {% endfor %}
     {% endunless %}
     </div>
