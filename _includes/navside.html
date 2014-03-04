@@ -4,9 +4,17 @@
     </div>
     <div class="sidebar-module">
         <h4>Categories</h4>
-        <ul >
+        <ul>
             {% for category in site.categories %}
             <li><a href="#">{{ category[0] | join("/") }}<sup>{{ category[1].size() }}</sup></a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="sidebar-module">
+        <h4>Tags</h4>
+        <ul>
+            {% for tag in site.tags %}
+            <li><a href="#">{{ tag[0] | join("/") }}<sup>{{ tag[1].size() }}</sup></a></li>
             {% endfor %}
         </ul>
     </div>

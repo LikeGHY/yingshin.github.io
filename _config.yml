@@ -12,6 +12,8 @@ home_path: /index.html
 archive_path: /archive.html
 books_path: /books.html
 about_path: /about.html
+tags_path: /tags.html
+categories_path: /categories.html
 
 paginate: 5
 paginate_path: "page:num"
