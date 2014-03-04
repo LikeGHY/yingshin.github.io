@@ -21,6 +21,7 @@ Automatic Page Generator。一个文件一个文件的自己创建，可以比�
 <!--more-->  
 
 最简单的页面是在仓库下创建一个index.html文件，文件名不要弄错。写入  
+
 ```
 Hello World!
 ```  
@@ -29,6 +30,7 @@ Hello World!
 
 jekyll需要的就是这个index.html,这个是最基本的。明白了之后，就可以看jekyll的[doc](http://jekyllrb.com/docs/home/)了。
 注意QuickStart里的  
+
 ```
 jekyll new myblog
 ```
