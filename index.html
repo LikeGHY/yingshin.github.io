@@ -29,6 +29,11 @@ title: Ying's Blog(生活,IT,笔记)
             <a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag }}-ref">{{ tag }}</a>
         {% endfor %}
     {% endunless %}
+    <!-- UYAN COUNT BEGIN -->
+        <span class="glyphicon glyphicon-comment" style="margin-left: 5px"></span>
+        <a href="{{ post.url }}#uyan_frame" id="uyan_count_unit" >0条评论</a>
+        <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1900314"></script>
+        <!-- UYAN COUNT END -->
     </div>
     <hr/>
 {% endfor %}
