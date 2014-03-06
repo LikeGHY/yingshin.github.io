@@ -6,7 +6,8 @@
         <h4>Categories</h4>
         <ul>
             {% for category in site.categories %}
-            <li><a href="{{ BASE_PATH }}{{ site.JB.categories_path }}#{{ category[0] }}-ref">{{ category[0] | join("/") }}<sup>{{ category[1].size() }}</sup></a></li>
+            <li><a href="{{ BASE_PATH }}{{ site.JB.categories_path }}#{{ category[0] }}-ref" style="font-size: 18">{{ category[0] | join("/") }}
+                <sup><span class="badge"><small>{{ category[1].size() }}</small></span></sup></a></li>
             {% endfor %}
         </ul>
     </div>

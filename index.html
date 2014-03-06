@@ -11,7 +11,9 @@ title: Ying's Blog(生活,IT,笔记)
     <p style="margin-top: 5px">
     {{ post.content | split:'<!--more-->' | first }}
     </p>
-    <a href="{{ post.url }}" >阅读全文&raquo;</a>
+    <div class="readmore_box">
+        <a href="{{ post.url }}">阅读全文&raquo;</a>
+    </div>
     <div style="padding: 5px 10px;border-radius: 25px; border: 1px outset; background-color: #dddddd; margin-top: 5px">
         <span class="glyphicon glyphicon-folder-open"></span>
         {% for category in post.categories %}
@@ -29,11 +31,6 @@ title: Ying's Blog(生活,IT,笔记)
             <a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag }}-ref">{{ tag }}</a>
         {% endfor %}
     {% endunless %}
-    <!-- UYAN COUNT BEGIN -->
-        <span class="glyphicon glyphicon-comment" style="margin-left: 5px"></span>
-        <a href="{{ post.url }}#uyan_frame" id="uyan_count_unit" du="yingshin.github.io" su="{{ post.url }}">0条评论</a>
-        <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1900314"></script>
-        <!-- UYAN COUNT END -->
     </div>
     <hr/>
 {% endfor %}
