@@ -31,6 +31,10 @@ title: Ying's Blog(生活,IT,笔记)
             <a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag }}-ref">{{ tag }}</a>
         {% endfor %}
     {% endunless %}
+    <!-- UYAN COUNT BEGIN -->
+    <a href="{{ post.url }}" id="uyan_count_unit">0条评论</a>
+    <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1900314"></script> <!-- 如果已经过加载此行JS，即可不用重复加载 -->
+    <!-- UYAN COUNT END -->
     </div>
     <hr/>
 {% endfor %}
