@@ -1,3 +1,6 @@
+.p {
+    text-indent: 2em;
+}
 .excerpt_box {
     border-radius:15px 0px 15px 0px;
     text-indent: 2em;
@@ -91,4 +94,10 @@
     -webkit-transform:rotate(180deg);
     -o-transform:rotate(180deg);
     transform:rotate(180deg);
+}
+
+.first_letter_box:first-letter
+{
+    color: #ff0000;
+    font-size: xx-large;
 }

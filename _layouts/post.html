@@ -3,9 +3,11 @@ layout: default
 ---
 <div class="page-header">
     <h3>{{ page.title }}</h3>
-    <h3 style="text-indent: 2em"><small>{{ page.excerpt }}</small></h3>
+    <h4 style="text-indent: 2em"><small>{{ page.excerpt }}</small></h4>
+    <h5 class="text-indent: 2em">{{ page.date | date_to_string }}</h5>
 </div>
-<p class="meta">{{ page.date | date_to_string }}</p>
-{{ content }}
+<div class="first_letter_box">
+    {{ content }}
+</div>
 
 {% include share_comment.html %}
