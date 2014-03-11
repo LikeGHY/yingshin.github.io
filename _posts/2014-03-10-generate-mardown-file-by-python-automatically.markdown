@@ -14,7 +14,7 @@ tags: [python, booknotes]
 生成了两篇笔记，但是还是没看懂博客文章之间的跳转怎么做。
 下面是个粘贴过来的链接，css格式很简单，大部分都写在了markdown内部。
 
-* [《地狱》]({{ site.url }}booknotes/2014/03/10/地狱/)
+* [《地狱》]({{ site.production_url }}/booknotes/2014/03/10/地狱/)
 
 <!--more-->
 
