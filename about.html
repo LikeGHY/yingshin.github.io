@@ -3,7 +3,23 @@ layout: default
 title : About 
 group: navigation
 ---
-<h1>About...</h1>
+
+<h5>About Me</h5>
+<p id="intro" style="display: none">
+理科生，喜欢文学，走在了工科的道路上。<br/>
+11年毕业于BUAA，目前就职于一家电子书公司，以Ｃ＋＋语言为主。<br/>
+热爱学习，希望可以接触更多有意思的知识和工作。
+</p>
+
+
 
 <img src="./assets/images/index.jpg" title = "Who am I?" alt = "missing" width = "120" height = "160"
- class="img-circle pull-right rotate_box"/>
+class="img-circle pull-right rotate_box" id="box_image"/>
+
+<script>
+    $(document).ready(function(){
+        $("#box_image").click(function(){
+            $("#intro").fadeToggle("3000");
+        });
+    });
+</script>
