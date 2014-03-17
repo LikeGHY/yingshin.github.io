@@ -14,7 +14,7 @@ tags: [Git]
 #修改commit的内容
 git commit --amend
 #恢复未提交文件到上次提交状态
-git rest --hard HEAD
+git reset --hard HEAD
 #只恢复一个文件
 git checkout -- filename
 ```
