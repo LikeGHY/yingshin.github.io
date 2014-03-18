@@ -101,3 +101,16 @@
     color: #ff0000;
     font-size: xx-large;
 }
+
+.about{
+    font-variant: small-caps;
+    text-shadow: 5px 5px 5px #006400
+    -moz-transition:width 2s, height 2s, background-color 2s, -moz-transform 2s;
+    -webkit-transition:width 2s, height 2s, background-color 2s, -webkit-transform 2s;
+    -o-transition:width 2s, height 2s, background-color 2s, -o-transform 2s;
+    transition:width 2s, height 2s, background-color 2s, transform 2s;
+}
+.about:hover
+{
+    font-size: 20px;
+}

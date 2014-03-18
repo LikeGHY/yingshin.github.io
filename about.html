@@ -3,9 +3,19 @@ layout: default
 title : About 
 group: navigation
 ---
+<div class="about" id="intro">About Me</div>
+<ul class="list-inline" style="display: none" id="image_boxes">
+    <li>
+    <img src="./assets/images/index.jpg" title = "Who am I?" alt = "missing" width = "120" height = "160"
+    class="img-circle rotate_box"/>
+    </li>
+    <li>
+    <img src="./assets/images/eagle.jpg" title = "What I want?" alt = "missing" width = "120" height = "160"
+    class="img-circle rotate_box"/>
+    </li>
+</ul>
 
-<h5>About Me</h5>
-<p id="intro" style="display: none">
+<p>
 <pre>
  ________  ____    ____     _______     ___       _______  __       _______ 
 |       /  \   \  /   /    |   ____|   /   \     /  _____||  |     |   ____|
@@ -18,15 +28,10 @@ group: navigation
 </pre>
 </p>
 
-
-
-<img src="./assets/images/index.jpg" title = "Who am I?" alt = "missing" width = "120" height = "160"
-class="img-circle pull-right rotate_box" id="box_image"/>
-
 <script>
     $(document).ready(function(){
-        $("#box_image").click(function(){
-            $("#intro").fadeToggle("3000");
+        $("#intro").click(function(){
+            $("#image_boxes").fadeToggle("3000");
         });
     });
 </script>
