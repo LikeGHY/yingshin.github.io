@@ -114,3 +114,16 @@
 {
     font-size: 20px;
 }
+
+.category_box {
+    border-bottom-style: inset;
+}
+
+.category_box a:hover {
+    padding: 0px 0px 0px 10px;
+};
+
+a.tag_link {
+    background: green;
+    font-size: 25px;
+}

@@ -6,20 +6,46 @@
         <h4>Categories</h4>
         <ul>
             {% for category in site.categories %}
-            <li><a href="{{ BASE_PATH }}{{ site.JB.categories_path }}#{{ category[0] }}-ref" style="font-size: 18">{{ category[0] | join("/") }}
-                <sup><span class="badge"><small>{{ category[1].size() }}</small></span></sup></a></li>
+                <li class="category_box">
+                <a href="{{ BASE_PATH }}{{ site.JB.categories_path }}#{{ category[0] }}-ref">{{ category[0] | join("/") }} <sup>{{ category[1].size() }}</sup></a>
+                </li>
             {% endfor %}
         </ul>
     </div>
     <div class="sidebar-module">
         <h4>Tags</h4>
-        <ul>
-            {% for tag in site.tags %}
-            <li><a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag[0] }}-ref">{{ tag[0] | join("/") }}<sup>{{ tag[1].size() }}</sup></a></li>
-            {% endfor %}
-        </ul>
+        {% assign tagcount = 0 %}
+        {% assign maxcount = 0 %}
+        {% for tag in site.tags %}
+        {% assign count = tag[1].size() %}
+        {% assign tagcount = tagcount | plus: count %}
+        {% if maxcount < tag[1].size() %}
+        {% assign maxcount = tag[1].size() %}
+        {% endif %}
+        {% endfor %}
+        {% assign averagecount = tagcount | divided_by: site.tags.size() %}
+
+        {% for tag in site.tags %}
+        {% assign proportion = tag[1].size() | divided_by: averagecount %}
+        {% assign proportion = proportion | times: 100 %}
+        {% if maxcount == tag[1].size() %}
+        <a class="tag_link" href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag[0] }}-ref" style="font-size: {{ proportion }}%; color: red">{{ tag[0] | join("/") }}<sup>{{ tag[1].size() }}</sup></a>
+        {% else %}
+        <a class="tag_link" href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag[0] }}-ref" style="font-size: {{ proportion }}%">{{ tag[0] | join("/") }}<sup>{{ tag[1].size() }}</sup></a>
+        {% endif %}
+        {% endfor %}
     </div>
     <div class="sidebar-module sidebar-module-inset">
         <script charset="Shift_JIS" src="http://chabudai.sakura.ne.jp/blogparts/honehoneclock/honehone_clock_tr.js"></script>
     </div>
 </div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $(".tag_link").mouseenter(function(){
+            $(this).css({"background-color":"#F0F8FF", "letter-spacing": "2px"});
+        });
+        $(".tag_link").mouseleave(function(){
+            $(this).css({"background-color":"#FFFFFF", "letter-spacing": "normal"});
+        });
+        });
+</script>
