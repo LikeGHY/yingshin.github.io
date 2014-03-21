@@ -127,3 +127,10 @@ a.tag_link {
     background: green;
     font-size: 25px;
 }
+
+.quote_box {
+    background-color: #F0F8FF;
+    border-left: green solid thick;
+    padding-left: 10px;
+}
+

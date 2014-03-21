@@ -8,9 +8,12 @@ title: Ying's Blog(生活,IT,笔记)
 {% else %}
     <h3 style="background-color: #F0F8FF; border-left: green solid thick;padding-left: 10px"></small><a href="{{ post.url }}">{{ post.title }}</a></small></h3>
     {{post.date | date: "%Y-%m-%d" }}
+    {% assign hasexcept = page.excerpt | size %}
+    {% if hasexcept != 0 %}
     <div class="excerpt_box">
         摘要："{{ post.excerpt }}<br/>
     </div>
+    {% endif %}
     <p style="margin-top: 5px">
     {{ post.content | split:'<!--more-->' | first }}
     </p>
@@ -24,7 +27,7 @@ title: Ying's Blog(生活,IT,笔记)
         {% endfor %}
           
     {% unless post.tags == empty %}
-        {% capture tagsize %}{{ post.tags | size }}{% endcapture %}
+        {% assign tagsize = post.tags | size %}
         {% if tagsize == 1 %}
             <span class="glyphicon glyphicon-tag" style="margin-left: 5px"></span>
         {% else %}

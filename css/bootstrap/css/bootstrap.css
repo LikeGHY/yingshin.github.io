@@ -208,7 +208,7 @@ th {
   pre,
   blockquote {
     border: 1px solid #999;
-
+    font-size: 8em;
     page-break-inside: avoid;
   }
   thead {
