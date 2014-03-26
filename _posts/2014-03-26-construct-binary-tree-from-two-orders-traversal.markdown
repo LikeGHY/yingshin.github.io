@@ -20,10 +20,12 @@ tags: [binarytree, leetcode]
      2   3
     / \
    4   5
-</pre>
+</pre>  
+
 
 中序遍历为  
 `4 2 5 1 3`  
+
 后序遍历为   
 `4 5 2 3 1`  
 
@@ -35,9 +37,11 @@ tags: [binarytree, leetcode]
 
 需要注意的是，过程中始终传递完整的二叉树的遍历结果并标明下在中序、后序的范围即可，如果每次都传对应子树的遍历结果递归，会很占内存。  
 
-![图解](/assets/images/tree_order.jpg)
-
 <!--more-->
+
+
+![图解](/assets/images/tree_order.jpg)  
+
 
 *索引值的计算*:  
 由图中可以理解，is,ps,size分别表示inorder,postorder的start位置，以及当前树的大小。  
