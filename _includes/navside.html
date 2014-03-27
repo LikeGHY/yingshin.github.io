@@ -26,9 +26,11 @@
         {% assign proportion = tag[1].size() | divided_by: averagecount %}
         {% assign proportion = proportion | times: 100 %}
         {% if maxcount == tag[1].size() %}
-        <a class="tag_link" href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag[0] }}-ref" style="font-size: {{ proportion }}%; color: red">{{ tag[0] | join("/") }}<sup>{{ tag[1].size() }}</sup></a>
+        <a class="tag_link" href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag[0] }}-ref" style="font-size: {{ proportion }}%; color: red">
+            {{ tag[0] | join("/") }}</a>
         {% else %}
-        <a class="tag_link" href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag[0] }}-ref" style="font-size: {{ proportion }}%">{{ tag[0] | join("/") }}<sup>{{ tag[1].size() }}</sup></a>
+        <a class="tag_link" href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ tag[0] }}-ref" style="font-size: {{ proportion }}%">
+            {{ tag[0] | join("/") }}</a>
         {% endif %}
         {% endfor %}
     </div>
@@ -42,7 +44,7 @@
             $(this).css({"background-color":"#F0F8FF", "letter-spacing": "2px"});
         });
         $(".tag_link").mouseleave(function(){
-            $(this).css({"background-color":"#FFFFFF", "letter-spacing": "normal"});
+            $(this).css({"background-color":"#eee", "letter-spacing": "normal"});
         });
         });
 </script>
