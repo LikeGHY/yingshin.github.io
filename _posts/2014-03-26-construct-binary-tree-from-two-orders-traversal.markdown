@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "由两种遍历结果遍历二叉树"
+title:  "由两种遍历结果构造二叉树"
 date:   2014-03-26 14:36:03
 categories: [algorithm]
 tags: [binarytree, leetcode]
