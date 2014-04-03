@@ -156,6 +156,7 @@ a.tag_link {
     .blog-nav-item:focus {
         color: #fff;
         text-decoration: none;
+        background-color: RoyalBlue;
     }
 
     /* Active state gets a caret at the bottom */
