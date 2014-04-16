@@ -11,7 +11,6 @@ tags: [proxy, python]
 抓取的网站地址为：`http://activeproxy.net/en/`   
 
 主要就是urlopen获取内容，使用SGMLParser筛选代理数据，存储。  
-<!--more-->
 
 最后的存储文件片断:  
 
