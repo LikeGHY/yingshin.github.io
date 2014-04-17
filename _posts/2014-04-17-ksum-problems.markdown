@@ -10,11 +10,11 @@ tags: [sort, leetcode]
 leetcode上很多题目是一系列的，循序渐进，比如TwoSum,3Sum,4Sum的问题。  
 
 1. [TwoSum](http://oj.leetcode.com/problems/two-sum/)   
-> Given an array of integers, find two numbers such that they add up to a specific target number.
+ **Given an array of integers, find two numbers such that they add up to a specific target number.**
 2. [3Sum](http://oj.leetcode.com/problems/3sum/)   
-> Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
+ **Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.**
 3. [4Sum](http://oj.leetcode.com/problems/4sum/)  
-> Given an array S of n integers, are there elements a, b, c, and d in S such that a + b + c + d = target? Find all unique quadruplets in the array which gives the sum of target.
+ **Given an array S of n integers, are there elements a, b, c, and d in S such that a + b + c + d = target? Find all unique quadruplets in the array which gives the sum of target.**
 
 要求也很简单，找到给定数组的k个数，使得这ｋ个数和为给定的数值target.  
 
