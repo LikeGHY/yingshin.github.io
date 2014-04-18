@@ -1,5 +1,5 @@
-<div class="col-sm-2 col-xs-4 col-md-2 col-sm-offset-1">
-    <div class="sidebar-module">
+<div class="col-xs-3 well">
+    <div class="nav nav-sidebar">
         <h4>Categories</h4>
         <ul>
             {% for category in site.categories %}
@@ -9,7 +9,7 @@
             {% endfor %}
         </ul>
     </div>
-    <div class="sidebar-module">
+    <div class="nav nav-sidebar">
         <h4>Tags</h4>
         {% assign tagcount = 0 %}
         {% assign maxcount = 0 %}
@@ -34,7 +34,7 @@
         {% endif %}
         {% endfor %}
     </div>
-    <div class="sidebar-module sidebar-module-inset">
+    <div class="nav nav-sidebar">
         <script charset="Shift_JIS" src="http://chabudai.sakura.ne.jp/blogparts/honehoneclock/honehone_clock_tr.js"></script>
     </div>
 </div>
