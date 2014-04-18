@@ -1,5 +1,7 @@
 p {
     text-indent: 2em;
+    font-size: 130%;
+    line-height: 150%;
 }
 .excerpt_box {
     border-radius:15px 0px 15px 0px;
