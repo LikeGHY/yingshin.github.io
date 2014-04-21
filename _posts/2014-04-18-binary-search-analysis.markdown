@@ -19,6 +19,9 @@ tags: [binarysearch]
 5. [查找刚好大于key的元素下标x，如果不存在返回-1,等价于std::upper\_bound.](#id5)    
 6. [查找第一个>=key的下标，如果不存在返回-1,等价于std::lower\_bound.](#id6)     
 
+[leetcode](http://oj.leetcode.com/problems)上也有很多类似的题目。   
+例如：[Search a 2D Matrix](http://oj.leetcode.com/problems/search-a-2d-matrix/)
+
 二分查找，必须条件是有序数组，然后不断折半，几乎每次循环都可以降低一半左右的数据量。  
 因此是O(lgN)的方法，要注意的是二分查找要能够退出，不能陷入死循环。  
 
