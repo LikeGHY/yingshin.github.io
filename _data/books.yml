@@ -12,7 +12,7 @@
   finish_date: x
   douban_link: http://book.douban.com/subject/4822685/
   download_link: http://pan.baidu.com/s/1mgHPmE8
-  note: 
+  note: 看完的第二本英文书，主要对英语提升帮助很多，知识点主要是温习的作用。
 
 - name: 毛泽东传
   cover: http://img5.douban.com/mpic/s4458248.jpg
@@ -33,7 +33,7 @@
 - name: Understanding and Using C Pointers
   cover: http://img5.douban.com/lpic/s26544167.jpg
   start_date: 2014.3.26
-  finish_date:
+  finish_date: 2014.8.2
   douban_link: http://book.douban.com/subject/20491037/a
   download_link:
   note:
@@ -86,3 +86,10 @@
   download_link:
   note: 读古龙总有一种欲罢不能的感觉，即使是重读，仍然被吸引。
 
+- name: 陆小凤传奇3决战前后
+  cover: http://img3.douban.com/mpic/s26307053.jpg
+  start_date: 2014.7.27
+  finish_date: 
+  douban_link: http://book.douban.com/subject/20516996/
+  download_link:
+  note: 读古龙总有一种欲罢不能的感觉，即使是重读，仍然被吸引。
