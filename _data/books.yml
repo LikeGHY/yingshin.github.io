@@ -105,8 +105,16 @@
 - name: 陆小凤传奇4银钩赌坊
   cover: http://img3.douban.com/mpic/s26306511.jpg
   start_date: 2014.8.3
-  finish_date: 2014.8.5
+  finish_date: 2014.8.9
   douban_link: http://book.douban.com/subject/20516997/
+  download_link:
+  note: 罗刹教，飞虎堂，玉罗刹，飞天玉虎！
+
+- name: 陆小凤传奇5幽灵山庄
+  cover: http://img3.douban.com/mpic/s26306525.jpg
+  start_date: 2014.8.10
+  finish_date: 
+  douban_link: http://book.douban.com/subject/20516992/
   download_link:
   note: 
 
