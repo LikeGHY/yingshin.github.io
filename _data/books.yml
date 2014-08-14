@@ -12,7 +12,7 @@
   finish_date: x
   douban_link: http://book.douban.com/subject/4822685/
   download_link: http://pan.baidu.com/s/1mgHPmE8
-  note: 看完的第二本英文书，主要对英语提升帮助很多，知识点主要是温习的作用。
+  note: 
 
 - name: 毛泽东传
   cover: http://img5.douban.com/mpic/s4458248.jpg
@@ -36,7 +36,7 @@
   finish_date: 2014.8.2
   douban_link: http://book.douban.com/subject/20491037/a
   download_link:
-  note:
+  note: 看完的第二本英文书，主要对英语提升帮助很多，知识点主要是温习的作用。
 
 - name: 曾国藩传
   cover: http://img5.douban.com/lpic/s6796828.jpg
@@ -124,7 +124,8 @@
   finish_date: 
   douban_link: http://book.douban.com/subject/20516993/
   download_link:
-  note: 陆小凤终究还是败给了老刀把子，可惜人算不如天算。冥冥中的那股力量啊！
+  note: 
+
 - name: 高级Bash脚本编程指南
   cover: http://img5.douban.com/mpic/s24938826.jpg
   start_date: 2014.8.3
