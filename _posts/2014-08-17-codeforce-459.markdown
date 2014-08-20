@@ -121,7 +121,8 @@ k辆车d天的话，一共有k**d种排列，只要排列数&le;n即可。
 
 n最大为1000，因此计算k**d过程中能够大于该值就可以返回了，否则会越界。  
 
- 如何打印全排列，我用的是递归的办法，后来看到别人的做法，更加简洁。先贴下我的做法。  
+ 如何打印全排列，我用的是递归的办法。  
+ 例子后面贴了另外一种思路更清楚办法
 
 
 ```
@@ -183,59 +184,72 @@ int main()
 }
 ```
 
-一种比较清晰的打印全排列的方式， 以`k = 5; d = 4;`举个例子：  
-0 &rarr; 1 1 1 1 1   
-1 &rarr; 1 1 1 1 2   
-2 &rarr; 1 1 1 1 3   
-3 &rarr; 1 1 1 1 4   
-4 &rarr; 1 1 1 1 5   
-5 &rarr; 1 1 1 2 1   
-6 &rarr; 1 1 1 2 2   
-7 &rarr; 1 1 1 2 3   
-8 &rarr; 1 1 1 2 4   
-9 &rarr; 1 1 1 2 5   
-其中&rarr;左边为索引值，右边为对应的排列数。  
-对0,1,2,3,4排列看最后一列，5,6,7,8,9看最后两列，减1,可以猜测跟余数相关。  
-0 &rarr; 0   
-1 &rarr; 1   
-2 &rarr; 2   
-3 &rarr; 3   
-4 &rarr; 4   
-5 &rarr; 1 0   
-6 &rarr; 1 1   
-7 &rarr; 1 2   
-8 &rarr; 1 3   
-9 &rarr; 1 4   
+一种比较清晰的打印全排列的方式是看做k进制，位数为d。   
+f/g分别是两种表现，本质相同
+
 具体看程序,打印前20个排列：
 
 ```
 int n,k,d;
 
-void f(int m)
+void f()
 {
-    vector<int> v;
-    while (m)
+    for (int m = 0; m < n; ++m)
     {
-        v.push_back(m % k);
-        m /= k;
-    }
+        //直接计算m的k进制表示
+        int j = m;
+        vector<int> v;
+        while (j)
+        {
+            v.push_back(j % k);
+            j /= k;
+        }
 
-    for (int i = 0; i < d - v.size(); ++i)
-    {
-        cout << 1 << " ";
+        for (int i = 0; i < d - v.size(); ++i)
+        {
+            cout << 1 << " ";
+        }
+        for (int i = v.size() - 1; i >= 0; --i)
+        {
+            cout << v[i] + 1 << " ";
+        }
+        cout << endl;
     }
-    for (int i = v.size() - 1; i >= 0; --i)
+}
+
+int a[1000][1000];
+void g()
+{
+    //i = 0可以单独稍后输出
+    for (int i = 1; i <= n; ++i)
     {
-        cout << v[i] + 1 << " ";
+        //根据i-1的k进制表示+1得到i的k进制表示
+        for (int j = 0; j < d; ++j)
+        {
+            a[i][j] = a[i - 1][j];
+        }
+
+        for (int j = d - 1; j >= 0; --j)
+        {
+            a[i][j] = (a[i][j] + 1) % k;
+            if (a[i][j])
+                break;
+        }
+
+        for (int j = 0; j < d; ++j)
+            cout << a[i][j] + 1 << " ";
+        cout << endl;
     }
-    cout << endl;
 }
 
 int main()
 {
     n = 20; k = 4; d = 5;
-    for (int i = 0; i < n; ++i)
-        f(i);
+    cout << "===================================" << endl;
+    f();
+    cout << "===================================" << endl;
+    g();
+    cout << "===================================" << endl;
 
     return 0;
 }
