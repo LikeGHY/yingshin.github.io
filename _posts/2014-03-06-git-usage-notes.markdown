@@ -17,5 +17,7 @@ git commit --amend
 git reset --hard HEAD
 #只恢复一个文件
 git checkout -- filename
+#查看某个文件的提交历史
+git log -p filename
 ```
 <!--more-->
