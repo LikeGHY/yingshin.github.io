@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "Codeforec Contest 462"
+title:  "Codeforec Contest 463"
 date:   2014-09-01 19:55:02
-excerpt: "submissions for codeforce contest 462"
+excerpt: "submissions for codeforce contest 463"
 categories: [algorithm]
 tags: [codeforce]
 ---
