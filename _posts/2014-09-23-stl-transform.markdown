@@ -115,6 +115,6 @@ int main()
 ```
 
 ###Reference:
-1. [http://www.cplusplus.com/reference/algorithm/transform/?kw=transform](http://www.cplusplus.com/reference/algorithm/transform/?kw=transform)
+1. [transform](http://www.cplusplus.com/reference/algorithm/transform)
 
 
