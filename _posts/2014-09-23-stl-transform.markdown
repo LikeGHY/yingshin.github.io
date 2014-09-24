@@ -7,7 +7,7 @@ categories: [stl]
 tags: [stl]
 ---
 
-##function template
+###function template
 
 ```
 #unary operation
@@ -25,13 +25,15 @@ OutputIterator transform(InputIterator1 first1, InputIterator1 last1,
 <!--more-->
 
 
-##函数说明
+###函数说明
+
+用一个/两个区间去更新目标区间 
 
 该函数两个原型   
 1. 处理[first1, last1)的每个元素，逐个写进result，处理方式为op.   
 2. 处理[first1, last1)， [first2, last2)的每个元素（注意last2没有显示给出，因为这两段区间长度一样），结果写进result，处理方式为binary\_op;  
 
-##函数行为  
+###函数行为  
 
 ```
 #unary operation
@@ -57,11 +59,11 @@ OutputIterator transform(InputIterator1 first1, InputIterator1 last1,
 }
 ```
 
-##注意
+###注意
 1. 结果存放的result迭代器需要事先resize范围或者使用插入迭代器。  
     例如下面L30会core掉，因为迭代器无效。
 
-##code
+###code
 
 ```
 #include <iostream>
@@ -111,3 +113,8 @@ int main()
     return 0;
 }
 ```
+
+###Reference:
+1. [http://www.cplusplus.com/reference/algorithm/transform/?kw=transform](http://www.cplusplus.com/reference/algorithm/transform/?kw=transform)
+
+
