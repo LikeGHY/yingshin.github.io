@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  "stl-algorithm笔记之remove"
+title:  "stl-algorithm笔记之remove&remove_if"
 date: 2014-09-24 19:28:18
-excerpt: "stl algorithm remove notes"
+excerpt: "stl algorithm remove&remove_if notes"
 categories: [stl]
 tags: [stl]
 ---
@@ -12,6 +12,9 @@ tags: [stl]
 ```
 template <class ForwardIterator, class T>
 ForwardIterator remove(ForwardIterator first, ForwardIterator last, const T& val)
+
+template <class ForwardIterator, class UnaryPredicate>
+ForwardIterator remove_if(ForwardIterator first, ForwardIterator last, UnaryPredicate p)
 ```
 
 
@@ -28,6 +31,8 @@ ForwardIterator remove(ForwardIterator first, ForwardIterator last, const T& val
 
 > 非常简要地说一下，remove移动指定区间中的元素直到所有“不删除的”元素在区间的开头（相对位置和原来它们的一样）。它返回一个指向最后一个的下一个“不删除的”元素的迭代器。返回值是区间的“新逻辑终点”。
 
+remove\_if与remove类似，只不过第三个参数变为一元操作符。
+
 ###函数行为  
 
 ```
@@ -37,6 +42,19 @@ ForwardIterator remove(ForwardIterator first, ForwardIterator last, const T& val
     ForwardIterator result = first;
     while (first != last) {
         if (!(*first == var)) {
+            *result = *first;
+            ++result;
+        }
+        ++first;
+    }
+}
+
+template <class ForwardIterator, class UnaryPredicate>
+ForwardIterator remove_if(ForwardIterator first, ForwardIterator last, UnaryPredicate p)
+{
+    ForwardIterator result = first;
+    while (first != last) {
+        if (!(p(*first))) {
             *result = *first;
             ++result;
         }
@@ -57,6 +75,11 @@ ForwardIterator remove(ForwardIterator first, ForwardIterator last, const T& val
 #include <vector>
 using namespace std;
 
+bool predicate(char c)
+{
+    return std::isspace(c);
+}
+
 int main()
 {
     int ints[] = {1, 3, 3, 2, 4, 4, 3, 5, 6};
@@ -75,13 +98,27 @@ int main()
     }
     cout << endl;
 
+    std::string str1 = "Text with some   spaces";
+    str1.erase(std::remove(str1.begin(), str1.end(), ' '),
+               str1.end());
+    std::cout << str1 << '\n';
+ 
+    std::string str2 = "Text\n with\tsome \t  whitespaces\n\n";
+    str2.erase(std::remove_if(str2.begin(),
+                              str2.end(),
+                              predicate),
+               str2.end());
+    std::cout << str2 << '\n';
     return 0;
 }
 //1 2 4 4 5 6 3 5 6
 //1 2 4 4 5 6
+//Textwithsomespaces
+//Textwithsomewhitespaces
 ```
 
 ###Reference:
-1. [Remove](http://www.cplusplus.com/reference/algorithm/remove)
-2. [Effective stl](http://www.amazon.cn/%E5%9B%BE%E4%B9%A6/dp/B00CSWIJUQ/ref=pd_sim_b_5?ie=UTF8&refRID=18Z6X8EBY6YTNK0Q3EN9)
+1. [CPlusPlus Remove](http://www.cplusplus.com/reference/algorithm/remove)
+2. [CPPReference Remove](http://en.cppreference.com/w/cpp/algorithm/remove)
+3. [Effective stl](http://www.amazon.cn/%E5%9B%BE%E4%B9%A6/dp/B00CSWIJUQ/ref=pd_sim_b_5?ie=UTF8&refRID=18Z6X8EBY6YTNK0Q3EN9)
 
