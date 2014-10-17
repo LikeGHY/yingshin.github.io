@@ -2,15 +2,16 @@
  * Globals
  */
 body{color:#333;padding:0;margin:0;background:#fdfdfd;
-    font:25px/2.125 "Helvetica Neue", Helvetica, Arial, sans-serif;}
+    font:30px/1.625 Georgia, "Times New Roman", "Microsoft YaHei", "Î¢ÈíÑÅºÚ", STXihei, "»ªÎÄÏ¸ºÚ", serif;}
+    /* font:30px/2.125 "Helvetica Neue", Helvetica, Arial, sans-serif;} */
 
 time{font-size:13px;color:#999;}
 a, a code{color:#08c;text-decoration:none;}
 a:hover{color:#1982d1;text-decoration:underline;}
-code{font-family: "Courier New", Consolas, monospace, Monaco, Menlo;
-    padding:1px 4px;background-color:#f9f9f9;border:1px solid #e8e8e8;
-    border-radius:3px;-webkit-border-radius:3px;-moz-border-radius:3px;}
-pre code{line-height:100%;background:none;border:none;}
+/* code{font-family: "Courier New", Consolas, monospace, Monaco, Menlo; */
+    /* padding:1px 4px;background-color:#f9f9f9;border:1px solid #e8e8e8; */
+    /* border-radius:3px;-webkit-border-radius:3px;-moz-border-radius:3px;} */
+/* pre code{line-height:100%;background:none;border:none;} */
 h1{font-size:2em;margin:0.8em 0;}
 h2{font-size:1.6em;margin:0.5em 0;}
 h3{font-size:1.3em;margin:0.2em 0;}
