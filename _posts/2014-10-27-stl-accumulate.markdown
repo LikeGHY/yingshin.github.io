@@ -17,7 +17,6 @@ T accumulate(InputIt first, InputIt last, T init)
 template <class InputIt, class T, class BinaryOperation>
 T accumulate(InputIt first, InputIt last, T init,
              BinaryOperation op)
-
 ```
 
 
@@ -50,7 +49,7 @@ T accumulate(InputIt first, InputIt last, T init,
 ```
 
 ###注意  
-该函数位于<numberic>中   
+该函数位于\<numberic\>中   
 第二个版本里op的定义如下：  
 Ret op(const Type1& a, const Type2& b);  
 1. const &不是必须的  
