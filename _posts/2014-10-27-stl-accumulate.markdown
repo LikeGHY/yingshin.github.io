@@ -7,7 +7,7 @@ categories: [stl]
 tags: [stl]
 ---
 
-accumulate主要用于整个序列的迭代统一操作，比如求序列和等。感觉和for\_each很像。
+accumulate主要用于整个序列的迭代统一操作，比如求序列和等，返回的也是整体之后的操作值。
 
 ###function template
 
