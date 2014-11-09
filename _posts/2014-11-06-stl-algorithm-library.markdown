@@ -7,6 +7,10 @@ categories: [stl]
 tags: [stl]
 ---
 
+STL Algorithm的整体总结
+
+<!--more-->
+
 <table class="table table-hover table-striped">
 <thead><h4>Non-modifying operations</h4></thead>
 <tr><td>all_of<br>none_of<br>any_of</td><td></td></tr>
