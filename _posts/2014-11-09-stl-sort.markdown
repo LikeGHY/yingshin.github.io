@@ -1,0 +1,60 @@
+---
+layout: post
+title:  "stl-algorithm笔记之sort"
+date: 2014-11-09 21:27:16 
+excerpt: "stl algorithm sort notes"
+categories: [stl]
+tags: [stl]
+---
+
+sort用于对给定的区间排序，默认排序方式是递减，比较函数是operator<。
+
+###function template
+
+```
+template<class RandomIt>
+void sort(RandomIt first, RandomIt last);
+template<class RandomIt, class Compare>
+void sort(RandomIt first, RandomIt last, Compare comp);
+
+```
+
+
+<!--more-->
+
+
+###函数说明
+对[first, last)区间排序。
+
+
+###code
+
+```
+template<class Type, int N>
+char (&arraySizeHelper(const Type (&array)[N]))[N];
+template<class Type>
+void print(const Type& t)
+{
+    std::cout << t << " ";
+}
+
+int main()
+{
+    int array[] = {4, 3, 6, 9, 0, 2, 1, 5, 7, 8};
+    std::vector<int> vec(array, array + sizeof(arraySizeHelper(array)));
+
+    std::sort(vec.begin(), vec.end());
+    std::for_each(vec.begin(), vec.end(), print<int>);
+    std::cout << std::endl;
+
+    std::sort(vec.begin(), vec.end(), std::greater<int>());
+    std::for_each(vec.begin(), vec.end(), print<int>);
+    std::cout << std::endl;
+
+    return 0;
+}
+```
+
+###Reference:
+1. [CPPReference sort](http://en.cppreference.com/w/cpp/algorithm/sort)
+
