@@ -76,10 +76,16 @@ STL Algorithm的整体总结
 <thead><h4>Sorting operations</h4></thead>
 <tr><td>is_sorted</td><td></td></tr>
 <tr><td>is_sorted_until</td><td></td></tr>
-<tr><td>sort</td><td></td></tr>
+<tr>
+<td>[sort](http://yingshin.github.io/stl/2014/11/09/stl-sort/)</td>
+<td>对区间元素进行排序，不保证稳定性</td>
+</tr>
 <tr><td>partial_sort</td><td></td></tr>
 <tr><td>partial_sort_copy</td><td></td></tr>
-<tr><td>stable_sort</td><td></td></tr>
+<tr>
+<td>[stable_sort](http://yingshin.github.io/stl/2014/11/11/stl-stable-sort/)</td>
+<td>对区间元素进行排序，保证稳定性</td>
+</tr>
 <tr><td>nth_element</td><td></td></tr>
 </table>
 <table class="table table-hover table-striped">
