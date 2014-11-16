@@ -38,7 +38,10 @@ STL Algorithm的整体总结
 <tr><td>copy_backward</td><td></td></tr>
 <tr><td>move</td><td></td></tr>
 <tr><td>move_backward</td><td></td></tr>
-<tr><td>fill</td><td></td></tr>
+<tr>
+<td>[fill](http://yingshin.github.io/stl/2014/11/16/stl-fill/)</td>
+<td></td>
+</tr>
 <tr><td>fill_n</td><td></td></tr>
 <tr>
 <td><a href=http://yingshin.github.io/stl/2014/09/23/stl-transform/>transform</a></td>
