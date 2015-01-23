@@ -1,3 +1,11 @@
+- name: 古董局中局3
+  cover: http://img5.douban.com/mpic/s27963366.jpg
+  start_date: 2015.1.15
+  finish_date: 2015.1.23
+  douban_link: http://book.douban.com/subject/26261240/
+  download_link:
+  note: 小说很精彩，相比情节，各种古董轶事更加吸引人一些
+
 - name: 地狱
   cover: http://img3.douban.com/mpic/s27173855.jpg
   start_date: 2014.1.15
@@ -65,7 +73,7 @@
 - name: 活着活着就老了
   cover: http://img5.douban.com/mpic/s24438387.jpg
   start_date: 2014.7.3
-  finish_date: 
+  finish_date: 2015.1.13
   douban_link: http://book.douban.com/subject/20365787/
   download_link:
   note: 
