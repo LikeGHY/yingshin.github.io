@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "stl-algorithm笔记之sort"
+title:  "stl-algorithm笔记之stable sort"
 date: 2014-11-09 21:27:16 
 excerpt: "stl algorithm sort notes"
 categories: [stl]
