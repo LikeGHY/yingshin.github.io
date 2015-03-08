@@ -1,3 +1,11 @@
+- name: 三国配角演义
+  cover: http://img3.douban.com/mpic/s25996301.jpg
+  start_date: 2015.3.4
+  finish_date: 2015.3.8
+  douban_link: http://book.douban.com/subject/20470934/
+  download_link:
+  note: 这种从细节出发进而推出阴谋论的，个人比较喜欢第一人称的叙述。有种徐徐展开、入情入理的感觉，至于一步步的推导，对于我这种理科学生，那种诗词传记透露出来的微妙的语境，很多难以理解。
+
 - name: 白玉老虎
   cover: http://img3.douban.com/lpic/s27037124.jpg
   start_date: 2015.2.24
@@ -233,10 +241,10 @@
 - name: 解忧杂货店
   cover: http://img5.douban.com/mpic/s27284878.jpg
   start_date: 2014.11.15
-  finish_date: 
+  finish_date: 2015.3.4
   douban_link: http://book.douban.com/subject/25862578/
   download_link:
-  note: 
+  note: 非常精彩的一本书
 
 - name: 昆虫记1
   cover: http://img3.douban.com/mpic/s1155064.jpg
