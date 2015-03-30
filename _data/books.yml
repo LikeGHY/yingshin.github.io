@@ -1,10 +1,10 @@
 - name: 时间之墟
   cover: http://img5.douban.com/mpic/s27127637.jpg
   start_date: 2015.3.15
-  finish_date: 
+  finish_date: 2015.3.30
   douban_link: http://book.douban.com/subject/24935042/
   download_link:
-  note: 
+  note: 记得从买第一本科幻世界开始已经十几年的时间了吧，岁月如梭，青葱不再。看完了有时候觉得这不是一本科幻，如果所有人类都只能在一天里轮回，只有记忆保留，会发生怎么样的集权和暴力？乌合之众里的那些疯狂的心理是否成为现实？如果科学无法继续，又怎么去揭示一切背后的秘密呢？
 
 - name: 三国配角演义
   cover: http://img3.douban.com/mpic/s25996301.jpg
@@ -241,10 +241,10 @@
 - name: Learn Python the Hard Way
   cover: http://img3.douban.com/mpic/s27256920.jpg
   start_date: 2014.11.2
-  finish_date: 
+  finish_date: 2015.2.22
   douban_link: http://book.douban.com/subject/11941213/
   download_link:
-  note: 
+  note: 开始还行，后来感觉看不进去，可能比较适合入门吧。
 
 - name: 解忧杂货店
   cover: http://img5.douban.com/mpic/s27284878.jpg
