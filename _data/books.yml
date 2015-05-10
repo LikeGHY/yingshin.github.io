@@ -1,3 +1,19 @@
+- name: 算法技术手册
+  cover: http://img5.douban.com/lpic/s6144917.jpg
+  start_date: 2015.5.1
+  finish_date:
+  douban_link: http://book.douban.com/subject/4317573/
+  download_link:
+  note: 
+
+- name: 九州缥缈录-辰月之征
+  cover: http://img5.douban.com/lpic/s2781187.jpg
+  start_date: 2015.5.1
+  finish_date: 2015.5.9
+  douban_link: http://book.douban.com/subject/2286313/
+  download_link:
+  note: 五一假期偷闲重读一遍,想到了大学那个爱读奇幻的年纪,想到自己也曾经想写小说.
+
 - name: 时间之墟
   cover: http://img5.douban.com/mpic/s27127637.jpg
   start_date: 2015.3.15
