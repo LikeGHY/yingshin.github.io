@@ -1,3 +1,19 @@
+- name: 剑毒梅香
+  cover: http://img3.douban.com/mpic/s10203234.jpg
+  start_date: 2015.7.12
+  finish_date: 
+  douban_link: http://book.douban.com/subject/1088777/
+  download_link:
+  note: 
+
+- name: 神探伽利略
+  cover: http://img3.douban.com/mpic/s20799003.jpg
+  start_date: 2015.7
+  finish_date: 2015.7.11
+  douban_link: http://book.douban.com/subject/19951185/
+  download_link:
+  note: 一些小的推理故事，一般
+
 - name: 信
   cover: http://img4.douban.com/mpic/s4514129.jpg
   start_date: 2015.6.27
