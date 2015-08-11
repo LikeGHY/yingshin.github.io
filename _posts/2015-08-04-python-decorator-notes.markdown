@@ -126,6 +126,7 @@ print add2(1, 2, 3)
 ### 装饰器带参数
 
 带参数的装饰器又额外在外面实现了一层，可以认为`decorator_args(arg)`与之前的`decorator(func)`是等价的，实现上也可看到,decortor\_args(arg)实际上返回了一个两层的decorator.
+可以看做`myfunc = _decorator(func) = _decorator_args(arg)(func)`
 
 ```
 def decorator_args(args):
