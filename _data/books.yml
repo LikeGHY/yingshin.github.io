@@ -41,10 +41,10 @@
 - name: 我是个算命先生
   cover: http://img3.douban.com/mpic/s8993763.jpg
   start_date: 2015.5.16
-  finish_date:
+  finish_date: 2015.6
   douban_link: http://book.douban.com/subject/10506822/
   download_link:
-  note: 
+  note: 很一般的一本书
 
 - name: 算法技术手册
   cover: http://img5.douban.com/lpic/s6144917.jpg
@@ -321,7 +321,7 @@
 - name: 昆虫记1
   cover: http://img3.douban.com/mpic/s1155064.jpg
   start_date: 2014.12.1
-  finish_date: 
+  finish_date: x
   douban_link: http://book.douban.com/subject/1124323/
   download_link:
   note: 
