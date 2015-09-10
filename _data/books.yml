@@ -1,10 +1,18 @@
+- name: HBase企业应用开发实战
+  cover: http://img3.douban.com/mpic/s27466344.jpg
+  start_date: 2015.9.10
+  finish_date:
+  douban_link: http://book.douban.com/subject/25985471/
+  download_link:
+  note:
+
 - name: 悬疑小说10年精选（下）
   cover: http://img3.douban.com/mpic/s4524512.jpg
   start_date: 2015.8
   finish_date: 2015.9.9
   douban_link: http://book.douban.com/subject/5063874/
   download_link:
-  note: 最开始以为是许多精彩小故事的集合，看完觉得一般，打法时间可以看下。
+  note: 最开始以为是许多精彩小故事的集合，看完觉得一般，打发时间可以看下。
 
 - name: 编写高质量代码：改善Python程序的91个建议
   cover: http://img3.douban.com/lpic/s27307891.jpg
