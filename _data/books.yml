@@ -1,3 +1,11 @@
+- name: 水浒传（中华书局版）
+  cover: http://img3.douban.com/mpic/s6115963.jpg
+  start_date: 2015.8
+  finish_date:
+  douban_link: http://book.douban.com/subject/25985471/
+  download_link:
+  note:
+
 - name: HBase企业应用开发实战
   cover: http://img3.douban.com/mpic/s27466344.jpg
   start_date: 2015.9.10
