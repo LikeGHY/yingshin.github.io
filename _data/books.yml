@@ -1,3 +1,11 @@
+- name: 分身
+  cover: http://img4.douban.com/mpic/s4435059.jpg
+  start_date: 2015.10.1
+  finish_date: 2015.10.3
+  douban_link: http://book.douban.com/subject/4753783/
+  download_link:
+  note: 关于克隆的思考，慢慢的觉得东野并不是我一直理解的推理小说作家，读多了觉得这个人对社会的思考很多。这本书里面，克隆人未必取得了成功，但至少不是孤独的，这点是最重要的。
+
 - name: 水浒传（中华书局版）
   cover: http://img3.douban.com/mpic/s6115963.jpg
   start_date: 2015.8
