@@ -16,4 +16,5 @@ What's the output of the C code?
 main() {printf(&unix["\021%six\012\0"], (unix)["have"] + "fun" - 0x60);}  
 {% endhighlight %}
 
+<script src="https://gist.github.com/yingshin/c8fe5bcdff3cf7d633d3.js"></script>
 [DOWNLOAD]({{site.url}}/assets/downloads/IOCCC-David-Korn.c)
