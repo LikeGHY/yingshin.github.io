@@ -13,8 +13,8 @@ a:hover{color:#1982d1;text-decoration:underline;}
 /* pre code{line-height:100%;background:none;border:none;} */
 h1{font-size:2em;margin:1.5em 0;border-bottom-color:#cccccc;}
 h2{font-size:1.6em;margin:1.0em 0;border-bottom-color:#cccccc;}
-h3{font-size:1.3em;margin:0.5em 0;}
-h4{font-size:1.05em;margin:0.2em 0;;}
+h3{font-size:1.3em;margin:0.5em 0;border-bottom-color:#cccccc;}
+h4{font-size:1.05em;margin:0.2em 0;border-bottom-color:#cccccc;;}
 /* p{margin:1em 0;} */
 p{padding-left: 20px;}
 blockquote{border-left:3px solid #ccc;margin:1em 0.5em;padding-left:0.3em;}
