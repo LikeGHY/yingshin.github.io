@@ -18,6 +18,10 @@ vec.push_back(1);
 vec.push_back("string");
 ```
 
+
+<!--more-->
+
+
 因此可以看出any类型的两个特点:  
 1. 是一种类型  
 2. 存储任意类型  
