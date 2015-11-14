@@ -7,14 +7,38 @@ body{color:#333;padding:0;margin:10;background:#fdfdfd;
 time{font-size:13px;color:#999;}
 a, a code{color:#08c;text-decoration:none;}
 a:hover{color:#1982d1;text-decoration:underline;}
-/* code{font-family: "Courier New", Consolas, monospace, Monaco, Menlo; */
-    /* padding:1px 4px;background-color:#f9f9f9;border:1px solid #e8e8e8; */
-    /* border-radius:3px;-webkit-border-radius:3px;-moz-border-radius:3px;} */
-/* pre code{line-height:100%;background:none;border:none;} */
-h1{font-size:2em;margin:1.5em 0;border-bottom-color:#cccccc;}
-h2{font-size:1.6em;margin:1.0em 0;border-bottom-color:#cccccc;}
-h3{font-size:1.3em;margin:0.5em 0;border-bottom-color:#cccccc;}
-h4{font-size:1.05em;margin:0.2em 0;border-bottom-color:#cccccc;}
+h1 {
+  padding-bottom: 0.3em;
+  font-size: 2.25em;
+  line-height: 1.2;
+  border-bottom: 1px solid #eee;
+}
+
+h2 {
+  padding-bottom: 0.3em;
+  font-size: 1.75em;
+  line-height: 1.225;
+  border-bottom: 1px solid #eee;
+}
+
+h3 {
+  font-size: 1.5em;
+  line-height: 1.43;
+}
+
+h4 {
+  font-size: 1.25em;
+}
+
+h5 {
+  font-size: 1em;
+}
+
+h6 {
+  font-size: 1em;
+  color: #777;
+}
+
 /* p{margin:1em 0;} */
 p{padding-left: 20px;}
 blockquote{border-left:3px solid #ccc;margin:1em 0.5em;padding-left:0.3em;}
