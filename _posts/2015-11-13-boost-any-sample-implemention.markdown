@@ -32,10 +32,16 @@ vec.push_back("string");
 holder类是一个模板类。
 
 基于上述思路，实现了一个简化版本的Any。  
-__IHolder__：虚基类，提供一个虚函数clone，print为测试用函数。  
-__Holder__: 模板类，数据存储在\_t，实现clone函数，对外复制自身数据，注意\_t是public的。  
-__Any__: 提供一个模板构造函数开辟\_holder数据指针，析构函数释放\_holder数据指针。实现复制构造函数和赋值函数，因为本身存储的是指针，所以需要防止浅复制导致同一地址被释放两次。注意这里需要有IHolder::clone完成，因为无法知道具体的数据类型，不能使用new Holder<T>操作。  
-__any\_cast__: Any的友元模板函数，将Any类型转化为需要的类型。注意boost里有`any_cast` `unsafe_any_cast`两种方式。  
+__IHolder__：  
+虚基类，提供一个虚函数clone，print为测试用函数。  
+__Holder__:  
+模板类，数据存储在\_t，实现clone函数，对外复制自身数据，注意\_t是public的。  
+__Any__:  
+提供一个模板构造函数开辟\_holder数据指针  
+析构函数释放\_holder数据指针  
+实现复制构造函数和赋值函数，因为本身存储的是指针，所以需要防止浅复制导致同一地址被释放两次。注意这里需要有IHolder::clone完成，因为无法知道具体的数据类型，不能使用new Holder<T>操作。  
+__any\_cast__:   
+Any的友元模板函数，将Any类型转化为需要的类型。注意boost里有`any_cast` `unsafe_any_cast`两种方式。  
 
 具体代码如下：
 
