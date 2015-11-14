@@ -68,7 +68,8 @@ DEFINE_string: C++string
 ```
 
 ### 如何查看程序支持了哪些flags
-例如对上述flags的定义，-help输出如下：
+例如对上述flags的定义，-help输出如下：  
+
 ```
   Flags from flags_help.cpp:
     -big_menu (Include 'advanced' options in the menu listing) type: bool
