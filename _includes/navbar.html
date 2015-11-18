@@ -39,6 +39,11 @@
             {% else %}
             <a class="blog-nav-item" href="{{ site.books_path }}">Books</a>
             {% endif %}
+            {% if page.group == "thinking" %}
+            <a class="blog-nav-item active" href="{{ site.thinking_path }}">Thinking</a>
+            {% else %}
+            <a class="blog-nav-item" href="{{ site.thinking_path }}">Thinking</a>
+            {% endif %}
             {% if page.group == "about" %}
             <a class="blog-nav-item active" href="{{ site.about_path }}">About</a>
             {% else %}

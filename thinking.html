@@ -1,0 +1,12 @@
+---
+layout: default 
+title : What I'm Thinking.
+group: thinking
+---
+<h5>记录读过、在读、想读的一些书籍，大部分为电子版。</h5>
+
+{% for think in site.data.thinks %}
+<p class="text-indent: 2em"> {{ think.date }}</p>
+<p>{{ think.think }}</p>
+<hr/>
+{% endfor %}
