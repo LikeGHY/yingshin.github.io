@@ -120,10 +120,10 @@
 }
 /* Style */
 pre.prettyprint {
-  background: #ebf8ff;
+  background: whitesmoke;
   color: #7ea2b4;
   font-family: Menlo, Consolas, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, monospace;
-  font-size: 12px;
+  font-size: 20px;
   line-height: 1.5;
   border: 1px solid #c1e4f6;
   padding: 10px;
