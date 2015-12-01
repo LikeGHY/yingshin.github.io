@@ -19,21 +19,26 @@ h2 {
   font-size: 1.75em;
   line-height: 1.225;
   border-bottom: 3px solid #2876EC;
+  color: #777;
 }
 
 h3 {
   font-size: 1.5em;
   line-height: 1.43;
   border-bottom: 2px solid #2876EC;
+  color: #777;
 }
 
 h4 {
   font-size: 1.25em;
   border-bottom: 1px solid #eee;
+  color: #777;
 }
 
 h5 {
-  font-size: 1em;
+  font-size: 1.1em;
+  border-bottom: 1px solid #eee;
+  color: #777;
 }
 
 h6 {
