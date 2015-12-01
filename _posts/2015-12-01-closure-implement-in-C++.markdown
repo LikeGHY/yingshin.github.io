@@ -35,7 +35,7 @@ f();
 
 使用bind和function，可以很轻松的打平普通函数和C++成员函数在作为回调函数上使用的区别（静态成员函数等同于普通函数，因为即便对于普通函数，也可能存在namespace）。
 
-**那么思考一下，bind和function是如何实现的呢？**  
+### 那么思考一下，bind和function是如何实现的呢？
 
 回到闭包的定义，其实只要把函数指针、函数参数以及对象指针封装到一个结构里就可以了。这里主要面临两个问题：  
 1. 参数类型不同  
@@ -96,7 +96,7 @@ NewCallback函数返回一个new之后的closure,closure不需要手动delete。
 直接运行closure的Run方法就可以运行封装前的函数及对应参数。  
 
 逐步看下是如何实现的。  
-首先定义一个Closure基类:  
+#### 首先定义一个Closure基类:  
 
 ```
 class Closure {
@@ -110,7 +110,7 @@ public:
 基类定义了一个纯虚函数Run，用于执行封装的函数，子类需要单独提供实现。  
 
 普通函数和成员函数需要定义两个不同的闭包子类  
-先看下无参数情况下的普通函数对应的闭包：  
+#### 先看下无参数情况下的普通函数对应的闭包：  
 
 ```
 class FunctionClosure0 : public Closure {
@@ -143,7 +143,7 @@ Closure* NewCallback(void (*function)()) {
 }
 ```
 所有的NewCallback都返回指向Closure对象的指针，因此传入函数指针类型不同，但返回类型是相同的。  
-接着看下无参数成员函数对应的闭包：  
+#### 接着看下无参数成员函数对应的闭包：  
 
 ```
 template <typename Class>
@@ -184,8 +184,8 @@ Closure* NewCallback(Class* object, void (Class::*method)()) {
 }
 ```
 
-类似的，通过模板可以实现不同参数个数的闭包对象，每种情况对应需要实现两个闭包对象和两个NewCallback函数。  
-例如对于单参数：  
+### 类似的，通过模板可以实现不同参数个数的闭包对象，每种情况对应需要实现两个闭包对象和两个NewCallback函数。  
+#### 例如对于单参数：  
 
 ```
 template <typename Arg1>
