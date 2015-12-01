@@ -7,8 +7,6 @@ categories: [C/CPP]
 tags: [closure]
 ---
 
-C++中闭包的实现
-
 这个问题的起源是想把成员函数封装为回调函数，众所周知一个比较好的选择是tr1里的function和bind。  
 
 function对不同类型的函数指针进行统一的封装。例如：  
