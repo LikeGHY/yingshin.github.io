@@ -33,3 +33,20 @@ li.L1,li.L3,li.L5,li.L7,li.L9 { }
     pre .atn, code .atn { color: #404 }
     pre .atv, code .atv { color: #060 }
 }
+
+.prettyprint *{font-family:'courier new',monospace;}
+.prettyprint .com { color: #93a1a1;  }
+.prettyprint .lit { color: #AE81FF;  }
+.prettyprint .pun,
+.prettyprint .opn, 
+.prettyprint .clo { color: #F8F8F2;  }
+.prettyprint .fun { color: #dc322f;  }
+.prettyprint .str, 
+.prettyprint .atv { color: #E6DB74;  }
+.prettyprint .kwd, 
+.prettyprint .tag { color: #F92659;  }
+.prettyprint .typ, 
+.prettyprint .atn, 
+.prettyprint .dec, 
+.prettyprint .var { color: #A6E22E;  }
+.prettyprint .pln { color: #66D9EF;  }
