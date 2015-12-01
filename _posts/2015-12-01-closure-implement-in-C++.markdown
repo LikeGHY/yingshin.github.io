@@ -96,7 +96,7 @@ NewCallback函数返回一个new之后的closure,closure不需要手动delete。
 直接运行closure的Run方法就可以运行封装前的函数及对应参数。  
 
 逐步看下是如何实现的。  
-#### 首先定义一个Closure基类:  
+##### 首先定义一个Closure基类:  
 
 ```
 class Closure {
@@ -110,7 +110,7 @@ public:
 基类定义了一个纯虚函数Run，用于执行封装的函数，子类需要单独提供实现。  
 
 普通函数和成员函数需要定义两个不同的闭包子类  
-#### 先看下无参数情况下的普通函数对应的闭包：  
+##### 先看下无参数情况下的普通函数对应的闭包：  
 
 ```
 class FunctionClosure0 : public Closure {
@@ -142,7 +142,7 @@ Closure* NewCallback(void (*function)()) {
     return new FunctionClosure0(function);
 }
 ```
-所有的NewCallback都返回指向Closure对象的指针，因此传入函数指针类型不同，但返回类型是相同的。  
+所有##的NewCallback都返回指向Closure对象的指针，因此传入函数指针类型不同，但返回类型是相同的。  
 #### 接着看下无参数成员函数对应的闭包：  
 
 ```
@@ -184,8 +184,11 @@ Closure* NewCallback(Class* object, void (Class::*method)()) {
 }
 ```
 
-### 类似的，通过模板可以实现不同参数个数的闭包对象，每种情况对应需要实现两个闭包对象和两个NewCallback函数。  
-#### 例如对于单参数：  
+#### 带参数闭包的实现
+
+类似的，通过模板可以实现不同参数个数的闭包对象，每种情况对应需要实现两个闭包对象和两个NewCallback函数。  
+
+##### 例如对于单参数：  
 
 ```
 template <typename Arg1>
