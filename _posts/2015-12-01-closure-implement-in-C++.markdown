@@ -250,4 +250,6 @@ Closure* NewCallback(Class* object, void (Class::*method)(Arg1), Arg1 arg1) {
 区别就是增加了参数模板，以及在Closure子类里保存参数。  
 实际使用中可以选择生成多少个参数对应的类和NewCallback，代码的生成是有规律可循的，有兴趣的朋友可以写个脚本实现下。  
 
+protobuf或者其他常见的关于closure的实现里要复杂一些，例如判断对象是否赋值过类似的需求。
+
 完整的代码示例放在了[这里](https://gist.github.com/yingshin/e6f42dec075e5791c232)
