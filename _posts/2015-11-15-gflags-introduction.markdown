@@ -81,6 +81,7 @@ DEFINE_string: C++string
 ### 如何使用
 在命令行里指定，例如`./flags_sample -big_menu=0 -languages="english"`  
 使用时，对应的变量名为`FLAGS_xxx`。  
+如果不想在命令行里指定，也可以使用-flagfile=文件名的形式。  
 如果使用时不想在main文件里定义flag，例如需要在flag1.cpp flags.cpp里定义,可以这么使用:  
 在flags1.cpp flags2.cpp里分别定义各自的flag，然后在flag.h声明，需要使用的文件直接`include flags.h`就可以了。  
 声明的函数如下：  
@@ -118,6 +119,10 @@ static const bool port_dummy = RegisterFlagValidator(&FLAGS_port, &ValidatePort)
 2. 该flag已经注册过  
 
 写了一个完整的[例子](https://gist.github.com/yingshin/35a17cc4a6631002d3e0)  
+
+### version与help
+一般我们的程序都需要-version提供版本信息，-help提供Usage。  
+可以使用SetVersionString() 和 SetUsageMessage() 来实现。  
 
 参考资料： 
 [https://gflags.github.io/gflags/](https://gflags.github.io/gflags/)
