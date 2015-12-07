@@ -120,6 +120,19 @@ static const bool port_dummy = RegisterFlagValidator(&FLAGS_port, &ValidatePort)
 
 写了一个完整的[例子](https://gist.github.com/yingshin/35a17cc4a6631002d3e0)  
 
+### 判断一个FLAG是否被设置
+使用`GetCommandLineFlagInfo`即可  
+例如判断`portno`是否设置：  
+
+```
+    google::CommandLineFlagInfo info;
+    if (GetCommandLineFlagInfo("portno", &info) && info.is_default) {
+        std::cout << "port is not set." << std::endl;
+    } else {
+        std::cout << "port is set." << std::endl;
+    }
+```
+
 ### version与help
 一般我们的程序都需要-version提供版本信息，-help提供Usage。  
 可以使用SetVersionString() 和 SetUsageMessage() 来实现。  
