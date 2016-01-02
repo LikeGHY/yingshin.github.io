@@ -67,6 +67,8 @@ DEFINE_double: double
 DEFINE_string: C++string
 ```
 
+注意DEFINE_xxx函数的3个参数都是必须的。
+
 ### 如何查看程序支持了哪些flags
 例如对上述flags的定义，-help输出如下：  
 
