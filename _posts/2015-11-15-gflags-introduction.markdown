@@ -135,6 +135,20 @@ static const bool port_dummy = RegisterFlagValidator(&FLAGS_port, &ValidatePort)
     }
 ```
 
+### 在程序里设置FLAG
+可以通过手动修改的方式： `FLAGS_protno = 9999`。  
+比较合理的是使用`SetCommandLineOption`，函数原型为  
+
+```
+extern std::string SetCommandLineOption(const char* name, const char* value);
+```
+
+注意bool int类型都使用字符串的方式修改，例如：  
+`google::SetCommandLineOption("bvar_dump", "true")`
+`google::SetCommandLineOption("portno", "9999")`  
+
+成功返回"portno set to 9999"，失败则返回空字符串。
+
 ### version与help
 一般我们的程序都需要-version提供版本信息，-help提供Usage。  
 可以使用SetVersionString() 和 SetUsageMessage() 来实现。  
