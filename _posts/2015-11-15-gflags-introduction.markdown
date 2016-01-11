@@ -153,5 +153,9 @@ extern std::string SetCommandLineOption(const char* name, const char* value);
 一般我们的程序都需要-version提供版本信息，-help提供Usage。  
 可以使用SetVersionString() 和 SetUsageMessage() 来实现。  
 
+### 两个疑问
+1. 如何在程序里自动遍历所有的flags？  
+2. 如果在程序里完全使用gflag作为配置，同时想实现动态reload各个flag的值，在程序中单独启动一个线程不断的重新更新flag的值是否可行？是否有些已知的坑？  
+
 ### 参考资料：   
 [https://gflags.github.io/gflags/](https://gflags.github.io/gflags/)

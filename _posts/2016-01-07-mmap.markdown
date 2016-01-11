@@ -122,7 +122,7 @@ int main(int argc, char* argv[]) {
 这里也可以看到mmap的基本功能就是映射文件到内存。
 
 注意几个错误：  
-1. open的flag需要与mmap的prot对应，比如open时为O_RDONLY，而mmap时prot为PROT_WRITE，那么会报错`mmap: Permission denied`  
+1. open的flag需要与mmap的prot对应，比如open时为O\_RDONLY，而mmap时prot为PROT_WRITE，那么会报错`mmap: Permission denied`  
 2. 程序限定了offset值不会超过文件大小，如果去掉这一限制，./mmapdemo 4095返回一个''，./mmapdemo 4096，那么会报一个`Bus error (core dumped)`的错误  
 3. munmap解除映射关系，程序退出时也会自动unmap，unmap之后如果继续访问之前映射的内存，那么会报一个`Segmentation fault (core dumped)`的错误   
 
