@@ -1,7 +1,15 @@
+- name: 欢乐英雄
+  cover: http://img3.douban.com/lpic/s26723000.jpg
+  start_date: 2016.1.15
+  finish_date:
+  douban_link: http://book.douban.com/subject/24743902/
+  download_link:
+  note: 
+
 - name: 七星龙王
   cover: http://img3.doubanio.com/mpic/s26722998.jpg
   start_date: 2016.1.11
-  finish_date: 
+  finish_date: 2015.1.15
   douban_link: http://book.douban.com/subject/24708300/
   download_link:
   note: 
