@@ -75,7 +75,7 @@ F0113 20:36:49.486486 32554 demo.cpp:27] Hello, glog fatal.
 
 glog有很多配置项，这些配置项都是通过gflags设置的，关于gflags的使用可以参考[这篇文章](http://yingshin.github.io/c/cpp/2015/11/15/gflags-introduction/)。  
 例如对于logtostderr这个配置，有3种方法可以设置：  
-1. 设置GLOG_前缀名的系统环境变量：`export GLOG_logtostderr=1;./your_application`  
+1. 设置GLOG\_前缀名的系统环境变量：`export GLOG_logtostderr=1;./your_application`  
 2. 手动在程序里修改gflags配置变量：`FLAGS_logtostderr = 1;LOG(INFO) << ...`。  
 注意`FLAGS_log_dir`比较特殊，如果想要生效，需要再调用`google::InitGoogleLogging`之前。  
 3. 程序启动时在命令行配置gflags：`./your_application --logtostderr=1`  
@@ -118,6 +118,7 @@ int main(int argc, char* argv[]) {
 ```
 
 程序输出为：  
+
 ```
 I0110 23:19:16.891237 17039 demo1.cpp:25] LOG_EVERY_N 3 i:0 google::COUNTER:1
 I0110 23:19:16.891355 17039 demo1.cpp:27] LOG_FIRST_N 4 i:0 google::COUNTER:1
@@ -217,11 +218,11 @@ VLOG_IF, VLOG_EVERY_N，VLOG_IF_EVERY_N与LOG_XXX一致，只不过参数里的�
 ### CHECK宏
 CHECK系列的宏跟assert很像，都是检测某个表达式是否为真，不过不受NDEBUG影响  
 `CHEKCK(expression) << "check failed description"`，检测expression如果不为真，则打印后面的description和栈上的信息，然后退出程序，出错后的处理过程和FATAL比较像。  
-除了CHECK，还有CHECK_EQ,CHECK_NE,CHECK_LE,CHECK_LT,CHECK_GE,CHECK_GT一系列宏用于判断。  
+除了CHECK，还有CHECK\_EQ,CHECK\_NE,CHECK\_LE,CHECK\_LT,CHECK\_GE,CHECK\_GT一系列宏用于判断。  
 
 空指针的判断需要转化下，例如`CHECK_EQ(p, static_cast<int*>(NULL)`，直接`CHECK_EQ(p, NULL)`会报错。
 
-字符串的比较需要使用CHECK_STREQ,CHECK_STRNE,CHECK_STRCASEEQ,CHECK_STRCASENE，注意这种情况下可以传入NULL，例如CHECK_STREQ(NULL, NULL)可以正常运行。  
+字符串的比较需要使用CHECK\_STREQ,CHECK\_STRNE,CHECK\_STRCASEEQ,CHECK\_STRCASENE，注意这种情况下可以传入NULL，例如CHECK\_STREQ(NULL, NULL)可以正常运行。  
 
 ###参考文档：  
 1. [glog官方文档](http://google-glog.googlecode.com/svn/trunk/doc/glog.html)  
