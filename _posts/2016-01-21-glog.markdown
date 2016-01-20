@@ -7,7 +7,7 @@ categories: [c/cpp]
 tags: [log]
 ---
 
-glog是google的的一个C++轻量日志库，支持常用的日志功能：例如日志级别，自定义级别，条件输出等  
+glog是google的的一个C++轻量日志库，支持常用的日志功能：例如日志级别，自定义级别，条件输出,DEBUG日志等  
 本文主要介绍glog的一些基本用法。  
 
 <!--more-->
@@ -93,10 +93,10 @@ glog有很多配置项，这些配置项都是通过gflags设置的，关于gfla
 
 ### 条件输出
 当指定变量满足某些条件时输出日志。  
-1. LOG_IF(INFO, i > 5)，当条件(i > 5)满足时输出日志。  
-2. LOG_EVERY_N(INFO, 3)，当运行该语句时，第1,3+1,6+1,...时输出日志，google::COUNTER记录语句的执行次数。  
-3. LOG_IF_EVERY_N(INFO, (i > 5), 2)，1 2的结合，当满足某些条件时，每N次输出日志。  
-4. LOG_FIRST_N(INFO, 4), 此语句的前N次输出到日志，google::COUNTER记录语句的执行次数。  
+1. LOG\_IF(INFO, i > 5)，当条件(i > 5)满足时输出日志。  
+2. LOG\_EVERY\_N(INFO, 3)，当运行该语句时，第1,3+1,6+1,...时输出日志，google::COUNTER记录语句的执行次数。  
+3. LOG\_IF\_EVERY\_N(INFO, (i > 5), 2)，1 2的结合，当满足某些条件时，每N次输出日志。  
+4. LOG\_FIRST\_N(INFO, 4), 此语句的前N次输出到日志，google::COUNTER记录语句的执行次数。  
 
 一个测试demo如下：  
 
