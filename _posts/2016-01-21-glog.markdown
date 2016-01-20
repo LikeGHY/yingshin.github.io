@@ -17,7 +17,8 @@ glog是google的的一个C++轻量日志库，支持常用的日志功能：例�
 "WARNING: Logging before InitGoogleLogging() is written to STDERR"  
 加了这一句后`google::InitGoogleLogging(argv[0])`，日志输出到文件
 默认的输出位置在tmp下，具体为：  
-/tmp/<program name>.<hostname>.<username>.log.<severity level>.<data>.<time>.<pid>，比如:introduction.ymac.yingshin.log.ERROR.20160102-231949.11182
+`/tmp/<program name>.<hostname>.<username>.log.<severity level>.<data>.<time>.<pid>`  
+比如:introduction.ymac.yingshin.log.ERROR.20160102-231949.11182
 
 
 ### 日志级别
@@ -212,8 +213,8 @@ I0119 23:05:52.615243  9245 hello.h:7] hello VLOG(1)
 ```
 
 可以看到hello和main里使用了不同的自定义输出标准。  
-VLOG_IS_ON(n)用于判断级别n是否会输出到日志，即当--v指定的值>=n时返回true。  
-VLOG_IF, VLOG_EVERY_N，VLOG_IF_EVERY_N与LOG_XXX一致，只不过参数里的级别为自定义级别。  
+VLOG\_IS\_ON(n)用于判断级别n是否会输出到日志，即当--v指定的值>=n时返回true。  
+VLOG\_IF, VLOG\_EVERY\_N，VLOG\_IF\_EVERY\_N与LOG\_XXX一致，只不过参数里的级别为自定义级别。  
 
 ### CHECK宏
 CHECK系列的宏跟assert很像，都是检测某个表达式是否为真，不过不受NDEBUG影响  
