@@ -7,7 +7,7 @@ categories: [c/cpp]
 tags: [log]
 ---
 
-glog是google的的一个C++轻量日志库，支持常用的日志功能：例如日志级别，自定义级别，条件输出,DEBUG日志等  
+glog是google的的一个C++轻量日志库，支持常用的日志功能：例如日志级别，自定义级别，条件输出，DEBUG日志等，同时支持gflag的参数配置方式。  
 本文主要介绍glog的一些基本用法。  
 
 <!--more-->
@@ -15,7 +15,7 @@ glog是google的的一个C++轻量日志库，支持常用的日志功能：例�
 ### 日志输出目录
 日志默认打印到屏幕，同时有一句提示  
 "WARNING: Logging before InitGoogleLogging() is written to STDERR"  
-加了这一句后`google::InitGoogleLogging(argv[0])`，日志输出到文件
+加了这一句后`google::InitGoogleLogging(argv[0])`，日志输出到文件。  
 默认的输出位置在tmp下，具体为：  
 `/tmp/<program name>.<hostname>.<username>.log.<severity level>.<data>.<time>.<pid>`  
 比如:introduction.ymac.yingshin.log.ERROR.20160102-231949.11182
@@ -47,12 +47,14 @@ Aborted (core dumped)
 不同的日志级别会输出到不同的文件，与日志级别一样，文件名后缀共有4个，分别是.INFO .WARNING .ERROR .FATAL。  
 X级别的日志会输出到所有<=X的日志文件里，例如error日志在.INFO .WARNING .ERROR日志里都会输出。  
 
-注意还有一种日志级别是DFATAL，这种级别在debug模式下为ERROR，当定义NDEBUG时则是FATAL，例如：
+注意还有一种日志级别是DFATAL，这种级别在debug模式下为ERROR，当定义NDEBUG时则是FATAL，主要通过在NDEBUG下定义为ERROR，否则为FATAL来实现。  
+
+例如：
 
 ```
 LOG(DFATAL) << "Hello, glog fatal.";
 ```
-主要通过在NDEBUG下定义为ERROR，否则为FATAL来实现。  
+
 
 ```
 // glog/log_severity.h里的定义
@@ -78,10 +80,10 @@ glog有很多配置项，这些配置项都是通过gflags设置的，关于gfla
 例如对于logtostderr这个配置，有3种方法可以设置：  
 1. 设置GLOG\_前缀名的系统环境变量：`export GLOG_logtostderr=1;./your_application`  
 2. 手动在程序里修改gflags配置变量：`FLAGS_logtostderr = 1;LOG(INFO) << ...`。  
-注意`FLAGS_log_dir`比较特殊，如果想要生效，需要再调用`google::InitGoogleLogging`之前。  
+   注意`FLAGS_log_dir`比较特殊，如果想要生效，需要再调用`google::InitGoogleLogging`之前。  
 3. 程序启动时在命令行配置gflags：`./your_application --logtostderr=1`  
 
-注意第三种方法需要安装了gflags库，我在编译安装glog时手动指定了gflags的位置：`--with-gflags=gflags安装路径`  
+注意第三种方法需要安装了gflags库，我在编译安装glog时手动指定了gflags的位置：`--with-gflags=gflags安装路径`。  
 使用时推荐使用这种方法。  
 
 介绍下最常用的几个flag：  
@@ -93,7 +95,7 @@ glog有很多配置项，这些配置项都是通过gflags设置的，关于gfla
 6. vmodele:自定义文件日志级别  
 
 ### 条件输出
-当指定变量满足某些条件时输出日志。  
+条件输出是指，当某些变量满足某些条件时才输出日志。  
 1. LOG\_IF(INFO, i > 5)，当条件(i > 5)满足时输出日志。  
 2. LOG\_EVERY\_N(INFO, 3)，当运行该语句时，第1,3+1,6+1,...时输出日志，google::COUNTER记录语句的执行次数。  
 3. LOG\_IF\_EVERY\_N(INFO, (i > 5), 2)，1 2的结合，当满足某些条件时，每N次输出日志。  
@@ -166,7 +168,7 @@ I0119 22:53:19.023028 26871 vlog_main.cpp:23] I'm printed when you run the progr
 I0119 22:53:19.023130 26871 vlog_main.cpp:24] I'm printed when you run the program with --v=2 or higher
 ```
 
-同时，更精彩的是自定义日志可以定义到文件级别，使用--vmodule=mapreduce=2,file=1,gfs*=3  
+同时，更精彩的是自定义日志可以定义到文件级别，使用--vmodule=mapreduce=2,file=1,gfs*=3这种形式。  
 例如有两个文件main.c,hello.h，代码如下：  
 
 ```
@@ -218,12 +220,13 @@ VLOG\_IF, VLOG\_EVERY\_N，VLOG\_IF\_EVERY\_N与LOG\_XXX一致，只不过参数
 
 ### CHECK宏
 CHECK系列的宏跟assert很像，都是检测某个表达式是否为真，不过不受NDEBUG影响  
-`CHEKCK(expression) << "check failed description"`，检测expression如果不为真，则打印后面的description和栈上的信息，然后退出程序，出错后的处理过程和FATAL比较像。  
-除了CHECK，还有CHECK\_EQ,CHECK\_NE,CHECK\_LE,CHECK\_LT,CHECK\_GE,CHECK\_GT一系列宏用于判断。  
+`CHEKCK(expression) << "check failed description"`  
+检测expression如果不为真，则打印后面的description和栈上的信息，然后退出程序，出错后的处理过程和FATAL比较像。  
+除了CHECK，还有 CHECK\_EQ,CHECK\_NE,CHECK\_LE,CHECK\_LT,CHECK\_GE,CHECK\_GT一系列宏用于判断。  
 
 空指针的判断需要转化下，例如`CHECK_EQ(p, static_cast<int*>(NULL)`，直接`CHECK_EQ(p, NULL)`会报错。
 
-字符串的比较需要使用CHECK\_STREQ,CHECK\_STRNE,CHECK\_STRCASEEQ,CHECK\_STRCASENE，注意这种情况下可以传入NULL，例如CHECK\_STREQ(NULL, NULL)可以正常运行。  
+字符串的比较需要使用 CHECK\_STREQ,CHECK\_STRNE,CHECK\_STRCASEEQ,CHECK\_STRCASENE，注意这种情况下可以传入NULL，例如CHECK\_STREQ(NULL, NULL)可以正常运行。  
 
 ###参考文档：  
 1. [glog官方文档](http://google-glog.googlecode.com/svn/trunk/doc/glog.html)  
