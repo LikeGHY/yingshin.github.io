@@ -1,3 +1,11 @@
+- name: 古董局中局 4
+  cover: http://img3.doubanio.com/mpic/s28340239.jpg
+  start_date: 2016.2.3
+  finish_date:
+  douban_link: http://book.douban.com/subject/26650970/
+  download_link:
+  note: 
+
 - name: Linux多线程服务端编程
   cover: http://img3.doubanio.com/mpic/s24522799.jpg
   start_date: 2016.2.1
