@@ -1,10 +1,18 @@
+- name: 流行蝴蝶剑
+  cover: http://img3.douban.com/lpic/s27008990.jpg
+  start_date: 2016.2.6
+  finish_date: 2016.2.12
+  douban_link: http://book.douban.com/subject/24871623/
+  download_link:
+  note: 看着感觉跟小时候的莲花争霸的人物有很多重叠，查了下果然是从这部小说改编的。整体不如陆小凤、楚留香系列的好看，但是推荐看一遍。
+
 - name: 古董局中局 4
   cover: http://img3.doubanio.com/mpic/s28340239.jpg
   start_date: 2016.2.3
-  finish_date:
+  finish_date: 2016.2.6
   douban_link: http://book.douban.com/subject/26650970/
   download_link:
-  note: 
+  note: 这一部主要冲着看下老朝奉是谁去的，整体比较平常的一个结局，但是好处是作者填上了坑，没有用一系列的难以填的坑来吊读者的胃口。
 
 - name: Linux多线程服务端编程
   cover: http://img3.doubanio.com/mpic/s24522799.jpg
