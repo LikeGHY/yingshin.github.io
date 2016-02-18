@@ -3,7 +3,6 @@
 permalink: /:categories/:year/:month/:day/:title 
 
 name: Ying's Blog 
-markdown: redcarpet
 highlighter: rouge
 title: Ying's World 
 
