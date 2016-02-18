@@ -4,7 +4,7 @@ permalink: /:categories/:year/:month/:day/:title
 
 name: Ying's Blog 
 markdown: redcarpet
-highlighter: pygments
+highlighter: rouge
 title: Ying's World 
 
 author :
