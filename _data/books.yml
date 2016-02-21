@@ -1,3 +1,19 @@
+- name: 苗疆蛊事
+  cover: http://cover.read.duokan.com/mfsv2/download/s010/p01XNGEvbQ48/hZLfLXNpIUAjzD.jpg!e
+  start_date: 2016.2.20
+  finish_date:
+  douban_link:
+  download_link:
+  note: 非常不错的一本书，一定要读！在肉欲情色中，讲一番道理。看似荒淫无耻，实际上发人深省。
+
+- name: 肉蒲团
+  cover:
+  start_date: 2016.2.6
+  finish_date: 2016.2.20
+  douban_link:
+  download_link:
+  note: 非常不错的一本书，一定要读！在肉欲情色中，讲一番道理。看似荒淫无耻，实际上发人深省。
+
 - name: 流行蝴蝶剑
   cover: http://img3.douban.com/lpic/s27008990.jpg
   start_date: 2016.2.6
