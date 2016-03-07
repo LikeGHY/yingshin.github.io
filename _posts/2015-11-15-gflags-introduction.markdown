@@ -149,6 +149,14 @@ extern std::string SetCommandLineOption(const char* name, const char* value);
 
 成功返回"portno set to 9999"，失败则返回空字符串。
 
+与此类似的是读取flag的接口：  
+
+```
+extern bool GetCommandLineOption(const char* name, std::string* OUTPUT)
+```
+
+读写其实都可以使用`if (FLAGS_foo) FLAGS_Foo = bar`的形式，但是如果需要线程安全的调用，使用`Get/Set`接口。
+
 ### version与help
 一般我们的程序都需要-version提供版本信息，-help提供Usage。  
 可以使用SetVersionString() 和 SetUsageMessage() 来实现。  
