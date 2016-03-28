@@ -228,5 +228,5 @@ CHECK系列的宏跟assert很像，都是检测某个表达式是否为真，不
 
 字符串的比较需要使用 CHECK\_STREQ,CHECK\_STRNE,CHECK\_STRCASEEQ,CHECK\_STRCASENE，注意这种情况下可以传入NULL，例如CHECK\_STREQ(NULL, NULL)可以正常运行。  
 
-###参考文档：  
+### 参考文档：  
 1. [glog官方文档](http://google-glog.googlecode.com/svn/trunk/doc/glog.html)  
