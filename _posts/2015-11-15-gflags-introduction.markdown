@@ -101,6 +101,8 @@ __remove\_flags__: 若设置为true，表示解析后将flag以及flag对应的�
 
 我觉得是返回处理后的argv第一个非flag值的下标  
 
+如果从文件中解析flags可以使用`ReadFromFlagsFile`接口。  
+
 ### 检查有效性
 gflags还提供了一个检查传入flag值是否有效的功能，只要定义检测函数，并且注册就可以了。  
 检测函数以及注册方式的例子：  
@@ -164,6 +166,7 @@ extern bool GetCommandLineOption(const char* name, std::string* OUTPUT)
 ### 遍历所有的flags
 使用`extern void GetAllFlags(std::vector<CommandLineFlagInfo>* OUTPUT)`接口。  
 
+更多的使用接口，可以直接查看gflags/gflags.h。
 
 ### 参考资料：   
 [https://gflags.github.io/gflags/](https://gflags.github.io/gflags/)
