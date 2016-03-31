@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "C++里的Two phase lookup"
-date: 2015-03-30 22:19:03
+date: 2016-03-30 22:19:03
 excerpt: "Two phase lookup"
 categories: [c/cpp]
 tags: [compliler]
@@ -182,3 +182,11 @@ test_template3.cpp:22:17: error: expected ';' before 'x'
 2. [Why can't I use variable of parent class that is template class?](http://stackoverflow.com/questions/10171242/why-cant-i-use-variable-of-parent-class-that-is-template-class)  
 3. [Template instantiation details of GCC and MS compilers](http://stackoverflow.com/questions/7182359/template-instantiation-details-of-gcc-and-ms-compilers/7241548#7241548)  
 4. [Two phase lookup - explanation needed](http://stackoverflow.com/questions/7767626/two-phase-lookup-explanation-needed?lq=1)
+
+
+
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 |
