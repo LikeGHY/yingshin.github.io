@@ -86,7 +86,6 @@ int main() {
 编译后的符号只有这个：`W A<int>::f()`，注意：编译器很聪明的没有生成`A::g`。  
 
 这个过程细分的话，就是Two phase name lookup了。  
-
 1. 模板定义阶段：这个时候编译器会检查语法，例如是否少了`;`。查找模板中独立的名字(all non-dependent names are resolved (looked up))  
 2. 模板实例化阶段：查找依赖的名字（dependent names are resolved.）  
 
