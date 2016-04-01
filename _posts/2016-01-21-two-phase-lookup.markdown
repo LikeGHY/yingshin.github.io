@@ -63,7 +63,7 @@ int main() {
 }
 ```
 
-上面两段代码的正确性分析文末可以找到，先说下模板的编译。  
+上面两段代码的正确性分析文末可以找到，先说下模板的编译过程。  
 
 我们知道模板是在用到的时候才实例化的，比如这段代码：
 
@@ -182,11 +182,3 @@ test_template3.cpp:22:17: error: expected ';' before 'x'
 2. [Why can't I use variable of parent class that is template class?](http://stackoverflow.com/questions/10171242/why-cant-i-use-variable-of-parent-class-that-is-template-class)  
 3. [Template instantiation details of GCC and MS compilers](http://stackoverflow.com/questions/7182359/template-instantiation-details-of-gcc-and-ms-compilers/7241548#7241548)  
 4. [Two phase lookup - explanation needed](http://stackoverflow.com/questions/7767626/two-phase-lookup-explanation-needed?lq=1)
-
-
-
-| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| col 3 is      | right-aligned | $1600 |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
