@@ -1,8 +1,8 @@
 ---
 layout: post
 title:  "test"
-date: 2016-05-02 22:19:03
-excerpt: "Two phase lookup"
+date: 2016-04-30 22:19:03
+excerpt: "Two phase lookup2222"
 categories: [c/cpp]
 tags: [compliler]
 ---
