@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "protobuf反射详解"
-date:   2016-05-01 15:19:03
+date: 2016-05-01 15:19:03
 excerpt: "protobuf反射详解"
 categories: [c/cpp]
 notebook: blog article notes
@@ -16,6 +16,8 @@ tags: [protobuf, reflection]
 
 即是否有一个通用的方法可以遍历任意pb对象的所有字段，而不用关心具体对象类型。使用场景上有很多：  
 比如json格式字符串的相互转换，bigtable里根据pb对象的字段自动写列名和对应的value。
+
+<!--more-->
 
 例如定义了pb messge类型Person如下：
 
