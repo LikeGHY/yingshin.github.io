@@ -4,10 +4,8 @@ title:  "protobuf反射详解"
 date: 2016-05-01 15:19:03
 excerpt: "protobuf反射详解"
 categories: [c/cpp]
-notebook: blog article notes
 tags: [protobuf, reflection]
 ---
-
 
 本文主要介绍protobuf里的反射功能，使用的pb版本为2.6.1，同时为了简洁，对repeated/extension字段的处理方法没有说明。
 
