@@ -10,7 +10,7 @@ tags: [protobuf, reflection]
 本文主要介绍protobuf里的反射功能，使用的pb版本为2.6.1，同时为了简洁，对repeated/extension字段的处理方法没有说明。
 
 最初是起源于这样一个问题：  
-给定一个pb对象，如何自动遍历该对象的所有字段？  
+**给定一个pb对象，如何自动遍历该对象的所有字段？**  
 
 即是否有一个通用的方法可以遍历任意pb对象的所有字段，而不用关心具体对象类型。使用场景上有很多：  
 比如json格式字符串的相互转换，bigtable里根据pb对象的字段自动写列名和对应的value。
@@ -53,6 +53,8 @@ void parse_message(const std::string& serialized_string, google::protobuf::Messa
 #### 1. 反射相关接口
 
 要介绍pb的反射功能，先看一个相关的UML示例图：
+
+![pb-reflection](/assets/images/pb-reflection.png)
 
 ##### 1.1 Message
 
