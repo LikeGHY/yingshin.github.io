@@ -12,8 +12,9 @@ tags: [protobuf, reflection]
 最初是起源于这样一个问题：  
 **给定一个pb对象，如何自动遍历该对象的所有字段？**  
 
-即是否有一个通用的方法可以遍历任意pb对象的所有字段，而不用关心具体对象类型。使用场景上有很多：  
-比如json格式字符串的相互转换，bigtable里根据pb对象的字段自动写列名和对应的value。
+即是否有一个通用的方法可以遍历任意pb对象的所有字段，而不用关心具体对象类型。    
+使用场景上有很多：  
+比如json格式字符串的相互转换，或者bigtable里根据pb对象的字段自动写列名和对应的value。
 
 <!--more-->
 
@@ -38,9 +39,9 @@ person.set_age(21);
 |-------------|-------------------|---------------------|
 |uid          |email              |izualzhy@163.com     |
 
-答案就是pb的反射功能。
+答案就是 **pb的反射功能**。
 
-我们的目标就是提供这样两个接口：  
+我们的目标是提供这样两个接口：  
 
 ```
 //从给定的message对象序列化为固定格式的字符串
@@ -50,15 +51,19 @@ void parse_message(const std::string& serialized_string, google::protobuf::Messa
 ```
 
 
+接下来逐步介绍下如何实现。
+
 #### 1. 反射相关接口
 
 要介绍pb的反射功能，先看一个相关的UML示例图：
 
 ![pb-reflection](/assets/images/pb-reflection.png)
 
+各个类以及接口说明:
+
 ##### 1.1 Message
 
-Person是自定义的pb类型，继承自Message.MessageLite作为Message基类，更加轻量级一些。  
+Person是自定义的pb类型，继承自Message.  MessageLite作为Message基类，更加轻量级一些。  
 通过Message的两个接口`GetDescriptor/GetReflection`，可以获取该类型对应的Descriptor/Reflection。  
 
 ##### 1.2 Descriptor
@@ -85,7 +90,7 @@ enum CppType {
 	CPPTYPE_INT32 = 1, //TYPE_INT32, TYPE_SINT32, TYPE_SFIXED32
 }
 ```
-或者该类型的label属性： 
+获取类型的label属性： 
 
 ```
 enum Label {
@@ -96,10 +101,10 @@ enum Label {
 	MAX_LABEL = 3, //Constant useful for defining lookup tables indexed by Label.
 }
 ```
-其中`const string& name() const;`可以获取字段的名称。  
+获取字段的名称:`const string& name() const;`。  
 
 ##### 1.4 Reflection
-Reflection主要提供了动态读写pb字段的接口，对pb对象的自动读写主要通过该类完成。
+Reflection主要提供了动态读写pb字段的接口，对pb对象的自动读写主要通过该类完成。  
 对每种类型，Reflection都提供了一个单独的接口用于读写字段对应的值。  
 
 例如对于读操作：
@@ -123,12 +128,12 @@ Reflection主要提供了动态读写pb字段的接口，对pb对象的自动读
 
 对于写操作也是类似的接口，例如`SetInt32/SetInt64/SetEnum`等。  
 
-#### 2. 反射实例
+#### 2. 反射示例
 
-实例主要是接收任意类型的message对象，遍历解析其中的每个字段、以及对应的值，按照自定义的格式存储到一个string中。同时重新反序列化该string，读取字段以及value，填充到message对象中。例如：  
+示例主要是接收任意类型的message对象，遍历解析其中的每个字段、以及对应的值，按照自定义的格式存储到一个string中。同时重新反序列化该string，读取字段以及value，填充到message对象中。例如：  
 
 其中Person是自定义的protobuf message类型，用于设置一些字段验证我们的程序。  
-单纯的序列化/反序列化功能可以通过pb自带的SerializeToString/ParseFromString接口完成。这里主要是为了同时展示**自动从pb对象里提取field/value，自动根据field/value来还原pb对象**一个功能。
+单纯的序列化/反序列化功能可以通过pb自带的SerializeToString/ParseFromString接口完成。这里主要是为了同时展示**自动从pb对象里提取field/value，自动根据field/value来还原pb对象**这个功能。
 
 ```
 int main() {
@@ -154,7 +159,7 @@ int main() {
 }
 ```
 
-其中Person定义是对example里的addressbook.proto做了少许修改(修改的原因是本文没有涉及数组的filed/value提取方式说明)
+其中Person定义是对example里的addressbook.proto做了少许修改(修改的原因是本文没有涉及pb里数组的处理)
 
 ```
 package tutorial;
@@ -183,7 +188,8 @@ message Person {
 
 ##### 3.1 serialize_message
 serialize_message遍历提取message中各个字段以及对应的值，序列化到string中。  
-主要思路就是通过Descriptor得到每个字段的描述符，通过Reflection获取对应的value。  
+主要思路就是通过Descriptor得到每个字段的描述符：字段名、字段的cpp类型。  
+通过Reflection的GetX接口获取对应的value。  
 
 ```
 void serialize_message(const google::protobuf::Message& message, std::string* serialized_string) {
@@ -263,7 +269,7 @@ void serialize_message(const google::protobuf::Message& message, std::string* se
 
 ##### 3.2 parse_message
 parse_message通过读取field/value，还原message对象。  
-主要思路跟serialize_message很像，通过Descriptor得到每个字段的描述符FieldDescriptor，通过Reflection赋值。  
+主要思路跟serialize_message很像，通过Descriptor得到每个字段的描述符FieldDescriptor，通过Reflection的SetX填充message。  
 
 ```
 void parse_message(const std::string& serialized_string, google::protobuf::Message* message) {
