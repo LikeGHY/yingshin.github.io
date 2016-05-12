@@ -38,7 +38,9 @@ tags: [binarysearch]
 其实就是数学归纳法，具体的定义不用管，我们在第一个例子里看下。  
 
 <!--more-->
-#### <a name="id1" id="id1">查找值为key的下标，如果不存在返回-1.</a>   
+
+#### <a name="id1" id="id1">1. 查找值为key的下标，如果不存在返回-1.</a>   
+
 先看一下伪代码:
 
 ```
@@ -84,7 +86,10 @@ int BS(const VecInt& vec, int key)
 ```
 
 接着考虑一个复杂一点的问题
-#### <a name="id2" id="id2">查找值key第一次出现的下标x，如果不存在返回-1.</a>    
+
+#### <a name="id2" id="id2">2. 查找值key第一次出现的下标x，如果不存在返回-1.</a>
+
+
 我们仍然考虑中间值与key的关系：  
 1. 如果array[mid]&lt;key，那么x一定在[mid+1, right]区间里。  
 2. 如果array[mid]&gt;key，那么x一定在[left, mid-1]区间里。   
@@ -123,7 +128,8 @@ int BS_First(const VecInt& vec, int key)
 ```
 
 接下来的这个问题还有一个小小的坑，需要注意下：   
-#### <a name="id3" id="id3">查找值key最后一次出现的下标x，如果不存在返回-1.</a>    
+
+#### <a name="id3" id="id3">3. 查找值key最后一次出现的下标x，如果不存在返回-1.</a>    
 省去分析的过程，我们直接写下想到的循环不变式：  
 1. 如果array[mid]&gt;key，那么x一定在[left, mid-1]区间里。  
 2. 如果array[mid]&le;key, 那么x一定在[mid, right]区间里。  
@@ -159,7 +165,7 @@ int BS_Last(const VecInt& vec, int key)
 接下来的题目都是类似的。  
 只贴下循环不变式和参考代码，如果你有别的心得或者这篇文章有错误欢迎提出。  
 
-#### <a name="id4" id="id4">查找刚好小于key的元素下标x，如果不存在返回-1.</a>    
+#### <a name="id4" id="id4">4. 查找刚好小于key的元素下标x，如果不存在返回-1.</a>    
 1. 如果array[mid]&lt;key，那么x在区间[mid, right]
 2. 如果array[mid]&ge;key，那么x在区间[left, mid-1]
 
@@ -185,7 +191,8 @@ int BS_Last_Less(const VecInt& vec, int key)
 }
 ```
 
-#### <a name="id5" id="id5">查找刚好大于key的元素下标x，如果不存在返回-1,等价于std::upper\_bound.</a>    
+#### <a name="id5" id="id5">5. 查找刚好大于key的元素下标x，如果不存在返回-1,等价于std::upper\_bound.</a>    
+
 1. 如果array[mid]&gt;key，那么x在区间[left, mid]
 2. 如果array[mid]&le;key，那么x在区间[mid + 1, right]
 
@@ -211,7 +218,8 @@ int BS_First_Greater(const VecInt& vec, int key)
 }
 ```
 
-#### <a name="id6" id="id6">查找第一个>=key的下标，如果不存在返回-1,等价于std::lower\_bound.</a>     
+#### <a name="id6" id="id6">6. 查找第一个>=key的下标，如果不存在返回-1,等价于std::lower\_bound.</a>     
+
 1. 如果array[mid]&lt;key，那么x在区间[mid + 1, right]
 2. 如果array[mid]&ge;key，那么x在区间[left, mid]
 
