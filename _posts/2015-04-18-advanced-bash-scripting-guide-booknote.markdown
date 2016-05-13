@@ -35,6 +35,7 @@ echo $a
 #A     B C                       D
 echo "$a"
 ```
+
 #### 变量赋值
 
 ```
@@ -42,7 +43,9 @@ echo "$a"
 a=`ls`
 a=$(ls)
 ```
-####bash变量是不区分类型的
+
+#### bash变量是不区分类型的
+
 Bash并不对变量区分"类型". 本质上, Bash变量都是字符串. 但是依赖于具体的上下文,Bash也允许比较操作和整数操作. 其中的关键因素就是, 变量中的值是否只有数字.
 
 ```
@@ -54,14 +57,18 @@ echo $b #BB35
 let b+=1
 echo $b #1
 ```
-####特殊的变量类型
+
+#### 特殊的变量类型
+
 {}标记法提供了一种提取从命令行传递到脚本的最后一个位置参数的简单办法. 但是这种方法同时还需要使用间接引用.
 
 ```
 args=$# #参数的个数
 lastarg=${!args} #最后一个参数
 ```
-####引用变量
+
+#### 引用变量
+
 这段关于IFS的代码没有看懂
 
 ```
@@ -70,7 +77,9 @@ echo $var #(]\{}$\
 IFS='\'
 echo $var #(] {}$ 
 ```
-####转义
+
+#### 转义
+
 注意\转义的解释
 
 ```
@@ -117,7 +126,9 @@ bar"
 echo -e '\n'
 echo $'\n'
 ```
-####条件测试结构
+
+#### 条件测试结构
+
 + 0 is True
 
 ```
@@ -174,14 +185,17 @@ str=abc
 #在一个混合测试中, 即使使用引用的字符串变量也可能还不够. 如果$string为空的话, [ -n "$string" -o "$a" = "$b" ]可能会在某些版本的Bash中产生错误. 安全的做法是附加一个额外的字符给可能的空变量, [ "x$string" != x -o "x$a" = "x$b" ] ("x"字符是可以相互抵消的).
 
 ```
-####操作符
+
+#### 操作符
+
 逻辑操作符  
 `if [ $condition1 ] && [ $condition2 ]`  
 `if [[ $condition1 && $condition2 ]]`  
 `if [ $condition1 -a $condition2 ]`  
 注意1,2 &&含义不同
 
-####数字常量
+#### 数字常量
+
 shell 默认情况下都是把数字当做10进制处理。除非这个数字采用了特殊的标记或者前缀。  
 0表示八进制，0x表示16进制，或者是Base#Number的形式。   
 Base的取值范围是2-64,对应的数字表示为10个数字 + 26个小写字母 + 26个大写字母 + @ + \_。   
@@ -228,7 +242,9 @@ let "bad_oct = 081"
 
 
 ```
-####内部变量
+
+#### 内部变量
+
 + 该函数可以打印调用的参数
 
 ```
@@ -253,7 +269,8 @@ output_args_one_per_line $var
 + `!*` 上个命令的所有参数
 
 
-####操作字符串
+#### 操作字符串
+
 + 字符串求长度
 
 ```
@@ -321,7 +338,8 @@ echo ${str/%123/ABC}
 # ABCufoABCabc123
 echo ${str/#abc/ABC}
 ```
-####参数替换
+
+#### 参数替换
 
 ```
 ${parameter}与$parameter相同, 也就是变量parameter的值. 在某些上下文中,${parameter}很少会产生混淆.
@@ -348,7 +366,9 @@ ${parameter:?err_msg} -- 如果parameter已经被设置, 那么就使用设置�
 ${!varprefix\*}, ${!varprefix@}
 匹配所有之前声明过的, 并且以varprefix开头的变量.
 ```
+
 #### 变量的间接引用
+
 `\$$var `或者`${!var}`的形式
 
 ```
@@ -360,7 +380,9 @@ echo $y
 #abc
 echo ${!y}
 ```
+
 #### $RANDOM: 产生随机整数
+
 RANDOM是BASH的内建函数，返回[0, 32767]间的伪随机数。虽然是函数，但是也可以这么用:
 
 ```
@@ -373,6 +395,7 @@ awk也可以产生一个[0, 1]的随机数
 echo | awk '{srand();print rand()}'
 0.744095
 ```
+
 #### 循环
 
 ```
@@ -393,7 +416,9 @@ do
     echo $a
 done
 ```
-####循环控制
+
+#### 循环控制
+
 break命令可以带一个参数，一个不带参数的break命令只能退出当前所在（最内层）的循环，而break N可以跳出N层循环 __continue N没有理解__
 
 ```
@@ -413,7 +438,9 @@ done
 #Group 1: 
 #1 2 3
 ```
+
 #### 基本命令
+
 + ls -S按照文件尺寸列出文件
 + -exec COMMAND \;
 find ~ -name "core\*" -exec rm -rf {} \;
@@ -423,6 +450,7 @@ find ~ -name "core\*" -exec rm -rf {} \;
 watch -n 60 'grep "\[E" server\*.log | tail'
 
 #### 文本处理命令
+
 + 先排序，再统计，再按照出现的次数DESC排列。这个原型常用于统计log或者词典列表。`sort INPUTFILE | uniq -c | sort -nr`
 + column -t可以转化为易于打印的表的形式，例如：
 
@@ -439,6 +467,7 @@ watch -n 60 'grep "\[E" server\*.log | tail'
 + cat -n会显示行号，nl的输出类似，但是空行前不显示行号
 
 #### 文件与归档命令
+
 + strings可以从二进制或者数据文件中读到可打印字符
 + diff --side-by-side会按照左右分隔的形式比较文件  
 -r 递归   
@@ -476,6 +505,7 @@ patch -R -p1 < to-dir.patch > #取消补丁
 创建一个随机的文件名($PREFIX固定 XXXXXX替换为随机的6个字符），完整的文件名储存在tempfile.
 
 #### 数学计算命令
+
 + factor分解素数
 + Bash不能处理浮点运算
     1. 需要使用bc
@@ -497,9 +527,11 @@ patch -R -p1 < to-dir.patch > #取消补丁
     ```
 
 #### 混杂命令
+
 seq产生出来的整数一般都占一行，-s可以修改为空格、冒号。
 
 #### 系统与管理命令
+
 nmap(Network Mapper) 可以端口扫描  
 nc(netcat)可以连接和监听TCP/UDP端口
 
@@ -525,6 +557,7 @@ echo $var
 -bash-3.00$ echo $(echo \\)
 \
 ```
+
 #### 算术扩展
 
 ```
@@ -532,12 +565,15 @@ echo `expr $z + 3`#注意+两边的空格
 echo $(($z+3))
 echo $((z+3))#使用双括号的形式，参数解引用是可选的
 ```
+
 #### I/O重定向
+
 n<&- 关闭输入文件描述符n  
 n>&- 关闭输出文件描述符n  
 i>&j 重定向文件描述符i到j，指向i文件的所有输出都发送到j.  
 
 ####使用exec
+
 `exec 6<&0` 将文件描述符6与stdin链接起来，保存stdin.  
 `exec < data-file` stdin被文件'data-file'代替  
 `exec 0<&6 6<&-` #将stdin从fd #6恢复，并且关闭fd #6.  
@@ -550,7 +586,8 @@ i>&j 重定向文件描述符i到j，指向i文件的所有输出都发送到j.
 
 我理解的0, 1, 2都分别始终与键盘，屏幕，屏幕绑定  
 
-####通配(globbing)
+#### 通配(globbing)
+
 bash使用的并不是标准的RE，仅仅使用通配符。
 
 #### 子shell
@@ -559,6 +596,7 @@ bash使用的并不是标准的RE，仅仅使用通配符。
 子shell里的变量在父shell里无效，目录的更改也不会影响父shell  
 
 #### 复杂函数和函数复杂性
+
 函数所能返回的最大值为255
 
 ```
@@ -578,7 +616,9 @@ return_test 256
 echo $?
 #如果想返回更大的值，可以echo然后命令替换捕捉该值
 ```
+
 #### 数组
+
 + 数组的赋值方法有三种:
     1. `array[0]=xxx`
     2. `array=(xxx xxx xxx)`
@@ -616,7 +656,9 @@ echo ${array[@]/%ve/ZZ} #zero one two three four fiZZ fiZZ
 echo ${array[@]/#fi/XY} #zero one two three four XYve XYve
 echo ${array[@]/%o/XX} #zerXX one twXX three four five five
 ```
+
 #### 调试
+
 + `sh -n scriptname` 不会运行脚本，只会检查脚本的语法错误。
 + 捕获信号： trap
 trap 'echo "Control-C disabled."' 2
