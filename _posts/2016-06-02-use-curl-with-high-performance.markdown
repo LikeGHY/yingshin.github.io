@@ -23,7 +23,7 @@ curl一共有三种接口：
 
 Easy下是同步接口，curl_easy_*的形式，基本处理方式有几个步骤：  
 1. curl_easy_init获取easy handle  
-2. curl_easy_setop设置header cookie post-filed 网页内容接收回调函数等  
+2. curl_easy_setop设置header/cookie/post-filed/网页内容接收回调函数等  
 3. curl_easy_perform执行  
 4. curl_easy_cleanup清理  
 注意在第3步是阻塞的
@@ -43,7 +43,7 @@ Share是共享接口,curl_shared_*的形式，用于多个easy handle间共享�
 
 #### 2. 异步接口的例子
 
-curl自带的[例子](https://curl.haxx.se/libcurl/c/multi-app.html)还是介绍使用的curl_multi_fdset的方法。  
+curl自带的[例子](https://curl.haxx.se/libcurl/c/multi-app.html)还是介绍的curl_multi_fdset的方法。  
 实际上已经可以用curl_multi_wait代替了，据说是facebook的工程师提的升级：  
 [Facebook contributes fix to libcurl’s multi interface to overcome problem with more than 1024 file descriptors.](https://daniel.haxx.se/blog/2012/09/03/introducing-curl_multi_wait/)  
 使用方法可以参考[这里](https://gist.github.com/clemensg/4960504)
@@ -116,7 +116,7 @@ int main() {
 ```
 //等待所有easy handle处理完毕
 do {
-	...
+    ...
 } while (running_handlers > 0);
 ```
 
@@ -164,28 +164,28 @@ CURLM* curlm = curl_multi_init()
 
 在StackOverflow上看到了[复用curl的想法](http://stackoverflow.com/questions/15870395/using-libcurl-from-multiple-threads-how-to-get-the-best-performance)：curl handler放在一个池子中，需要时从中获取，使用后归还，同样不可行。
 
-因此，标准的写法就是之前的示例的代码，正如[这里](http://stackoverflow.com/questions/6900222/multithreaded-libcurl)提到的：
+因此，标准的写法就是之前的示例的代码，正如[这里](http://stackoverflow.com/questions/6900222/multithreaded-libcurl)提到的：  
 > The multi interface is designed for this purpose: you add multiple handles and then process all of them with one call, all in the same thread.
 
 #### 4.优化
 接下来就是优化的问题，在不使用curl_multi_socket_*的接口的情况下，是否有办法提升性能呢？  
 参考了curl的[Persistence](https://curl.haxx.se/libcurl/c/libcurl-tutorial.html#Persistence
 )一节，主要是持久化部分信息来加速（缓存）。  
-其中提到
+其中提到  
 > Each easy handle will attempt to keep the last few connections alive for a while in case they are to be used again.
 
-这里说到每个easy handle会缓存上次的若干连接来避免重连、缓存DNS等以提高性能。因此一些思路就是easy handle重用、dns全局缓存等。  
+这里说到每个easy handle会缓存之前的若干连接来避免重连、缓存DNS等以提高性能。因此一些思路就是easy handle重用、dns全局缓存等。  
 
 #### 5.测试&结论
 
 按照上面的思路分别测试抓取1000次baidu首页  
 1.	串行使用curl easy接口  
 2.	10个线程并行使用curl easy接口  
-3.	使用curl multi接口
+3.	使用curl multi接口  
 4.	使用curl multi接口,并且reuse connection。（方法是第一遍curl easy handle抓取后不cleanup，计算第二次全部抓取完成的时间）  
-5.	使用dns cache（使用curl_share_*接口，第一次抓取用于dnscache填充，计算第二次全部抓取完成的时间。效果上打开VERBOSE可以看到hostname found in DNS Cache）
+5.	使用dns cache（使用curl_share_*接口，第一次抓取用于dnscache填充，计算第二次全部抓取完成的时间。效果上打开VERBOSE可以看到hostname found in DNS Cache）  
 
-其中处理时间如下：
+其中处理时间测试结论如下：
 
 |method            |avg      |max      |min      |
 |------------------|---------|---------|---------|
