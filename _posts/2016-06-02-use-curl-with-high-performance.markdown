@@ -15,9 +15,9 @@ notebook: blog article notes
 #### 1.curl接口基本介绍
 
 curl一共有三种接口：  
-*  [Easy Interface](https://curl.haxx.se/libcurl/c/libcurl-easy.html)  
-*  [Multi Interface](https://curl.haxx.se/libcurl/c/libcurl-multi.html)  
-*  [Share Interface](https://curl.haxx.se/libcurl/c/libcurl-share.html)  
+* [Easy Interface](https://curl.haxx.se/libcurl/c/libcurl-easy.html)  
+* [Multi Interface](https://curl.haxx.se/libcurl/c/libcurl-multi.html)  
+* [Share Interface](https://curl.haxx.se/libcurl/c/libcurl-share.html)  
 
 ##### 1.1 Easy Interface
 
