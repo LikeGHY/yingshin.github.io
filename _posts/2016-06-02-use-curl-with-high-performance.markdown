@@ -15,9 +15,9 @@ notebook: blog article notes
 #### 1.curl接口基本介绍
 
 curl一共有三种接口：  
-+ [Easy Interface](https://curl.haxx.se/libcurl/c/libcurl-easy.html)  
-+ [Multi Interface](https://curl.haxx.se/libcurl/c/libcurl-multi.html)  
-+ [Share Interface](https://curl.haxx.se/libcurl/c/libcurl-share.html)  
+*  [Easy Interface](https://curl.haxx.se/libcurl/c/libcurl-easy.html)  
+*  [Multi Interface](https://curl.haxx.se/libcurl/c/libcurl-multi.html)  
+*  [Share Interface](https://curl.haxx.se/libcurl/c/libcurl-share.html)  
 
 ##### 1.1 Easy Interface
 
@@ -197,8 +197,10 @@ CURLM* curlm = curl_multi_init()
 
 4 5的区别不大，同时不确定重用connection的情况下，dnscache是否还能起到正向作用
 
-对应的测试代码都放到了gist上：  
-[1](https://gist.github.com/yingshin/cd1df34c84e832cfc1fc314d8145c259) [2](https://gist.github.com/yingshin/c33725da0b85f0e98ade38ed3a684b9b) [3](https://gist.github.com/yingshin/ce0331c9c1f842ddb636341597c99a7a) [4](https://gist.github.com/yingshin/0f7d84799f7743ca4757c4b5edf6c1bc) [5](https://gist.github.com/yingshin/ad8cb57588cd9418a6d6d20af7135ddd)
+对应的测试代码都放到了gist上：[1](https://gist.github.com/yingshin/cd1df34c84e832cfc1fc314d8145c259) [2](https://gist.github.com/yingshin/c33725da0b85f0e98ade38ed3a684b9b) [3](https://gist.github.com/yingshin/ce0331c9c1f842ddb636341597c99a7a) [4](https://gist.github.com/yingshin/0f7d84799f7743ca4757c4b5edf6c1bc) [5](https://gist.github.com/yingshin/ad8cb57588cd9418a6d6d20af7135ddd)
+
+
+-------------------------------
 
 补充一下
 
