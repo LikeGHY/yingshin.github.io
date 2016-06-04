@@ -8,7 +8,7 @@ tags: [curl]
 notebook: blog article notes
 ---
 
-本文主要介绍curl异步接口的使用方式，以及获取高性能的一些思路和实践。
+本文主要介绍curl异步接口的使用方式，以及获取高性能的一些思路和实践。同时假设读者已经熟悉并且使用过同步接口。
 
 <!--more-->
 
@@ -39,7 +39,7 @@ Multi下是异步接口，curl_multi_*的形式，允许在单线程下同时操
 注意curl_multi_perform不是阻塞的
 
 ##### 1.3 Share Interface
-Share是共享接口,curl_shared_*的形式，用于多个easy handle间共享一些数据，例如cookie dns等
+Share是共享接口，curl_shared_*的形式，用于多个easy handle间共享一些数据，例如cookie dns等
 
 #### 2. 异步接口的例子
 
@@ -124,7 +124,7 @@ do {
 
 而在实际应用中，我们的使用场景往往是这样的：  
 
-**某个负责抓取数据的模块，service接监听端口收url，抓取数据后发往下游。**
+**某个负责抓取数据的模块，service监听端口接收url，抓取数据后发往下游。**
 
 因为不希望所有的线程都处于上面的等待（什么都不做）。于是就有了这种想法：接收到一条url后构造对应的easy handle，通过curl_multi_add_handle接口放入curlm后返回。同时两个线程不断的wait/perform和read，如果有完成的url，那么就调用对应的回调函数即可。  
 相当于将curlm当做一个队列，两个线程分别充当了生产者和消费者。  
