@@ -165,6 +165,7 @@ CURLM* curlm = curl_multi_init()
 在StackOverflow上看到了[复用curl的想法](http://stackoverflow.com/questions/15870395/using-libcurl-from-multiple-threads-how-to-get-the-best-performance)：curl handler放在一个池子中，需要时从中获取，使用后归还，同样不可行。
 
 因此，标准的写法就是之前的示例的代码，正如[这里](http://stackoverflow.com/questions/6900222/multithreaded-libcurl)提到的：  
+
 > The multi interface is designed for this purpose: you add multiple handles and then process all of them with one call, all in the same thread.
 
 #### 4.优化
@@ -172,6 +173,7 @@ CURLM* curlm = curl_multi_init()
 参考了curl的[Persistence](https://curl.haxx.se/libcurl/c/libcurl-tutorial.html#Persistence
 )一节，主要是持久化部分信息来加速（缓存）。  
 其中提到  
+
 > Each easy handle will attempt to keep the last few connections alive for a while in case they are to be used again.
 
 这里说到每个easy handle会缓存之前的若干连接来避免重连、缓存DNS等以提高性能。因此一些思路就是easy handle重用、dns全局缓存等。  
