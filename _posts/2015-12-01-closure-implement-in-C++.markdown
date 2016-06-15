@@ -35,9 +35,7 @@ f();
 
 使用bind和function，可以很轻松的打平普通函数和C++成员函数在作为回调函数上使用的区别（静态成员函数等同于普通函数，因为即便对于普通函数，也可能存在namespace）。
 
-### 那么思考一下，bind和function是如何实现的呢？
-
-#### 思考
+### 1. 那么思考一下，bind和function是如何实现的呢？
 
 回到闭包的定义，其实只要把函数指针、函数参数以及对象指针封装到一个结构里就可以了。这里主要面临两个问题：  
 1. 参数类型不同  
@@ -48,7 +46,9 @@ f();
 2. 为可能的参数个数都定义一个闭包的结构体。  
 没错！就是可能有多少个参数，我们就定义多少个对应的闭包结构体。  
 
-#### 实现
+### 2 使用
+
+先来看下实现后的用法。  
 最近正好在看protobuf的源码，在google/protobuf/stubs/common.h中有一个类似的实现。  
 试着实现了一个简化的版本，先看下使用方法：  
 
@@ -98,9 +98,10 @@ int main()
 NewCallback函数返回一个new之后的closure,closure不需要手动delete。  
 直接运行closure的Run方法就可以运行封装前的函数及对应参数。  
 
+### 3 实现
 逐步看下是如何实现的。  
 
-##### 首先定义一个Closure基类:  
+#### 3.1 首先定义一个Closure基类:  
 
 ```
 class Closure {
@@ -115,7 +116,7 @@ public:
 
 普通函数和成员函数需要定义两个不同的闭包子类  
 
-##### 先看下无参数情况下的普通函数对应的闭包：  
+#### 3.2 先看下无参数情况下的普通函数对应的闭包：  
 
 ```
 class FunctionClosure0 : public Closure {
@@ -149,7 +150,7 @@ Closure* NewCallback(void (*function)()) {
 ```
 所有##的NewCallback都返回指向Closure对象的指针，因此传入函数指针类型不同，但返回类型是相同的。  
 
-#### 接着看下无参数成员函数对应的闭包：  
+#### 3.3 接着看下无参数成员函数对应的闭包：  
 
 ```
 template <typename Class>
@@ -192,7 +193,7 @@ Closure* NewCallback(Class* object, void (Class::*method)()) {
 
 类似的，通过模板可以实现不同参数个数的闭包对象，每种情况对应需要实现两个闭包对象和两个NewCallback函数。  
 
-##### 例如对于单参数：  
+#### 3.4 例如对于单参数：  
 
 ```
 template <typename Arg1>
@@ -257,3 +258,9 @@ Closure* NewCallback(Class* object, void (Class::*method)(Arg1), Arg1 arg1) {
 protobuf或者其他常见的关于closure的实现里要复杂一些，例如判断对象是否赋值过类似的需求。
 
 完整的代码示例放在了[这里](https://gist.github.com/yingshin/e6f42dec075e5791c232)
+
+### 4. 继续思考
+
+完整的闭包考虑的问题比这篇文章里提到的要多得多，比如传入的对象指针如何才能保证在异步回调时没有被析构，如果已经被析构怎么样保证不出问题，这些就需要`shared_ptr\weak_ptr`登场了。
+
+在chrome源码[bind.h](https://cs.chromium.org/chromium/src/base/bind.h?dr=CSs&q=bind.h&sq=package:chromium)里，bind的参数里会额外传入一个参数，取值为：base::Unretained(closure不拥有所有权，用于AddRef接口）, base::Owned(closure拥有所有权)等，另外通过使得`Foo`继承自`RefCountedThreadSafe<Foo>`或者内部维护一个`WeakPtrFactory<Foo>`对象等，实现了类似于弱回调的作用。有兴趣的同学可以看下[这里](https://cs.chromium.org/chromium/src/base/bind_helpers.h?dr=CSs&sq=package:chromium)
