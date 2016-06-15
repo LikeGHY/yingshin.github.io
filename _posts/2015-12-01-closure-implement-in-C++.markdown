@@ -261,6 +261,6 @@ protobuf或者其他常见的关于closure的实现里要复杂一些，例如�
 
 ### 4. 继续思考
 
-完整的闭包考虑的问题比这篇文章里提到的要多得多，比如传入的对象指针如何才能保证在异步回调时没有被析构，如果已经被析构怎么样保证不出问题，这些就需要`shared_ptr\weak_ptr`登场了。
+完整的闭包考虑的问题比这篇文章里提到的要多得多，比如传入的对象指针如何才能保证在异步回调时没有被析构，如果已经被析构怎么样保证不出问题，这些就需要`shared_ptr\weak_ptr`登场了。比如这么执行`boost::function<void ()> function; function()`会不会有问题？是否有判断空值的接口，自己来实现的话，这个接口是否有必要提供等等
 
 在chrome源码[bind.h](https://cs.chromium.org/chromium/src/base/bind.h?dr=CSs&q=bind.h&sq=package:chromium)里，bind的参数里会额外传入一个参数，取值为：base::Unretained(closure不拥有所有权，用于AddRef接口）, base::Owned(closure拥有所有权)等，另外通过使得`Foo`继承自`RefCountedThreadSafe<Foo>`或者内部维护一个`WeakPtrFactory<Foo>`对象等，实现了类似于弱回调的作用。有兴趣的同学可以看下[这里](https://cs.chromium.org/chromium/src/base/bind_helpers.h?dr=CSs&sq=package:chromium)
