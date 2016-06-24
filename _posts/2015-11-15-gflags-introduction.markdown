@@ -1,10 +1,11 @@
 ---
 layout: post
-title:  "参数解析gflags介绍"
+title:  参数解析gflags介绍
 date: 2015-11-15 00:22:58
 excerpt: "参数解析gflags介绍"
 categories: [c/cpp]
 tags: [gflags]
+notebook：blog article notes
 ---
 
 
@@ -95,8 +96,10 @@ DEFINE_string: C++string
 ### 如何解析
 `gflags::ParseCommandLineFlags(&argc, &argv, remove_flags)`可以帮助解析出相应的flags  
 __argc argv__: main中的对应参数  
+注意这里的参数为[in | out]  
 __remove\_flags__: 若设置为true，表示解析后将flag以及flag对应的值从argv中删除，并相应的修改argc，即最后存放的是不包含flag的参数。如果设置为false，则仅对参数进行重排，标志位参数放在最前面。   
 返回值：文档中说明如下，   
+
 > ParseCommandLineFlags returns the index into argv that holds the first commandline argument: that is, the index past the last flag.  
 
 我觉得是返回处理后的argv第一个非flag值的下标  
@@ -161,7 +164,7 @@ extern bool GetCommandLineOption(const char* name, std::string* OUTPUT)
 
 ### version与help
 一般我们的程序都需要-version提供版本信息，-help提供Usage。  
-可以使用SetVersionString() 和 SetUsageMessage() 来实现。  
+可以使用`SetVersionString` 和 SetUsageMessage() 来实现。  
 
 ### 遍历所有的flags
 使用`extern void GetAllFlags(std::vector<CommandLineFlagInfo>* OUTPUT)`接口。  
