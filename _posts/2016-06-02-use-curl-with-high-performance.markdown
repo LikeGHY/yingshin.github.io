@@ -23,7 +23,7 @@ curl一共有三种接口：
 
 Easy下是同步接口，curl_easy_*的形式，基本处理方式有几个步骤：  
 1. curl_easy_init获取easy handle  
-2. curl_easy_setop设置header/cookie/post-filed/网页内容接收回调函数等  
+2. curl_easy_setopt设置header/cookie/post-filed/网页内容接收回调函数等  
 3. curl_easy_perform执行  
 4. curl_easy_cleanup清理  
 注意在第3步是阻塞的
@@ -107,10 +107,10 @@ int main() {
     return 0;
 }
 ```
-**注意L35~36 L36~38不能互换，否则url为空，原因没有继续深追。**
+**注意L35~36 L37~38不能互换，否则url为空，原因没有继续深追。**
 
 
-可以看到异步处理的方式是通过curl_multi_add_handle接口不断的把待抓的easy handle放到multi handle里。然后通过curl_multi_wait/curl_multi_perform等待所有easy handle处理完毕。  
+可以看到异步处理的方式是通过`curl_multi_add_handle`接口不断的把待抓的easy handle放到multi handle里。然后通过`curl_multi_wait/curl_multi_perform`等待所有easy handle处理完毕。  
 因为是同时在等待所有easy handle处理完毕，耗时比easy方式里逐个同步等待大大减少。其中产生hold作用的是在这段代码里：
 
 ```
@@ -126,7 +126,7 @@ do {
 
 **某个负责抓取数据的模块，service监听端口接收url，抓取数据后发往下游。**
 
-因为不希望所有的线程都处于上面的等待（什么都不做）。于是就有了这种想法：接收到一条url后构造对应的easy handle，通过curl_multi_add_handle接口放入curlm后返回。同时两个线程不断的wait/perform和read，如果有完成的url，那么就调用对应的回调函数即可。  
+因为不希望所有的线程都处于上面multi示例中的等待（什么都不做）。于是就有了这种想法：接收到一条url后构造对应的easy handle，通过curl_multi_add_handle接口放入curlm后返回。同时两个线程不断的wait/perform和read，如果有完成的url，那么就调用对应的回调函数即可。  
 相当于将curlm当做一个队列，两个线程分别充当了生产者和消费者。  
 
 模型类似于：
@@ -162,7 +162,7 @@ CURLM* curlm = curl_multi_init()
 
 具体可以参考[这里](https://curl.haxx.se/libcurl/c/threadsafe.html)，说明上面的模型是不可行的。
 
-看到这里有一个[基于libcurl的单线程I:O多路复用HTTP框架](http://iosqqmail.github.io/2016/03/01/%E5%9F%BA%E4%BA%8Elibcurl%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8BI:O%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8HTTP%E6%A1%86%E6%9E%B6/)，dispatch部分和chrome源码里的thread模型很像，CURLM*对象在Dispatch::IO线程里统一操作，不过没有找到`dispatch_after`的实现，所以不太确定。   
+看到这里有一个[基于libcurl的单线程I:O多路复用HTTP框架](http://iosqqmail.github.io/2016/03/01/%E5%9F%BA%E4%BA%8Elibcurl%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8BI:O%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8HTTP%E6%A1%86%E6%9E%B6/)，dispatch部分和chrome源码里的thread模型很像，CURLM*对象在Dispatch::IO线程里统一操作，同时全局唯一，在一个LazyInstance的ConnectionRunner里维护。不过没有找到`dispatch_after`的实现，所以不太确定。   
 
 在StackOverflow上看到了[复用curl的想法](http://stackoverflow.com/questions/15870395/using-libcurl-from-multiple-threads-how-to-get-the-best-performance)：curl handler放在一个池子中，需要时从中获取，使用后归还，同样不可行。
 
@@ -206,7 +206,7 @@ CURLM* curlm = curl_multi_init()
 
 -------------------------------
 
-补充一下
+#### 6.补充
 
 关于curl性能的讨论帖子很多，比如[这里](http://www.linuxquestions.org/questions/programming-9/looking-for-open-source-library-better-than-libcurl-767195/)，其中也讲到了获取网页的一个基本流程：
 
