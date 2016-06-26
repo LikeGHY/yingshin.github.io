@@ -162,6 +162,8 @@ CURLM* curlm = curl_multi_init()
 
 具体可以参考[这里](https://curl.haxx.se/libcurl/c/threadsafe.html)，说明上面的模型是不可行的。
 
+看到这里有一个[基于libcurl的单线程I:O多路复用HTTP框架](http://iosqqmail.github.io/2016/03/01/%E5%9F%BA%E4%BA%8Elibcurl%E7%9A%84%E5%8D%95%E7%BA%BF%E7%A8%8BI:O%E5%A4%9A%E8%B7%AF%E5%A4%8D%E7%94%A8HTTP%E6%A1%86%E6%9E%B6/)，dispatch部分和chrome源码里的thread模型很像，CURLM*对象在Dispatch::IO线程里统一操作，不过没有找到`dispatch_after`的实现，所以不太确定。   
+
 在StackOverflow上看到了[复用curl的想法](http://stackoverflow.com/questions/15870395/using-libcurl-from-multiple-threads-how-to-get-the-best-performance)：curl handler放在一个池子中，需要时从中获取，使用后归还，同样不可行。
 
 因此，标准的写法就是之前的示例的代码，正如[这里](http://stackoverflow.com/questions/6900222/multithreaded-libcurl)提到的：  
