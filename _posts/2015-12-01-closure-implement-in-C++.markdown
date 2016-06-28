@@ -148,7 +148,7 @@ Closure* NewCallback(void (*function)()) {
     return new FunctionClosure0(function);
 }
 ```
-所有##的NewCallback都返回指向Closure对象的指针，因此传入函数指针类型不同，但返回类型是相同的。  
+所有的NewCallback都返回指向Closure对象的指针，因此传入函数指针类型不同，但返回类型是相同的。  
 
 #### 3.3 接着看下无参数成员函数对应的闭包：  
 
@@ -262,6 +262,6 @@ protobuf或者其他常见的关于closure的实现里要复杂一些，例如�
 ### 4. 继续思考
 
 完整的闭包考虑的问题比这篇文章里提到的要多得多，比如传入的对象指针如何才能保证在异步回调时没有被析构，如果已经被析构怎么样保证不出问题，这些就需要`shared_ptr/weak_ptr`登场了。  
-比如这么执行`boost::function<void ()> function; function()`会不会有问题？是否有判断空值的接口，自己来实现的话，这个接口是否有必要提供?
+又或者比如这么执行`boost::function<void ()> function; function()`会不会有问题？是否有判断空值的接口，自己来实现的话，这个接口是否有必要提供?
 
 在chrome源码[bind.h](https://cs.chromium.org/chromium/src/base/bind.h?dr=CSs&q=bind.h&sq=package:chromium)里，bind的参数里会额外传入一个参数，取值为：base::Unretained(closure不拥有所有权，用于AddRef接口）, base::Owned(closure拥有所有权)等，另外通过使得`Foo`继承自`RefCountedThreadSafe<Foo>`或者内部维护一个`WeakPtrFactory<Foo>`对象等，实现了类似于弱回调的作用。同时chrome默认bind参数为const T&的形式，防止了参数的拷贝。也是值得思考的。有兴趣的同学可以看下[代码](https://cs.chromium.org/chromium/src/base/bind_helpers.h?dr=CSs&sq=package:chromium)和[文档](https://www.chromium.org/developers/coding-style/important-abstractions-and-data-structures#TOC-base::Callback-and-base::Bind-)
