@@ -1,3 +1,11 @@
+- name: 中国近代史
+  cover: https://img1.doubanio.com/lpic/s2883058.jpg
+  start_date: 2016.7.7
+  finish_date:
+  douban_link: https://book.douban.com/subject/2376486/
+  download_link:
+  note:
+
 - name: Linux Shell脚本攻略
   cover: https://img1.doubanio.com/lpic/s22702207.jpg
   start_date: 2016.6.13
