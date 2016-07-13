@@ -39,7 +39,14 @@ Multi下是异步接口，curl_multi_*的形式，允许在单线程下同时操
 注意curl_multi_perform不是阻塞的
 
 ##### 1.3 Share Interface
-Share是共享接口，curl_shared_*的形式，用于多个easy handle间共享一些数据，例如cookie dns等
+Share是共享接口，curl_shared_*的形式，用于多个easy handle间共享一些数据，例如cookie dns等  
+注意需要用到锁的情况:
+
+> Since you can use this share from multiple threads, and libcurl has no internal thread synchronization, you must provide mutex callbacks if you're using this multi-threaded. You set lock and unlock functions with curl_share_setopt too.
+
+可以参考这两处例子：  
+1. <http://www.mit.edu/afs.new/sipb/user/ssen/src/curl-7.11.1/tests/libtest/lib506.c>  
+2. <https://curl.haxx.se/mail/lib-2006-01/0218.html>  
 
 #### 2. 异步接口的例子
 
