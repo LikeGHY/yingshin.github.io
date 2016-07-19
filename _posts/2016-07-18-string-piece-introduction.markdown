@@ -1,8 +1,8 @@
 ---
 layout: post
-title: chrome源码里的StringPiece
+title: StringPiece介绍
 date: 2016-7-18 21:12:11
-excerpt: ""
+excerpt: "StringPiece介绍"
 categories: [c/cpp]
 tags: [chrome StringPiece]
 ---
@@ -25,35 +25,33 @@ std::string extract_part ( const std::string &bar ) {
 if ( extract_part ( "ABCDEFG" ).front() == 'C' ) { /* do something */ }
 ```
 
-在上面代码执行过程中，首先"ABCDEFG"被转化成了一个临时string变量A，作为形参。  
-按照传引用的方式进入函数`extract_part`，调用`std::string::substr`时产生一个临时string变量B作为返回值赋值到结果string变量C（C可能被RVO优化掉，结果值直接使用B所在的内存）,`front`产生一个char类型的临时变量。
+在上面代码执行过程中，即时经过RVO优化，仍旧不可避免的产生临时变量，例如首先"ABCDEFG"被转化成一个string作为形参，`front`产生一个char等。
 
-而这些临时变量实际上不需要产生，内存拷贝可以避免。这也说明了在传递`string`时，我们经常遇到的一个问题：
+但是仔细分析下，这些临时变量不需要产生，例如传参时不需要拷贝，比如`const char*`，这样内存拷贝就可以避免。这段代码说明了在传递`string`时，我们经常遇到的一个问题：
 
 **不必要的拷贝**
 
 在chrome的[StringPiece源码](https://cs.chromium.org/chromium/src/base/strings/string_piece.h?dr=CSs&q=string_piece.h&sq=package:chromium&l=1)里，说明了该类设计的主要目的：
 
-> // You can use StringPiece as a function or method parameter.  A StringPiece
-> // parameter can receive a double-quoted string literal argument, a "const
-> // char*" argument, a string argument, or a StringPiece argument with no data
-> // copying.  Systematic use of StringPiece for arguments reduces data
-> // copies and strlen() calls.
+> // You can use StringPiece as a function or method parameter.  A StringPiece  
+> // parameter can receive a double-quoted string literal argument, a "const  
+> // char*" argument, a string argument, or a StringPiece argument with no data  
+> // copying.  Systematic use of StringPiece for arguments reduces data  
+> // copies and strlen() calls.  
 
 1. 统一了参数格式，不需要为`const char*` `const std::string&`等分别实现功能相同的函数了，参数统一指定为`StringPiece`即可  
 2. 节约了数据拷贝以及`strlen`的调用  
 
-根据boost里[string_ref](http://www.boost.org/doc/libs/1_61_0/libs/utility/doc/html/string_ref.html)的介绍，同时适用于以下两种情况：  
+根据boost里[string_ref](http://www.boost.org/doc/libs/1_61_0/libs/utility/doc/html/string_ref.html)的介绍，`StringPiece`同样适用于以下两种情况：  
 
 1. 函数参数传入了`string`，而该函数内调用的另一个函数需要接收该string的一个substring  
 2. 函数参数传入了`string`，而该函数需要return一个该string的substring  
 
-boost里string_ref的实现参考了[这篇文章](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3442.html)，跟`StringPiece`的想法是完全一致的。
+boost里string_ref的实现跟`StringPiece`的想法是完全一致的，参考了[这篇文章](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3442.html)。
 
-StringPiece的使用非常广泛，muduo也引用了[pcre的StringPiece的实现](https://github.com/vmg/pcre/blob/master/pcre_stringpiece.h.in)，
-在llvm的源码里也有类似的[实现](http://llvm.org/docs/doxygen/html/StringRef_8h_source.html)
+如何节省string的拷贝开销是一个非常普遍的需求，因此StringPiece的使用非常广泛，muduo引用了[pcre的StringPiece的实现](https://github.com/vmg/pcre/blob/master/pcre_stringpiece.h.in)，在llvm的源码里也有类似的[实现](http://llvm.org/docs/doxygen/html/StringRef_8h_source.html)
 
-### 2. 实现及使用
+### 2. chrome里的实现
 
 以chrome里的StringPiece为例
 
@@ -113,7 +111,7 @@ STRING_TYPE as_string() const;
 bool starts_with(const BasicStringPiece& x);
 bool ends_with(const BasicStringPiece& x);
 ```
-注意想`remove_prefix`这种操作都是常数级别的，因为只是在操作`ptr_`和`length_`
+注意像`remove_prefix`这种操作都是常数级别的，因为只是在操作`ptr_`和`length_`
 
 ```
   void remove_prefix(size_type n) {
@@ -154,7 +152,14 @@ BasicStringPiece<STRING_TYPE>::npos =
     typename BasicStringPiece<STRING_TYPE>::size_type(-1);
 ```
 
-实现大部分也是通过`std::min search find find_end find_first_of`来完成，其中像`find`实现里使用的是`std::search`，`find_first_of`的实现里稍微变动了下，在`const BasicStringPiece& s`大小为1的情况下，退化为`find`查找，>1的情况下，则建表查询，也就是以空间换时间的做法。
+实现大部分也是通过`std::min search find find_end find_first_of`来完成。
+
+其中像`find`实现里使用的是`std::search`
+
+`find_first_of`的实现里稍微变动了下，在参数`const BasicStringPiece& s`
++ 大小为1的情况下，退化为`find`查找  
++ >1的情况下，则建表查询，也就是以空间换时间的做法  
+注意并没有使用std里的`find_first_of`
 
 ```
   bool lookup[UCHAR_MAX + 1] = { false };
@@ -202,9 +207,9 @@ template<class ForwardIterator1, class ForwardIterator2>
 }
 ```
 
-实际实现的情况我不大清楚，一直没有系统的看过stl的源码解析。
+对比下时间复杂度应该就能推测chrome改动的原因。但是一直没有系统的看过stl源码，因此不确定`std::find_first_of`是否可以简化为上面的伪代码。
 
-对比了下boost的string_ref实现，boost多了`std::distance find_if`的实现，但是没有chrome源码里的代码时间复杂度的优化。
+对比了下boost的string_ref实现，boost多了`std::distance find_if`的实现，`find_first_of`也是直接使用的`std::find_first_of`。
 
 #### 2.4 计算hash值
 
