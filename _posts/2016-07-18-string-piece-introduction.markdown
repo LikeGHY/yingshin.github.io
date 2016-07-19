@@ -15,7 +15,7 @@ tags: [chrome StringPiece]
 
 ### 1. 为什么需要StringPiece
 
-先看一个例子（摘自boost关于string_ref的介绍）
+先看一个例子（摘自boost关于[string_ref的介绍](http://www.boost.org/doc/libs/1_61_0/libs/utility/doc/html/string_ref.html#string_ref.examples)）
 
 ```
 std::string extract_part ( const std::string &bar ) {
@@ -26,16 +26,19 @@ if ( extract_part ( "ABCDEFG" ).front() == 'C' ) { /* do something */ }
 ```
 
 在上面代码执行过程中，首先"ABCDEFG"被转化成了一个临时string变量A，作为形参。  
-按照传引用的方式进入函数`extract_part`，调用`std::string::substr`时产生一个临时string变量B作为返回值赋值到结果string变量C（C可能被RVO优化掉，结果值直接使用B所在的内存）,`front`产生一个char类型的临时变量。  
-这也说明了在传递`string`时，我们经常遇到的问题：**不必要的拷贝**
+按照传引用的方式进入函数`extract_part`，调用`std::string::substr`时产生一个临时string变量B作为返回值赋值到结果string变量C（C可能被RVO优化掉，结果值直接使用B所在的内存）,`front`产生一个char类型的临时变量。
+
+而这些临时变量实际上不需要产生，内存拷贝可以避免。这也说明了在传递`string`时，我们经常遇到的一个问题：
+
+**不必要的拷贝**
 
 在chrome的[StringPiece源码](https://cs.chromium.org/chromium/src/base/strings/string_piece.h?dr=CSs&q=string_piece.h&sq=package:chromium&l=1)里，说明了该类设计的主要目的：
 
 > // You can use StringPiece as a function or method parameter.  A StringPiece
-// parameter can receive a double-quoted string literal argument, a "const
-// char*" argument, a string argument, or a StringPiece argument with no data
-// copying.  Systematic use of StringPiece for arguments reduces data
-// copies and strlen() calls.
+> // parameter can receive a double-quoted string literal argument, a "const
+> // char*" argument, a string argument, or a StringPiece argument with no data
+> // copying.  Systematic use of StringPiece for arguments reduces data
+> // copies and strlen() calls.
 
 1. 统一了参数格式，不需要为`const char*` `const std::string&`等分别实现功能相同的函数了，参数统一指定为`StringPiece`即可  
 2. 节约了数据拷贝以及`strlen`的调用  
@@ -44,10 +47,10 @@ if ( extract_part ( "ABCDEFG" ).front() == 'C' ) { /* do something */ }
 
 1. 函数参数传入了`string`，而该函数内调用的另一个函数需要接收该string的一个substring  
 2. 函数参数传入了`string`，而该函数需要return一个该string的substring  
+
 boost里string_ref的实现参考了[这篇文章](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3442.html)，跟`StringPiece`的想法是完全一致的。
 
-StringPiece的使用非常广泛，muduo也引用了[pcre的StringPiece的实现](https://github.com/vmg/pcre/blob/master/pcre_stringpiece.h.in)
-
+StringPiece的使用非常广泛，muduo也引用了[pcre的StringPiece的实现](https://github.com/vmg/pcre/blob/master/pcre_stringpiece.h.in)，
 在llvm的源码里也有类似的[实现](http://llvm.org/docs/doxygen/html/StringRef_8h_source.html)
 
 ### 2. 实现及使用
@@ -62,6 +65,8 @@ typedef BasicStringPiece<std::string> StringPiece;
 typedef BasicStringPiece<string16> StringPiece16;
 ```
 其中`string16`封装的是`std::wstring wchar_t`
+
+#### 2.1 构造及析构
 
 根据上面提到的需求，BasicStringPiece的构造函数有多个，可以接收`const char*`，`const std::string&`：
 
@@ -80,7 +85,7 @@ typedef BasicStringPiece<string16> StringPiece16;
         length_((end > begin) ? (size_type)(end - begin) : 0) {}
 ```
 
-没有析构函数
+注意没有析构函数
 
 同时成员变量只有两个:
 
@@ -89,7 +94,11 @@ typedef BasicStringPiece<string16> StringPiece16;
   size_type     length_;
 ```
 
-因此**BasicStringPiece没有字符串的控制权，不负责构造以及销毁。调用者需要保证在BasicStringPiece的生命周期里源buffer始终有效**
+因此
+
+**BasicStringPiece没有字符串的控制权，不负责构造以及销毁。调用者需要保证在BasicStringPiece的生命周期里源buffer始终有效**
+
+#### 2.2 string操作
 
 BasicStringPiece支持string的常见操作
 
@@ -126,6 +135,8 @@ bool ends_with(const BasicStringPiece& x);
     return const_reverse_iterator(ptr_);
   } 
 ```
+
+#### 2.3 字符串查找
 
 同时支持find系列的需求
 
@@ -195,7 +206,7 @@ template<class ForwardIterator1, class ForwardIterator2>
 
 对比了下boost的string_ref实现，boost多了`std::distance find_if`的实现，但是没有chrome源码里的代码时间复杂度的优化。
 
-以及计算hash值
+#### 2.4 计算hash值
 
 ```
 std::size_t operator()(const base::StringPiece& sp) const;
