@@ -7,7 +7,7 @@ categories: [c/cpp]
 tags: [chrome StringPiece]
 ---
 
-记得最开始使用StringPiece的时候直接上手就用了，场景大概是这样子的：一个线程读取数据写到StringPiece，另外一个线程读取这些对象，结果可想而知。后来发现很多项目源码里都会有这个类的类似实现，于是仔细看了下这个类的设计目的、实现。
+记得最开始使用StringPiece的时候直接上手就用了，场景大概是这样子的：一个线程写StringPiece并放到队列里，另外一个线程从队列读取StringPiece，结果可想而知。后来发现很多项目源码里都会有这个类的类似实现，于是仔细看了下这个类的设计目的、实现。
 
 本文是对阅读过程中的一些笔记的整理。
 
@@ -25,7 +25,7 @@ std::string extract_part ( const std::string &bar ) {
 if ( extract_part ( "ABCDEFG" ).front() == 'C' ) { /* do something */ }
 ```
 
-在上面代码执行过程中，即时经过RVO优化，仍旧不可避免的产生临时变量，例如首先"ABCDEFG"被转化成一个string作为形参，`front`产生一个char等。
+在上面代码执行过程中，即时经过RVO优化，仍旧不可避免的产生临时变量，例如首先"ABCDEFG"被转化成一个string作为形参，返回的substring，`front`产生的char等。
 
 但是仔细分析下，这些临时变量不需要产生，例如传参时不需要拷贝，比如`const char*`，这样内存拷贝就可以避免。这段代码说明了在传递`string`时，我们经常遇到的一个问题：
 
@@ -49,7 +49,7 @@ if ( extract_part ( "ABCDEFG" ).front() == 'C' ) { /* do something */ }
 
 boost里string_ref的实现跟`StringPiece`的想法是完全一致的，参考了[这篇文章](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3442.html)。
 
-如何节省string的拷贝开销是一个非常普遍的需求，因此StringPiece的使用非常广泛，muduo引用了[pcre的StringPiece的实现](https://github.com/vmg/pcre/blob/master/pcre_stringpiece.h.in)，在llvm的源码里也有类似的[实现](http://llvm.org/docs/doxygen/html/StringRef_8h_source.html)
+如何节省string的拷贝开销是一个非常普遍的需求，因此StringPiece的使用非常广泛，muduo引用了[pcre的StringPiece的实现](https://github.com/vmg/pcre/blob/master/pcre_stringpiece.h.in)，在llvm的源码里也有类似的[实现](http://llvm.org/docs/doxygen/html/StringRef_8h_source.html)。
 
 ### 2. chrome里的实现
 
@@ -156,10 +156,10 @@ BasicStringPiece<STRING_TYPE>::npos =
 
 其中像`find`实现里使用的是`std::search`
 
-`find_first_of`的实现里稍微变动了下，在参数`const BasicStringPiece& s`
+`find_first_of`并没有使用std里的`find_first_of`来实现，在参数`const BasicStringPiece& s`
 + 大小为1的情况下，退化为`find`查找  
 + >1的情况下，则建表查询，也就是以空间换时间的做法  
-注意并没有使用std里的`find_first_of`
+
 
 ```
   bool lookup[UCHAR_MAX + 1] = { false };
@@ -212,6 +212,8 @@ template<class ForwardIterator1, class ForwardIterator2>
 对比了下boost的string_ref实现，boost多了`std::distance find_if`的实现，`find_first_of`也是直接使用的`std::find_first_of`。
 
 #### 2.4 计算hash值
+
+其实不太理解为什么字符串的hash值需要封装到StringPiece的接口里来
 
 ```
 std::size_t operator()(const base::StringPiece& sp) const;
