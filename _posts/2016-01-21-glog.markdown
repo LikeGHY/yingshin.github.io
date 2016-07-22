@@ -12,7 +12,7 @@ glog是google的的一个C++轻量日志库，支持常用的日志功能：例�
 
 <!--more-->
 
-### 日志输出目录
+### 1. 日志输出目录
 日志默认打印到屏幕，同时有一句提示  
 "WARNING: Logging before InitGoogleLogging() is written to STDERR"  
 加了这一句后`google::InitGoogleLogging(argv[0])`，日志输出到文件。  
@@ -21,7 +21,7 @@ glog是google的的一个C++轻量日志库，支持常用的日志功能：例�
 比如:introduction.ymac.yingshin.log.ERROR.20160102-231949.11182
 
 
-### 日志级别
+### 2. 日志级别
 日志级别有4种，INFO WARNING ERROR FATAL，在`glog/log_severity.h`中定义
 
 ```
@@ -74,7 +74,7 @@ F0113 20:36:49.486486 32554 demo.cpp:27] Hello, glog fatal.
 ```
 
 
-### 配置
+### 3. 配置
 
 glog有很多配置项，这些配置项都是通过gflags设置的，关于gflags的使用可以参考[这篇文章](http://yingshin.github.io/c/cpp/2015/11/15/gflags-introduction)。  
 例如对于logtostderr这个配置，有3种方法可以设置：  
@@ -94,7 +94,7 @@ glog有很多配置项，这些配置项都是通过gflags设置的，关于gfla
 5. v:自定义日志级别  
 6. vmodele:自定义文件日志级别  
 
-### 条件输出
+### 4. 条件输出
 条件输出是指，当某些变量满足某些条件时才输出日志。  
 1. LOG\_IF(INFO, i > 5)，当条件(i > 5)满足时输出日志。  
 2. LOG\_EVERY\_N(INFO, 3)，当运行该语句时，第1,3+1,6+1,...时输出日志，google::COUNTER记录语句的执行次数。  
@@ -139,7 +139,7 @@ I0110 23:19:16.891405 17039 demo1.cpp:24] LOG_IF i > 5 i:9
 I0110 23:19:16.891409 17039 demo1.cpp:25] LOG_EVERY_N 3 i:9 google::COUNTER:10
 ```
 
-### DEBUG日志
+### 5. DEBUG日志
 在debug模式下可用的日志输出的宏  
 
 ```
@@ -148,7 +148,7 @@ I0110 23:19:16.891409 17039 demo1.cpp:25] LOG_EVERY_N 3 i:9 google::COUNTER:10
    DLOG_EVERY_N(INFO, 10) << "Got the " << google::COUNTER << "th cookie";
 ```
 
-### 自定义日志  
+### 6. 自定义日志  
 
 glog提供了VLOG宏用于自定义日志的输出，用户可以使用--v=数字来指定自定义的日志级别。  
 与系统日志级别不同的是，vlog数值越低，级别越高。例如：  
@@ -218,7 +218,7 @@ I0119 23:05:52.615243  9245 hello.h:7] hello VLOG(1)
 VLOG\_IS\_ON(n)用于判断级别n是否会输出到日志，即当--v指定的值>=n时返回true。  
 VLOG\_IF, VLOG\_EVERY\_N，VLOG\_IF\_EVERY\_N与LOG\_XXX一致，只不过参数里的级别为自定义级别。  
 
-### CHECK宏
+### 7. CHECK宏
 CHECK系列的宏跟assert很像，都是检测某个表达式是否为真，不过不受NDEBUG影响  
 `CHEKCK(expression) << "check failed description"`  
 检测expression如果不为真，则打印后面的description和栈上的信息，然后退出程序，出错后的处理过程和FATAL比较像。  
