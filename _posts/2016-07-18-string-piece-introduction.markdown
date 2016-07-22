@@ -219,3 +219,6 @@ template<class ForwardIterator1, class ForwardIterator2>
 ```
 std::size_t operator()(const base::StringPiece& sp) const;
 ```
+
+#### 3. 问题
+1. muduo里大量使用了`const StringPiece& string_piece`，但是chrome里明确指出了prefer这种`void MyFunction(StringPiece arg);`使用方式，个人更赞同muduo的做法  
