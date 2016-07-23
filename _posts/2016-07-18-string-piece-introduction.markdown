@@ -158,8 +158,8 @@ BasicStringPiece<STRING_TYPE>::npos =
 
 `find_first_of`并没有使用std里的`find_first_of`来实现，在参数`const BasicStringPiece& s`
 
-+ 大小为1的情况下，退化为`find`查找  
-+ \>1的情况下，则建表查询，也就是以空间换时间的做法  
++ 大小=1的情况下，退化为`find`查找  
++ 大小\>1的情况下，则建表查询，也就是以空间换时间的做法  
 
 
 ```
