@@ -5,7 +5,6 @@ date: 2015-11-15 00:22:58
 excerpt: "参数解析gflags介绍"
 categories: [c/cpp]
 tags: [gflags]
-notebook：blog article notes
 ---
 
 gflags是google一个开源的处理命令行参数的库，相比getopt，更加容易使用。  
