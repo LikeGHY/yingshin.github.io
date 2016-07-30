@@ -5,5 +5,9 @@ group: archive
 ---
 {% include JB/setup %}
 
+{% for post in site.posts %}
+<h2>post.date</h2>
+<h3>post.title</h3>
+{% endfor %}
 {% assign posts_collate = site.posts %}
 {% include JB/posts_collate %}
