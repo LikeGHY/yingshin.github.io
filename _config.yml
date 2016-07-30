@@ -15,7 +15,7 @@ home_path: /index.html
 books_path: /books.html
 about_path: /about.html
 thinking_path: /thinking.html
-future: true
+# future: true
 
 paginate: 5
 paginate_path: "page:num"
