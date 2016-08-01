@@ -47,7 +47,7 @@ tags: [binarysearch]
 while left <= right:
     mid = (left + right) >> 1
     if array[mid] > key:
-        mid = right - 1
+        right = mid - 1
     else if array[mid] < key:
         left = mid + 1
     else
