@@ -27,7 +27,9 @@ if ( extract_part ( "ABCDEFG" ).front() == 'C' ) { /* do something */ }
 
 在上面代码执行过程中，即时经过RVO优化，仍旧不可避免的产生临时变量，例如首先"ABCDEFG"被转化成一个string作为形参，返回的substring，`front`产生的char等。
 
-但是仔细分析下，这些临时变量不需要产生，例如传参时不需要拷贝，比如`const char*`，这样内存拷贝就可以避免。这段代码说明了在传递`string`时，我们经常遇到的一个问题：
+但是仔细分析下，这些临时变量不需要产生，例如传参时不需要拷贝，比如`const char*`，这样内存拷贝就可以避免。
+
+这段代码说明了在传递`string`时，我们经常遇到的一个问题：
 
 **不必要的拷贝**
 
@@ -159,7 +161,7 @@ BasicStringPiece<STRING_TYPE>::npos =
 `find_first_of`并没有使用std里的`find_first_of`来实现，在参数`const BasicStringPiece& s`
 
 + 大小=1的情况下，退化为`find`查找  
-+ 大小\>1的情况下，则建表查询，也就是以空间换时间的做法  
++ 大小\>1的情况下，则建表查询，也就是以空间换时间的做法，  
 
 
 ```
@@ -193,7 +195,7 @@ inline void BuildLookupTable(const StringPiece& characters_wanted,
 }
 ```
 
-stl的`find_first_of`的实现经常被简化为这样的伪代码：
+原因可能是stl的`find_first_of`的实现经常被简化为这样的伪代码：
 
 ```
 template<class ForwardIterator1, class ForwardIterator2>
@@ -208,9 +210,11 @@ template<class ForwardIterator1, class ForwardIterator2>
 }
 ```
 
-对比下时间复杂度应该就能推测chrome改动的原因。但是一直没有系统的看过stl源码，因此不确定`std::find_first_of`是否可以简化为上面的伪代码。
+对比下时间复杂度应该就能推测chrome修改的动机。但是一直没有系统的看过stl源码，因此不确定`std::find_first_of`是否可以简化为上面的伪代码。
 
 对比了下boost的string_ref实现，boost多了`std::distance find_if`的实现，`find_first_of`也是直接使用的`std::find_first_of`。
+
+顿时觉得chrome对代码的要求实在是精益求精。
 
 #### 2.4 计算hash值
 
