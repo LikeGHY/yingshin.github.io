@@ -9,7 +9,7 @@ tags: [protobuf varint zigzag]
 
 本文主要介绍protobuf里整数的编码方式，进而给出一些pb使用上的建议。使用的pb版本为2.6.1。
 
-在protobuf中序列化与反序列化是很常见的操作，无论是用于存储还是网络传输。pb提供了一组接口用于message的序列化，例如 ` bool SerializeToString(string* output) const; `  
+在protobuf中序列化与反序列化是很常见的操作，无论是用于存储还是网络传输。pb提供了一组接口用于message的序列化，例如` bool SerializeToString(string* output) const; `  
 
 比如我们定义了proto
 
@@ -31,7 +31,7 @@ message Test1 {
 
 查看序列化之后的值:`08 96 01`。
 
-可以看到相比xml/json等包装数据的方案，pb数据非常精简。那么问题来了，这些数字是如何生成的？为什么只用3个字节就可以做到传输我们上面的数据？
+可以看到相比xml/json等包装数据的方案，pb数据非常精简。那么问题来了，这些数字是如何表示上面的数据的？为什么只用3个字节就可以做到传输我们上面的数据？
 
 <!--more-->
 ------
@@ -41,10 +41,10 @@ Protbuf序列化之后的数据如此紧凑，得益于采用的encoding方法�
 ### 1. Varint编码
 
 数据传输中出于IO的考虑，我们会希望尽可能的对数据进行压缩。  
-Varint是一种对数字进行编码的方法，数值越小的数字使用的字节数越少。例如对于`int32_t`，需要4个bytes来保存，采用Varint编码后需要1~5个bytes，是不定长的。小的数字使用1个byte，大的数字使用5个bytes。基于实际场景中小数字的使用远远多于大数字，因此通过Varint编码对于大部分数字都可以起到一个压缩的效果。
+Varint就是一种对数字进行编码的方法，编码后二进制数据是不定长的，对数值越小的数字使用的字节数越少。例如对于`int32_t`，采用Varint编码后需要1~5个bytes，小的数字使用1个byte，大的数字使用5个bytes。基于实际场景中小数字的使用远远多于大数字，因此通过Varint编码对于大部分数字都可以起到一个压缩的效果。
 
-Varint编码规则是这样的：  
-最高位(most significant bit)表示编码是否继续，如果该位为1，表示接下来的字节仍然是该数字的一部分，如果该位为0，表示编码结束。剩余的7位用原数字编码补齐，采用低位字节补齐到高位的办法。
+编码规则：  
+最高位(most significant bit)表示编码是否继续，如果该位为1，表示接下来的字节仍然是该数字的一部分，如果该位为0，表示编码结束。字节里的其余7位用原码补齐，采用低位字节补齐到高位的办法。
 
 举几个数值具体说明下：
 
@@ -82,9 +82,9 @@ Varint编码规则是这样的：
 
 ### 2. message数据格式
 
-pb数据是一种[key, value]的数据格式，在编码时也是如此，其中key使用的是该字段的field\_number与wire type取|后的值。
+pb数据是一种[key, value]的数据格式，在编码时也是如此，其中key使用的是该字段的field\_number与wire type取\|后的值。
 
-field\_number就是定义proto时使用的tag序号，比如对`a`，对应的field\_number=1。
+field\_number就是定义proto时使用的tag序号，比如对前面的proto字段`a`，对应的field\_number=1。
 
 wire type的取值有很多
 
@@ -99,7 +99,7 @@ wire type的取值有很多
 
 key的计算方式为`(field_number << 3) | wire_type`
 
-由此得到最开始的例子里key为`varint(1 << 3 | 0) = 0x08`，value为`0x96 0x01`。
+因此我们可以得到前面的例子里key为`varint(1 << 3 | 0) = 0x08`，value为`0x96 0x01`。
 
 key-value采用直接连接的方式，因此编码后的数据为`0x08 0x96 0x01`。
 
