@@ -15,6 +15,8 @@ tags: [protobuf]
 
 pbmessage序列化以二进制流的方式存储，按照定义的字段顺序紧紧相邻。每个字段对应有key-value数据相邻，key由field\_number和wire\_type计算出，value由该字段定义的值（可能包括value长度）组成。
 
+![protobuf_key_value.png](/assets/images/protobuf_key_value.png)
+
 ### 2. 相关类图
 
 ![protobuf_encode.png](/assets/images/protobuf_encode.png)
