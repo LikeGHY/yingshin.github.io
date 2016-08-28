@@ -17,6 +17,8 @@ pbmessage序列化以二进制流的方式存储，按照定义的字段顺序�
 
 ### 2. 相关类图
 
+![protobuf_encode.png](/assets/images/protobuf_encode.png)
+
 `Message::SerializeToString`负责序列化message，调用到`WireFormat`的这个接口
 
 ```
@@ -81,7 +83,7 @@ void WireFormatLite::WriteInt32(int field_number, int32 value,
 
 `MakeTag`通过调用宏`GOOGLE_PROTOBUF_WIRE_FORMAT_MAKE_TAG`完成
 
-具体宏定义如下，也就是我们介绍的规则(field\_number << 3 | wire_type)：
+具体宏定义如下，也就是我们介绍的规则`field\_number << 3 | wire_type`
 
 ```
 #define GOOGLE_PROTOBUF_WIRE_FORMAT_MAKE_TAG(FIELD_NUMBER, TYPE)                  \
