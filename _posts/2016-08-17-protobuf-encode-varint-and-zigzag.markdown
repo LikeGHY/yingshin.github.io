@@ -7,7 +7,7 @@ categories: [c/cpp]
 tags: [protobuf varint zigzag]
 ---
 
-本文主要介绍protobuf里整数的编码方式，进而给出一些pb使用上的建议。使用的pb版本为2.6.1。
+本文主要介绍protobuf里整型的编码方式，包括varint/zigzag等。分析下protobuf为了兼顾数据压缩和高性能的一些相关源码。进而给出一些pb整型使用上的建议。使用的pb版本为2.6.1。
 
 在protobuf中序列化与反序列化是很常见的操作，无论是用于存储还是网络传输。pb提供了一组接口用于message的序列化，例如` bool SerializeToString(string* output) const; `  
 
@@ -97,7 +97,7 @@ wire type的取值有很多
 |4  |End group  |groups(deprecated)  |
 |5  |32-bit  |fixed32, sfixed32, float  |
 
-key的计算方式为`(field_number << 3) | wire_type`
+key的计算方式为`(field_number << 3) | wire_type`，即低位记录`wire_type`，高位记录`field_number`。
 
 ```
 // Number of bits in a tag which identify the wire type.
