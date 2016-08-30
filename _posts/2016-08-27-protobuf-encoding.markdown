@@ -295,6 +295,32 @@ message MessageB {
     std::cout << msgC.b() << std::endl;
 ```
 
+注：
+
+实际上在序列化的时候获取`_unknown_fileds`是通过`const GeneratedMessageReflection::UnknownFieldSet& GetUnknownFields(const Message& message) const`，该类负责反射，其中获取具体message的`_unknown_fields`成员变量是通过偏移量来传入的
+
+```
+//test.pb.cc
+//Test1为自定义message类型
+  Test1_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      ...
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Test1, _unknown_fields_),
+      -1,  
+      ...);
+
+//generated_message_reflection.h
+// Note that we calculate relative to the pointer value 16 here since if we
+// just use zero, GCC complains about dereferencing a NULL pointer.  We
+// choose 16 rather than some other number just in case the compiler would
+// be confused by an unaligned pointer.
+#define GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TYPE, FIELD)    \
+  static_cast<int>(                                           \
+      reinterpret_cast<const char*>(                          \
+          &reinterpret_cast<const TYPE*>(16)->FIELD) -        \
+      reinterpret_cast<const char*>(16))
+
+```
 ### 8. 参考
 
 1. [Protobuf Encoding](https://developers.google.com/protocol-buffers/docs/encoding)
