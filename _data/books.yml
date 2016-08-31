@@ -18,10 +18,10 @@
 - name: 中国近代史
   cover: https://img1.doubanio.com/lpic/s2883058.jpg
   start_date: 2016.7.7
-  finish_date:
+  finish_date: 2016.8.31
   douban_link: https://book.douban.com/subject/2376486/
   download_link:
-  note:
+  note: 历史是多面的，但是了解历史总是要从某一面开始。这本书展开了很多事情、人物的某一面。虽然无法赞同作者的很多观点，但是值得思考。比较有感触的是相比过去的大学生，现在所谓的名牌大学在灌输的更多的是精英主义、利己主义。
 
 - name: Linux Shell脚本攻略
   cover: https://img1.doubanio.com/lpic/s22702207.jpg
