@@ -1,28 +1,9 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>{{ page.title }}</title>
-        <meta name="viewport" content="width=device-width">
-        <script src="http://code.jquery.com/jquery-latest.js"></script>
-        <script src="/css/bootstrap/js/bootstrap.min.js"></script>
-        <link rel="stylesheet" type="textscript" href="/assets/google-code-prettify/prettify.css">
-
-        <!--Bootstrap CSS-->
-        <link rel="stylesheet" href="/css/bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/css/mycustom.css">
-        {% include baidu-analytics.html %}
-    </head>
-    <body>
-        {% include navbar.html %}
-
-        <div class="container-fluid">
-            <div class="row">
-            	<div class="col-xs-1">
-            	</div>
-                <div class="col-xs-9">
-                        <h5>记录读过、在读、想读的一些书籍，大部分为电子版。</h5>
+---
+layout: post 
+title : Books
+group: books
+---
+<h5>记录读过、在读、想读的一些书籍，大部分为电子版。</h5>
 <hr/>
 
 <table class="table table-hover table-striped">
@@ -55,22 +36,3 @@
         {% endfor %}
     </tbody>
 </table>
-                </div>
-
-                <!-- {% include navside.html %} -->
-            </div>
-
-        </div>
-
-        <script type="text/javascript" src="/assets/google-code-prettify/prettify.js"></script>
-        <script type="text/javascript">
-            $(function(){
-                $("pre").addClass("prettyprint linenums");
-                prettyPrint();
-            });
-        </script>
-            {% include previous_next_page.html %}
-    {% include share_comment.html %}
-    </body>
-
-</html>
