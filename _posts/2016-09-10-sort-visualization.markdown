@@ -17,6 +17,4 @@ tags: [protobuf]
 
 程序的演示上传到了土豆上：
 
-<embed src="http://www.tudou.com/v/yjgwxYnFCnE/&bid=05&rpid=996297556&resourceId=996297556_05_05_99/v.swf" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" wmode="opaque" width="480" height="400"></embed>
-
-<!--more-->
+<embed src="http://www.tudou.com/v/yjgwxYnFCnE/&bid=05&rpid=996297556&resourceId=996297556_05_05_99/v.swf" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" wmode="opaque" width="480" height="400">
