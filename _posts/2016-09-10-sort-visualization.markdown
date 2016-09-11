@@ -11,6 +11,8 @@ tags: [protobuf]
 
 由于是多年的vim控，同时出于简洁的考虑，选择了终端演示的方式，光标操作使用python的curses库，代码放在了github上：<https://github.com/yingshin/visible_sort>，得益于python的简洁和强大，加上注释代码不到700行。
 
+<!--more-->
+
 功能上主要用于排序算法的演示，目前提供了插入排序、选择排序、冒泡排序。
 
 整个从界面设计到编码完成大概6个小时的时间，权当打法时间了。
