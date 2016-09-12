@@ -45,4 +45,109 @@ Any的友元模板函数，将Any类型转化为需要的类型。注意boost里
 
 具体代码如下：
 
-<script src="https://gist.github.com/yingshin/e5a32a57f267de1bfd1a.js"></script>
+```
+#include <stdio.h>
+#include <iostream>
+#include <vector>
+#include <string>
+
+class Any {
+public:
+    Any() : _holder(NULL) {}
+    ~Any() {delete _holder; _holder = NULL;}
+
+    template<class T>
+    Any(T t) :
+        _holder(new Holder<T>(t)) {
+    }
+
+    //copy construct/operator=都使用clone
+    //因为没有类型T,无法使用_holder = new Holder<T>(*_holder)的形式
+    Any(const Any& any) {
+        std::cout << "Any(Any) " << std::endl;
+        _holder = any._holder->clone();
+    }
+    Any& operator=(const Any& any) {
+        std::cout << "Any operator=(Any)" << std::endl;
+        _holder = any._holder->clone();
+    }
+
+    void print() {
+        if (_holder) {
+            _holder->print();
+        } else {
+            std::cout << "nothing." << std::endl;
+        }
+    }
+
+    //虚基类
+    class IHolder {
+    public:
+        virtual void print() = 0;
+        //提供数据clone的功能
+        //Any的copy constructor/operator=依赖这个函数
+        virtual IHolder* clone() = 0;
+    };
+
+    //真正存储数据的类
+    template<class T>
+    class Holder : public IHolder {
+    public:
+        Holder(const T t) :
+            _t(t) {
+        }
+
+        void print() {
+            std::cout << _t << std::endl;
+        }
+
+        virtual IHolder* clone() {
+            return new Holder(_t);
+        }
+    //any_cast 是Any的friend, private导致any_cast无法访问到_t
+    //所以这里使用public
+    public:
+        T _t;
+    };
+    //取出数据使用
+    template<class T>
+    friend T any_cast(const Any& any);
+private:
+    IHolder* _holder;
+};//Any
+
+
+template<class T>
+T any_cast(const Any& any) {
+    return static_cast<Any::Holder<T>*>(any._holder)->_t;
+}
+
+struct S {
+    S(int i) : data(i) {}
+    friend std::ostream& operator<<(std::ostream& os, const S& s);
+    int data;
+};//S
+
+std::ostream& operator<<(std::ostream& os, const S& s) {
+    return os << "struct[" << s.data << "]";
+}
+
+int main()
+{
+    std::vector<Any> vecs;
+    S s(1);
+
+    vecs.push_back(1);
+    vecs.push_back(9.9);
+    vecs.push_back("string");
+    vecs.push_back('c');
+    vecs.push_back(s);
+
+    for (unsigned int i = 0; i < vecs.size(); ++i) {
+        vecs[i].print();
+    }
+
+    return 0;
+}
+
+```
