@@ -20,7 +20,6 @@ glog是google的的一个C++轻量日志库，支持常用的日志功能：例�
 `/tmp/<program name>.<hostname>.<username>.log.<severity level>.<data>.<time>.<pid>`  
 比如:introduction.ymac.yingshin.log.ERROR.20160102-231949.11182
 
-
 ### 2. 日志级别
 日志级别有4种，INFO WARNING ERROR FATAL，在`glog/log_severity.h`中定义
 
