@@ -10,10 +10,10 @@
 - name: 秘密
   cover: https://img3.doubanio.com/lpic/s27185093.jpg
   start_date: 2016.9.13
-  finish_date:
+  finish_date: 2016.9.17
   douban_link: https://book.douban.com/subject/25720041/
   download_link:
-  note:
+  note: 东野的小说读的越多，越来越发现情感为主题，解谜只是部分。
 
 - name: Python网络编程攻略
   cover: https://img3.doubanio.com/mpic/s28480936.jpg
