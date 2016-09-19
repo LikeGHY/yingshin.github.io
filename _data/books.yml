@@ -63,22 +63,6 @@
   download_link:
   note: 非常好看！读后感发表在了<a href="http://yingshin.github.io/life/2016/07/09/caocao">这里</a>
 
-- name: 这些年，我吃的都是不懂拒绝的亏
-  cover: http://img3.douban.com/lpic/s27997100.jpg
-  start_date: 2016.2.26
-  finish_date: x
-  douban_link: http://book.douban.com/subject/26311968/
-  download_link:
-  note:
-
-- name: 苗疆蛊事
-  cover: http://cover.read.duokan.com/mfsv2/download/s010/p01XNGEvbQ48/hZLfLXNpIUAjzD.jpg!e
-  start_date: 2016.2.20
-  finish_date:
-  douban_link:
-  download_link:
-  note:
-
 - name: 肉蒲团
   cover:
   start_date: 2016.2.6
@@ -135,22 +119,6 @@
   download_link:
   note: 感觉一般
 
-- name: 东野圭吾的最后致意
-  cover: http://img4.douban.com/lpic/s24980196.jpg
-  start_date: 2015.10
-  finish_date:
-  douban_link: http://book.douban.com/subject/20507419/
-  download_link:
-  note:
-
-- name: 七周七语言
-  cover: http://img3.douban.com/mpic/s9046771.jpg
-  start_date: 2015.10.28
-  finish_date:
-  douban_link: http://book.douban.com/subject/10555435/
-  download_link:
-  note:
-
 - name: 分身
   cover: http://img4.douban.com/mpic/s4435059.jpg
   start_date: 2015.10.1
@@ -159,22 +127,6 @@
   download_link:
   note: 关于克隆的思考，慢慢的觉得东野并不是我一直理解的推理小说作家，读多了觉得这个人对社会的思考很多。这本书里面，克隆人未必取得了成功，但至少不是孤独的，这点是最重要的。
 
-- name: 水浒传（中华书局版）
-  cover: http://img3.douban.com/mpic/s6115963.jpg
-  start_date: 2015.8
-  finish_date:
-  douban_link: http://book.douban.com/subject/25985471/
-  download_link:
-  note:
-
-- name: HBase企业应用开发实战
-  cover: http://img3.douban.com/mpic/s27466344.jpg
-  start_date: 2015.9.10
-  finish_date:
-  douban_link: http://book.douban.com/subject/25985471/
-  download_link:
-  note:
-
 - name: 悬疑小说10年精选（下）
   cover: http://img3.douban.com/mpic/s4524512.jpg
   start_date: 2015.8
@@ -182,14 +134,6 @@
   douban_link: http://book.douban.com/subject/5063874/
   download_link:
   note: 最开始以为是许多精彩小故事的集合，看完觉得一般，打发时间可以看下。
-
-- name: 编写高质量代码：改善Python程序的91个建议
-  cover: http://img3.douban.com/lpic/s27307891.jpg
-  start_date: 2015.8.28
-  finish_date: 
-  douban_link: http://book.douban.com/subject/25910544/
-  download_link:
-  note: 
 
 - name: 剑毒梅香
   cover: http://img3.douban.com/mpic/s10203234.jpg
@@ -222,14 +166,6 @@
   douban_link: http://book.douban.com/subject/10506822/
   download_link:
   note: 很一般的一本书
-
-- name: 算法技术手册
-  cover: http://img5.douban.com/lpic/s6144917.jpg
-  start_date: 2015.5.1
-  finish_date:
-  douban_link: http://book.douban.com/subject/4317573/
-  download_link:
-  note: 
 
 - name: 九州缥缈录-辰月之征
   cover: http://img5.douban.com/lpic/s2781187.jpg
@@ -302,14 +238,6 @@
   douban_link: http://book.douban.com/subject/25756947/
   download_link: http://pan.baidu.com/s/1mguiCh6
   note: 不如前几本好看
-
-- name: Code,The Hidden Language of Computer Hardware and Software
-  cover: http://img3.douban.com/mpic/s4379914.jpg
-  start_date: 2014.2.28
-  finish_date: x
-  douban_link: http://book.douban.com/subject/4822685/
-  download_link: http://pan.baidu.com/s/1mgHPmE8
-  note: 
 
 - name: 毛泽东传
   cover: http://img5.douban.com/mpic/s4458248.jpg
@@ -439,14 +367,6 @@
   download_link: http://teliute.org/linux/abs-3.9.1/index.html
   note: 
 
-- name: Effective STL中文版
-  cover: http://img5.douban.com/mpic/s1669748.jpg
-  start_date: 2014.8.18
-  finish_date: 
-  douban_link: http://book.douban.com/subject/1792179/
-  download_link:
-  note: 
-
 - name: 尸语者
   cover: http://img5.douban.com/lpic/s20710799.jpg
   start_date: 2014.9.2
@@ -494,14 +414,6 @@
   douban_link: http://book.douban.com/subject/25862578/
   download_link:
   note: 非常精彩的一本书
-
-- name: 昆虫记1
-  cover: http://img3.douban.com/mpic/s1155064.jpg
-  start_date: 2014.12.1
-  finish_date: x
-  douban_link: http://book.douban.com/subject/1124323/
-  download_link:
-  note: 
 
 - name: SQL必知必会
   cover: http://img5.douban.com/mpic/s2593426.jpg
