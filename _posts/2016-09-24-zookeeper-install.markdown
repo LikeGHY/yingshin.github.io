@@ -119,7 +119,7 @@ Stopping zookeeper ... STOPPED
 启动时如果看到以上输出，则表示zookeeper服务已经正常启动，可以通过`netstat -anp | grep 2181`验证zookeeper是否已经监听配置端口。
 
 
-参考资料：
+### 3. 参考资料：
 
 1. [分布式服务框架 Zookeeper -- 管理分布式环境中的数据](http://www.ibm.com/developerworks/cn/opensource/os-cn-zookeeper/)
 
