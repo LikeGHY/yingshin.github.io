@@ -24,13 +24,14 @@ bar();
 ```
 struct X {
     int foo(int data) {
-        std::cout << "X::foo " << data << endl;
+        std::cout << "X::foo " << data << std::endl;
+        return 0;
     }
 };//X
 
 X x;
 std::tr1::function<int (int)> f = std::tr1::bind(&X::foo, &x, std::tr1::placeholders::_1);
-f();
+f(1);
 ```
 
 使用bind和function，可以很轻松的打平普通函数和C++成员函数在作为回调函数上使用的区别（静态成员函数等同于普通函数，因为即便对于普通函数，也可能存在namespace）。
