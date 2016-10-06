@@ -1,8 +1,8 @@
 ---
 layout: post
-title: zookeeper C API实战
+title: zookeeper-kazoo介绍
 date: 2016-10-5 11:34:36
-excerpt: "zookeeper C API实战"
+excerpt: "zookeeper-kazoo介绍"
 categories: [c/cpp]
 tags: [zookeeper]
 ---

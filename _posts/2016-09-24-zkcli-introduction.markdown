@@ -1,8 +1,8 @@
 ---
 layout: post
-title: zookeeper实战一：zkCli的使用
+title: zookeeper之zkCli的使用
 date: 2016-9-24 23:25:08
-excerpt: "zookeeper实战一：zkCli的使用"
+excerpt: "zookeeper之zkCli的使用"
 categories: [c/cpp]
 tags: [zookeeper]
 ---
