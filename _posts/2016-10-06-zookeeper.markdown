@@ -15,7 +15,7 @@ zookeeper的基本功能是在分布式系统中协作多个任务，比如最�
 
 zookeeper实现了一组核心操作，通过这些可以实现很多常见分布式应用的任务。例如在一个常见的主从模型中，我们需要实现主节点选举，节点存活与否的跟踪的功能。zookeeper提供了实现这些任务的工具，但是如何选举主节点、协同任务，则由应用层自己决定。
 
-几篇文章主要包括安装、介绍、zkcli、c/python的客户端lib解析及介绍。
+几篇文章主要包括安装、介绍、zkcli、c/python的客户端lib解析及介绍，并推荐阅读[ZooKeeper:Distributed Process Coordination](http://pan.baidu.com/s/1nuT9tUx)以及中文版。
 
 1. [单机zookeeper的安装](http://yingshin.github.io/c/cpp/2016/09/24/zookeeper-install)  
 2. [zookeeper介绍](http://yingshin.github.io/c/cpp/2016/09/24/zookeeper-introduction)  

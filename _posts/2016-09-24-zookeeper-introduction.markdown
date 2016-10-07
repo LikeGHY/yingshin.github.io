@@ -13,7 +13,7 @@ tags: [zookeeper]
 
 ### 1. 数据模型
 
-如果我们自己要实现分布式锁的机制，需要实现三个最重要的原语：`create acquire release`。
+如果我们自己要实现分布式锁的机制，需要实现三个最重要的锁原语：`create acquire release`。
 
 zookeeper对外提供的是一个树形的数据结构，每个节点就被称为znode。同时zookeeper没有暴露分布式锁的原语，而是提供了一系列的API，这些API操作的对象就是znode。
 
@@ -35,13 +35,13 @@ zookeeper对外提供的是一个树形的数据结构，每个节点就被称�
 
 #### 2.1. 持久节点和临时节点
 
-znode节点可以使持久(persistent)节点，还可以是临时(ephemeral)节点。两者的区别主要在删除行为上，持久节点只能通过`delete`删除。临时节点当创建了该节点的客户端崩溃或者关闭了与zookeeper服务端的连接时，就会删除。
+znode节点可以使持久(persistent)节点，还可以是临时(ephemeral)节点。两者的区别主要在删除行为上，持久节点只能通过`delete`删除。而临时节点，当创建了该节点的客户端崩溃或者关闭了与zookeeper服务端的连接时，就会自动删除。
 
-注意ephemeral znode
+注意ephemeral znode不能有子节点。
 
 #### 2.2 有序节点
 
-有序（sequential)节点创建时，被默认分配一个单调递增的整数，"10d"的形式添加到给定的路径之后。
+有序（sequential)节点创建时，被默认分配一个单调递增的整数，"%10d"的形式添加到给定的路径之后。
 例如创建一个有序的znode节点，给定路径为/tasks/tasks-，实际生成的节点路径可能为`/tasks/tasks-0000000000`
 
 ```
@@ -49,9 +49,10 @@ znode节点可以使持久(persistent)节点，还可以是临时(ephemeral)节�
 Created /tasks/tasks-0000000000
 ```
 
-上述来自zk提供的shell，`zkCli`，将在下节介绍。
+上述来自zk提供的shell，`zkCli`，将在[zkCli的使用](http://yingshin.github.io/c/cpp/2016/09/24/zkcli-introduction)单独介绍。
 
 因此znode一共有四种类型：
+
 1. persistent  
 2. ephemeral  
 3. persistent_sequential  
@@ -66,8 +67,8 @@ Created /tasks/tasks-0000000000
 到这里基础介绍算是结束了，接下来的几篇文章，会逐渐进入到zk实战的部分。我们会发现在zookeeper对这些分布式的事务做了良好的封装，为了避免进入到知其然不知其所以然的节奏，在具体的使用zookeeper前，有几个问题先抛出来。我们会逐渐的解释：
 
 1. 单次触发是否会导致丢事件？  
-2. 无序的问题是否存在，比如客户端A先创建了nodeA，接着删除，服务端按照这个顺序通知客户端B，然后如果删除nodeA这个事件先到怎么办？  
-3. 客户端A B同时去修改一个node的value，如何判断哪个会成功？  
+2. 无序的问题是否存在，比如客户端A先创建了nodeA，接着删除，服务端按照这个顺序通知客户端B，但是如果到达顺序为删除nodeA -> 创建nodeA怎么办？  
+3. 客户端A B同时去修改一个node的value，结果应该选择哪个？在无法确认网络状况的情况下，如何保证结果符合预期？  
 4. 客户端A连接到服务端I，创建了nodeA，断开链接接着重连到服务端II，此时II还未同步到I上创建nodeA的操作，该如何处理？换言之zookeeper是否保证了一致性？  
 5. 集群模式下zookeeper允许多少台服务机器出现故障？  
 
@@ -113,7 +114,7 @@ Node count: 24
 
 #### 3.5 kill
 
-关闭server，不要轻易尝试囧
+关闭server，不要轻易尝试（囧）
 
 #### 3.6 conf
 

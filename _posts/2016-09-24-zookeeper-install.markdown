@@ -7,7 +7,7 @@ categories: [c/cpp]
 tags: [zookeeper]
 ---
 
-本文主要介绍下单机环境下zookeeper的安装，分为两个步骤：java环境搭建和zookeeper环境搭建，方便起见，放了一份在[百度云](http://pan.baidu.com/s/1kVPjbRx)上。
+本文主要介绍下单机环境下zookeeper的安装，分为两个步骤：java环境搭建和zookeeper环境搭建，方便起见，所有源码放了一份在[百度云](http://pan.baidu.com/s/1kVPjbRx)上。
 
 <!--more-->
 
@@ -34,7 +34,7 @@ public class test {
     }
 }
 ```
-将上述代码存为test.java，然后运行javac test.java会在当前目录下生成test.class文件，再执行java test如果能够输出`A new jdk test!`则表明java安装成功。
+将上述代码存为test.java，运行`javac test.java`生成test.class文件，执行`java test`如果能够输出`A new jdk test!`则表明java安装成功。
 
 ### 2. 搭建zookeeper环境
 

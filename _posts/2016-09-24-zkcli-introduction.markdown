@@ -9,7 +9,7 @@ tags: [zookeeper]
 
 从本节开始，我们进入zk的实战部分。
 
-zk客户端的封装除了提供JAVA/C的API，还提供了客户端的shell工具：发布在`bin`下的zkCli.sh。
+zk客户端的封装除了提供各语言如JAVA/C/PYTHON的API，还提供了客户端的shell工具：发布在`bin`下的zkCli.sh。
 
 使用zkCli.sh可以很方便对zookeeper进行调试和管理，包括创建、更新、删除znode，设置监视点等。同时交互式shell的方式不依赖库的编译，也非常适合初学者上手，本文主要介绍`zkCli.sh`下对znode的各种基本操作。
 
@@ -18,7 +18,8 @@ zk客户端的封装除了提供JAVA/C的API，还提供了客户端的shell工�
 
 ### 1. zkcli启动
 
-上一节中介绍了四字命令，其中`stat`可以显示当前的连接情况。在使用`zkCli.sh`连接前，我们先看下当前的状态：
+上一节中介绍了四字命令，其中`stat`可以显示当前的连接情况。  
+在使用`zkCli.sh`连接前，我们先看下当前的状态：
 
 ```
 [spider@cp01-saverng-2 bin]$ echo stat | nc 127.0.0.1 2181
@@ -54,11 +55,11 @@ WatchedEvent state:SyncConnected type:None path:null
 
 此时继续使用`stat`四字命令查看连接情况，会发现多了一个链接。
 
-接下来介绍下关于znode的操作
+接下来介绍下znode的操作部分
 
 ### 2. zkCli基础
 
-进入zkCli-shell后，`help`可以看到所有的命令及支持的参数，这里列举几个常勇的命令。
+进入zkCli-shell后，`help`可以看到所有的命令及支持的参数，这里列举几个常用的命令。
 
 #### 2.1 ls
 

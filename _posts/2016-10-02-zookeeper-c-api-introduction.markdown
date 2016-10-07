@@ -51,7 +51,11 @@ typedef void (*watcher_fn)(zhandle_t *zh, int type,
 
 注意连接的创建是异步的，也就是当`zookeeper_init`返回时连接并不一定建立，只有在`fn`回调函数调用时返回`state = ZOO_CONNECTED_STATE`时才连接成功。
 
-一个会话的生命周期是指会话从创建到结束的时期，中间可能的状态有：**CONNECTED CONNECTING CLOSED NOT_CONNECTED**，一个会话从NOT_CONNECTED开始，当ZooKeeper客户端初始化后转换到CONNECTING。成功建立连接后状态为CONNECTED，关闭连接后状态为CLOSED。中间可能断开连接状态变为CONNECTING，状态以及可能状态的转换如下图：
+一个会话的生命周期是指会话从创建到结束的时期，中间可能的状态有：**CONNECTED CONNECTING CLOSED NOT_CONNECTED**。  
+
+一个会话从NOT_CONNECTED开始，当ZooKeeper客户端初始化后转换到CONNECTING。成功建立连接后状态为CONNECTED，关闭连接后状态为CLOSED。中间可能断开连接状态变为CONNECTING。
+
+状态以及可能状态的转换如下图：
 
 ![zk_status.png](/assets/images/zk_status.png)
 
@@ -171,7 +175,8 @@ void close_zhandle(zhandle_t*&)
 ```
 
 
-zookeeper客户端会输出部分日志，这里重点看下程序自身的输出，`zk_event_callback`里，`type = -1; state = 3`都是常量定义，分别为`ZOO_SESSION_EVENT; ZOO_CONNECTED_STATE`，此时表示连接确实建立。同时`zookeeper_close`是有返回值的，这里的值是0，我们使用`zerror`打印出了对应的字符串解释为"ok"。
+zookeeper客户端会输出部分日志，这里重点看下程序自身的输出：  
+`zk_event_callback`里，`type = -1; state = 3`都是常量定义，分别为`ZOO_SESSION_EVENT; ZOO_CONNECTED_STATE`，此时表示连接确实建立。同时`zookeeper_close`是有返回值的，这里的值是0，我们使用`zerror`打印出了对应的字符串解释为"ok"。
 
 因此，接下来我们先介绍下`type`,`state`,返回值等常见的常量， 以及监视点函数，也就是我们的全局回调函数。
 
@@ -227,11 +232,11 @@ ZOOAPI int zoo_wexists(zhandle_t *zh, const char *path,
 
 两者作用相同：都是通过传入`zh`来监控`path`这个znode，返回值表示是否存在或者其他错误。区别是在监视点的注册上，传入"watch flag"还是"watcher object"，这两个名词是zookeeper的术语，简言之就是传入一个int值，还是回调函数`watcher`+上下文`watcherCtx`来监视`path`，如果传入前者，则在`path`被创建时回调`zookeeper_init`里的回调函数，如果传入后者，则后者被回调。
 
-也就是说`watch_fn`在两种情况下作为参数指定：`zookeeper_init`和`zoo_wxxx`类型的函数，其中各个函数传入的上下文互不影响，也就是单独的"watcher object"(watch_fn + context)。
+也就是说`watch_fn`在两种情况下作为参数指定：`zookeeper_init`和`zoo_wxxx`类型的函数。
 
 类似的接口还有`zoo_get/zoo_wget zoo_get_children/zoo_wget_children zoo_get_children2/zoo_wget_children2`
 
-我们使用一个简单的例子来具体看下两种回调方式的区别，使用到的api有`zookeeper_init/zookeeper_close/zoo_create/zoo_exists/zoo_wexists`。
+我们使用`zoo_exists/zoo_wexists`的例子来具体看下两种回调方式的区别。
 
 ### 3. 监视点回调的例子
 
@@ -338,7 +343,9 @@ int main() {
 
 部分代码与上个例子相同，因此做了删减。注意例子里context会有内存泄露的问题。
 
-程序先使用两种同步方式检测/ephemerals_node这个znode是否存在，并注册监视点，接着创建这个结点，sleep等待回调函数被调用（真实场景里永远不建议使用sleep实现同步效果）。我们从程序的输出看下`zoo_exist/zoo_wexists`的不同（过滤了zookeeper自身的输出并做了注释）：
+程序先使用两种同步方式检测/ephemerals_node这个znode是否存在，并注册监视点，接着创建这个结点，sleep等待回调函数被调用（真实场景里永远不建议使用sleep实现同步效果）。
+
+从程序的输出看下`zoo_exist/zoo_wexists`的不同（过滤了zookeeper自身的输出并做了注释）：
 
 ```
 zhandle_t* init_zhandle()//初始化连接
@@ -376,7 +383,7 @@ void close_zhandle(zhandle_t*&)
 
 我们使用`zoo_exists/zoo_wexists`创建了两个监视点，`zoo_create`创建znode后，触发了两次回调，分别为`watch_event_callback zk_event_callback`。可以看到两个回调函数的context互不影响。
 
-### 4. 写znode
+### 4. 写
 
 上面的例子里，我们使用`zoo_create`创建了一个临时znode，函数原型如下：
 
@@ -387,7 +394,7 @@ ZOOAPI int zoo_create(zhandle_t *zh, const char *path, const char *value,
 
 ```
 
-ACL与权限管理有关，上个例子里不设置权限，因此取值为`ZOO_OPEN_ACL_UNSAFE`。
+ACL与权限管理有关，上个例子里不设置权限，因此取值为`ZOO_OPEN_ACL_UNSAFE`，ACL_vector初始化操作定义在zookeeper.jute.h。
 
 之前我们介绍过znode一共有四种类型，其中参数flags用于指定类型：`ZOO_EPHEMERAL, ZOO_SEQUENCE, 0`，因为对sequence类型，创建的真实path在服务器端确定，参数`path_buffer`记录了真实的path。
 
@@ -402,7 +409,7 @@ ZOOAPI int zoo_set2(zhandle_t *zh, const char *path, const char *buffer,
 
 参数`version`用于多个进程对同一znode数据的更新控制，只有传入的参数`version`与服务器端一致时，才会更新成功。
 
-### 5. 读znode
+### 5. 读
 
 读znode主要有三个接口：  
 `zoo_exists/zoo_wexists`查看znode存在与否  
@@ -432,11 +439,11 @@ typedef void
 
 `rc`为处理结果返回值，`value`为实际的path，`data`为`zoo_acreate`里传递的上下文对象，创建成功后该函数会被调用。
 
-### 8. 实战
+### 7. 实战
 
 之前介绍过使用`zlcli`模拟一个[主-从实例](http://yingshin.github.io/c/cpp/2016/09/25/zkcli-example)，如果需要查看对应的master c代码，可以参考fpj大神的的[github](https://github.com/fpj/zookeeper-book-example)。
 
-### 9. 注意
+### 8. 注意
 
 各个接口的用法建议在使用时直接参考`zookeeper.h`，因此本文没有逐个接口细细展开介绍，这里说明几个注意点：
 
@@ -447,6 +454,6 @@ typedef void
 5. 单次触发会丢失事件，但是可以保证不丢任务。  
 6. java中提供了`multitop`的调用方式保证多个操作的原子性，但c++中没有。  
 
-### 10. 参考资料
+### 9. 参考资料
 
 1. [ZooKeeper：分布式过程协同技术详解](http://www.duokan.com/book/106575)
