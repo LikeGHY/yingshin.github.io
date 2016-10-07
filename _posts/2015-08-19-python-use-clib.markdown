@@ -4,7 +4,7 @@ title:  "python调用clib的两种方法"
 date: 2015-08-19 16:45:29
 excerpt: "python调用clib的两种方法"
 categories: [python]
-tags: [python]
+tags: [clib]
 ---
 
 这篇文章介绍在python中调用clib定义的函数，分别是__ctypes__和__Python API__的形式。
@@ -12,7 +12,9 @@ tags: [python]
 <!--more-->
 
 ### ctypes
+
 #### 一个简单的例子
+
 首先准备hello.c文件：
 
 ```
@@ -53,6 +55,7 @@ hellolibc.hello()
 一个简单的例子就编写完成了。
 
 #### 注意事项
+
 ctypes在使用上有很多需要注意的地方，这里介绍下一些常见的问题。  
 __传入可变字符串__   
 更新我们的hello.c文件:
@@ -189,7 +192,9 @@ extern "C" {
 关于ctypes更多使用的细节，比如如何传递数组、指针、自定义数据格式等，可以参考[python官方文档](https://docs.python.org/2/library/ctypes.html)  
 
 ### Python API(Application Programmers Interface)
+
 #### 一个简单的例子  
+
 这个例子是PythonDoc里自带的    
 先看下use\_spammodule.py文件  
 
@@ -242,9 +247,11 @@ PyMODINIT_FUNC initspammodule(void)
 可以看到真正使用Python API的部分在这里，到这一步这一个示例也就完成了。我们重点分析下这个c文件的各个部分。  
 
 #### Python.h
+
 Python API定义了一系列的函数、宏以及变量，所有这些都被包裹进了__Python.h__这个文件，因此只要在你的c文件最开始include这个文件就可以了。因为__Python.h__含有一些预处理定义，因此最好在所有非标准头文件导入之前导入。  
 
 #### 导出函数
+
 要在Python中使用C的某个函数，首先需要为其编写对应的导出函数。上述例子中的`spam_system`就是对应的导出函数。  
 所有的导出函数形式为下面3种：  
 
@@ -262,6 +269,7 @@ static PyObject *MyFunctionWithNoArgs( PyObject *self );
 例子中的导出函数属于第一种，返回值固定是__PyObject__，第一个参数为self，通常为NULL（感兴趣的同学可以看下不为NULL的情况给我留言），第二个参数则是python传过来的参数。
 
 #### 解析参数
+
 有了导出函数，我们还需要解析出当前传过来的参数是什么。对应不同类型的导出函数，解析参数也有两种：  
 
 ```
@@ -272,6 +280,7 @@ int PyArg_ParseTupleAndKeywords(PyObject *args, PyObject *kw, const char *format
 其中第一个参数就python传过来的args，format用于指定如何读取这些参数，例如i表示integer, f表示float，例如`PyArg_ParseTuple(args, "ii", &a, &b)`表示从args里读取两个integer类型，分别存储到变量a b，这两个变量有了内容后我们就可以在c里使用了。  
 
 #### 返回结果  
+
 这个跟解析参数是相对的，在c里的计算完成后，需要返回结果到python。  
 用到的是Py\_BuildValue这个API  
 
@@ -289,6 +298,7 @@ return Py_None;
 ```
 
 #### 方法列表
+
 定义了上述的方法，还需要给出Python解释器中使用的方法，即例子中的代码：  
 
 ```
@@ -303,6 +313,7 @@ static PyMethodDef SpamMethods[] = {
 此表需要适当的成员终止与定点NULL的组成和0值
 
 #### 初始化函数
+
 扩展模块需要一个初始化函数，这也是最后一部分。需要的功能被命名为initModule，其中module是模块的名称。  
 
 用到的函数原型为：  
@@ -317,6 +328,7 @@ PyObject* Py_InitModule3(char *name, PyMethodDef *methods, char *doc)
 注意这也是一个唯一一个非static的函数  
 
 #### 为什么其他函数要定义为static
+
 主要是为了防止名字污染，因为只需要python解释器读懂就可以了，对其他方式不可见。  
 stackoverflow有一个比较简短的[答案](http://stackoverflow.com/questions/28493847/in-python-c-api-why-is-wrapper-function-static)
 
@@ -372,7 +384,7 @@ void initexample()
 ```
 
 参考资料：
-1. [Extending Python with C or C++](https://docs.python.org/2/extending/extending.html)
-2. [ctypes — A foreign function library for Python](https://docs.python.org/2/library/ctypes.html)
-3. [用C语言扩展Python的功能](http://www.ibm.com/developerworks/cn/linux/l-pythc/)
+1. [Extending Python with C or C++](https://docs.python.org/2/extending/extending.html)  
+2. [ctypes — A foreign function library for Python](https://docs.python.org/2/library/ctypes.html)  
+3. [用C语言扩展Python的功能](http://www.ibm.com/developerworks/cn/linux/l-pythc/)  
 
