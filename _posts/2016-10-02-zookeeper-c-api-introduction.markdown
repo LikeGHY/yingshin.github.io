@@ -13,17 +13,17 @@ tags: [zookeeper]
 2. 同步接口：同步操作znode，zoo_xxx/zoo_wxxx的形式，例如创建(zoo_create），查看节点data(zoo_get/zoo_wget)等  
 3. 异步接口：异步操作znode，zoo_axxx的形式，例如创建(zoo_create/zoo_acreate)，查看节点data(zoo_get/zoo_aget)等  
 
-zookeeper的发行版本大部分接口都在`zookeeper.h`中定义，客户端代码遵守doxy规范，使用doxygen可以得到一份详细的接口文档。
-
 <!--more-->
 
-在接口设计上zookeeper非常灵活，例如查看znode是否存在，提供了3个接口`zoo_exists/zoo_wexists/zoo_aexists`，由应用方按照具体场景选择使用。为了避免只是单纯的翻译介绍`zookeeper.h`，本文主要从整体上介绍这些接口的异同点，并提供了一些仅供学习环境的例子，以及一些总结的注意事项。
+在接口设计上zookeeper非常灵活，例如查看znode是否存在，提供了3个接口`zoo_exists/zoo_wexists/zoo_aexists`，由应用方按照具体场景选择使用。
+
+为了避免只是单纯的翻译介绍`zookeeper.h`，本文主要从整体上介绍这些接口的异同点，并提供了一些仅供学习环境的例子，以及总结的注意事项。zookeeper客户端代码遵守doxy规范，使用doxygen可以得到一份详细的接口文档，强烈建议读一遍文档。
 
 我们从如何创建和销毁跟服务集群的连接开始，逐步介绍zookeeper客户端的接口使用。
 
 ### 1. 连接的创建和销毁
 
-在使用ZooKeeper进行任何操作之前，首先需要一个`zhandle_t`句柄，用于管理客户端与服务器之间的连接，所有的zookeeper接口函数都需要传入该参数。通过`zookeeper.h`的两个接口进行创建和销毁:
+在使用ZooKeeper进行任何操作之前，需要一个`zhandle_t`句柄，用于管理客户端与服务器之间的连接，所有的zookeeper接口函数都需要传入该参数。通过`zookeeper.h`的两个接口进行创建和销毁:
 
 ```
 ZOOAPI zhandle_t *zookeeper_init(const char *host, watcher_fn fn,
@@ -34,7 +34,7 @@ ZOOAPI int zookeeper_close(zhandle_t *zh);
 
 `zookeeper_init`初始化一条与服务器之间的连接。
 
-介绍下输入的各个参数：  
+各个参数的含义：  
 1. host: 服务集群主机地址的字符串，地址格式为host:port，每组地址以逗号分隔。  
 2. fn：回调函数地址，如果设置了监视点，znode节点发生相关变化后，该回调函数会被调用。  
 3. recv_timeout：会话过期时间，单位毫秒。  

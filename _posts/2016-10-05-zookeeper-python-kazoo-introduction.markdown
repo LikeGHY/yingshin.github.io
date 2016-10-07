@@ -73,6 +73,7 @@ zk.add_listener(my_listener)
 listener可以有多个，使用`add_listener`添加即可，同时`remove_listener`支持移除listener。
 
 当服务集群状态发生变化时，listener会逐个被调用。详细了解三种状态的转化，可以参考[understanding-kazoo-states](http://kazoo.readthedocs.io/en/latest/basic_usage.html#understanding-kazoo-states)
+
 注意如果有报错："No handlers could be found for logger "kazoo.client"
 
 在初始化之前配置log即可：
@@ -210,3 +211,8 @@ print election.contenders()
 竞争群首失败执行`run`会hold住，成功则执行指定的leader_function。
 
 `identifier`是该选举者的身份表示，通过`contenders()`接口可以获取到当前所有的群首竞争者。
+
+
+### 8. 参考
+
+1. [kazoo](http://kazoo.readthedocs.io/en/latest/index.html)
