@@ -439,6 +439,25 @@ typedef void
 
 `rc`为处理结果返回值，`value`为实际的path，`data`为`zoo_acreate`里传递的上下文对象，创建成功后该函数会被调用。
 
+其他几个异步结果处理函数有：
+
+```
+typedef void (*void_completion_t)(int rc, const void *data);
+typedef void (*stat_completion_t)(int rc, const struct Stat *stat,
+        const void *data);
+typedef void (*data_completion_t)(int rc, const char *value, int value_len,
+        const struct Stat *stat, const void *data);
+typedef void (*strings_completion_t)(int rc,
+        const struct String_vector *strings, const void *data);
+typedef void (*strings_stat_completion_t)(int rc,
+        const struct String_vector *strings, const struct Stat *stat,
+        const void *data);
+typedef void
+        (*string_completion_t)(int rc, const char *value, const void *data);
+typedef void (*acl_completion_t)(int rc, struct ACL_vector *acl,
+        struct Stat *stat, const void *data);
+```
+
 ### 7. 实战
 
 之前介绍过使用`zlcli`模拟一个[主-从实例](http://yingshin.github.io/c/cpp/2016/09/25/zkcli-example)，如果需要查看对应的master c代码，可以参考fpj大神的的[github](https://github.com/fpj/zookeeper-book-example)。
@@ -452,7 +471,7 @@ typedef void
 3. 监视点设置后无法手动移除。  
 4. `zookeeper_interest`接口用于单线程版本里，在多线程环境下不建议使用。  
 5. 单次触发会丢失事件，但是可以保证不丢任务。  
-6. java中提供了`multitop`的调用方式保证多个操作的原子性，但c++中没有。  
+6. java中提供了`multitop`的调用方式保证多个操作的原子性，c提供了`zoo_multi`。  
 
 ### 9. 参考资料
 

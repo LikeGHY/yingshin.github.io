@@ -1,4 +1,20 @@
 
+- name: GitHub入门与实践
+  cover: https://img3.doubanio.com/lpic/s28147406.jpg
+  start_date: 2016.10.19
+  finish_date:
+  douban_link: https://book.douban.com/subject/26462816/
+  download_link:
+  note:
+
+- name: 最后一个道士
+  cover: https://img1.doubanio.com/lpic/s23139097.jpg
+  start_date: 2016.10.7
+  finish_date:
+  douban_link: https://book.douban.com/subject/19987171/
+  download_link:
+  note:
+
 - name: ZooKeeper:分布式过程协同技术详解
   cover: https://img3.doubanio.com/lpic/s28606296.jpg
   start_date: 2016.9.10

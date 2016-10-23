@@ -118,8 +118,35 @@ Stopping zookeeper ... STOPPED
 
 启动时如果看到以上输出，则表示zookeeper服务已经正常启动，可以通过`netstat -anp | grep 2181`验证zookeeper是否已经监听配置端口。
 
+### 3. zk-smoketest
 
-### 3. 参考资料：
+[smoketest](https://github.com/phunt/zk-smoketest)项目用于检测服务集群的可用性、延迟等。
+
+```
+[zhangying21@cq01-rdqa-dev095 zk-smoketest]$ python zk-smoketest.py --servers "127.0.0.1:2181"
+Connecting to 127.0.0.1:2181
+Connected in 7 ms, handle is 0
+Connecting to 127.0.0.1:2181
+Connected in 7 ms, handle is 1
+Connecting to 127.0.0.1:2181
+Connected in 15 ms, handle is 0
+Smoke test successful
+[zhangying21@cq01-rdqa-dev095 zk-smoketest]$ python zk-latencies.py --servers "127.0.0.1:2181" --znode_count=100   
+Connecting to 127.0.0.1:2181
+Connected in 15 ms, handle is 0
+Testing latencies on server 127.0.0.1:2181 using asynchronous calls
+created     100 permanent znodes  in     16 ms (0.163441 ms/op 6118.426888/sec)
+set         100           znodes  in     17 ms (0.175538 ms/op 5696.770163/sec)
+get         100           znodes  in     18 ms (0.181930 ms/op 5496.617610/sec)
+deleted     100 permanent znodes  in     16 ms (0.160332 ms/op 6237.068760/sec)
+created     100 ephemeral znodes  in     19 ms (0.190301 ms/op 5254.834749/sec)
+watched     100           znodes  in     16 ms (0.160351 ms/op 6236.326870/sec)
+deleted     100 ephemeral znodes  in     21 ms (0.211921 ms/op 4718.745359/sec)
+notif       100           watches in      0 ms (included in prior)
+Latency test complete
+```
+
+### 4. 参考资料：
 
 1. [分布式服务框架 Zookeeper -- 管理分布式环境中的数据](http://www.ibm.com/developerworks/cn/opensource/os-cn-zookeeper/)
 
