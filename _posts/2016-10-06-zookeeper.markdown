@@ -9,6 +9,8 @@ tags: [zookeeper]
 
 接触zk想起来已经大概有两年多的时间，期间一直没有系统的总结过。最近接手了两个遗留模块，都将zk作为模块的强依赖，但是都存在一些使用上的问题，导致接手后梳理非常困难。因此抽空重新系统的了解了下zookeeper，也是这几篇指南的来历。
 
+<!--more-->
+
 zookeeper的基本功能是在分布式系统中协作多个任务，比如最常见的群首选举的需求，同时在分布式项目中负责配置管理，元数据存储等工作。
 
 具体的，zookeeper一些使用的实例：HBase中用于选举集群内的主节点，以便跟踪可用的服务器，并保存集群的元数据。Kafka中用于检测崩溃，实现topic的发现，并保持topic的生产和消费状态。
@@ -23,6 +25,8 @@ zookeeper实现了一组核心操作，通过这些可以实现很多常见分�
 4. [使用zkcli实现一个主-从模式的架构](http://yingshin.github.io/c/cpp/2016/09/25/zkcli-example)  
 5. [zookeeper C API介绍](http://yingshin.github.io/c/cpp/2016/10/02/zookeeper-c-api-introduction)  
 6. [zookeeper-kazoo介绍](http://yingshin.github.io/c/cpp/2016/10/05/zookeeper-python-kazoo-introduction)  
+7. [c客户端源码分析一：数据结构与线程](http://yingshin.github.io/c/cpp/2016/10/22/zookeeper-c-client-src-first)  
+8. [c客户端源码分析二：接口调用后发生了什么？](http://yingshin.github.io/c/cpp/2016/10/23/zookeeper-c-client-src-user-thread)  
+9. [c客户端源码分析三：两个线程](http://yingshin.github.io/c/cpp/2016/10/23/zookeeper-c-client-src-lib-thread)  
 
-<!--more-->
 
