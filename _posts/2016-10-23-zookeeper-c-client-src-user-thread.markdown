@@ -34,7 +34,7 @@ zhandle_t *zookeeper_init(const char *host, watcher_fn watcher,
     if (adaptor_init(zh) == -1) {
 ```
 
-`adaptor_init`开启两个线程分别用于socket的读写和结果的处理。
+继续看`adaptor_init`，设置`self_pipe`后调用`start_threads`
 
 ```
     struct adaptor_threads *adaptor_threads = calloc(1, sizeof(*adaptor_threads));
@@ -67,7 +67,7 @@ int wakeup_io_thread(zhandle_t *zh)
 }
 ```
 
-`start_threads`则启动了前面提到的两个线程：
+`start_threads`则启动了开启两个线程分别用于socket的读写和结果的处理。：
 
 ```
     rc=pthread_create(&adaptor->io, 0, do_io, zh);
