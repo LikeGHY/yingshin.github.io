@@ -25,7 +25,7 @@ zookeeper实现了一组核心操作，通过这些可以实现很多常见分�
 4. [使用zkcli实现一个主-从模式的架构](http://yingshin.github.io/c/cpp/2016/09/25/zkcli-example)  
 5. [zookeeper C API介绍](http://yingshin.github.io/c/cpp/2016/10/02/zookeeper-c-api-introduction)  
 6. [zookeeper-kazoo介绍](http://yingshin.github.io/c/cpp/2016/10/05/zookeeper-python-kazoo-introduction)  
-7. [c客户端源码分析一：数据结构与线程](http://yingshin.github.io/c/cpp/2016/10/22/zookeeper-c-client-src-first)  
+7. [c客户端源码分析一：数据结构与线程](http://yingshin.github.io/c/cpp/2016/10/22/zookeeper-c-client-src-structure-and-thread)  
 8. [c客户端源码分析二：接口调用后发生了什么？](http://yingshin.github.io/c/cpp/2016/10/23/zookeeper-c-client-src-user-thread)  
 9. [c客户端源码分析三：两个线程](http://yingshin.github.io/c/cpp/2016/10/23/zookeeper-c-client-src-lib-thread)  
 
