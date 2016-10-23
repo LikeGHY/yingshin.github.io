@@ -15,7 +15,7 @@ tags: [zookeeper]
 
 <!--more-->
 
-在接口设计上zookeeper非常灵活，例如查看znode是否存在，提供了3个接口`zoo_exists/zoo_wexists/zoo_aexists`，由应用方按照具体场景选择使用。
+在接口设计上zookeeper非常灵活，例如查看znode是否存在，提供了接口`zoo_exists/zoo_wexists/zoo_aexists/zoo_awexists`，由应用方按照具体场景选择使用。
 
 为了避免只是单纯的翻译介绍`zookeeper.h`，本文主要从整体上介绍这些接口的异同点，并提供了一些仅供学习环境的例子，以及总结的注意事项。zookeeper客户端代码遵守doxy规范，使用doxygen可以得到一份详细的接口文档，强烈建议读一遍文档。
 

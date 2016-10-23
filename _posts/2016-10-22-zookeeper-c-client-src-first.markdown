@@ -278,7 +278,62 @@ typedef struct _completion_list {
 } completion_list_t;
 ```
 
+#### 1.5 sync_completion
 
+同步接口调用时，`sync_completion`将异步接口使用`wait/signal`的方式起到同步的效果。
+
+```
+struct sync_completion {
+    int rc;
+    union {
+        struct {
+            char *str;
+            int str_len;
+        } str;
+        struct Stat stat;
+        struct {
+            char *buffer;
+            int buff_len;
+            struct Stat stat;
+        } data;
+        struct {
+            struct ACL_vector acl;
+            struct Stat stat;
+        } acl;
+        struct String_vector strs2;
+        struct {
+            struct String_vector strs2;
+            struct Stat stat2;
+        } strs_stat;
+    } u;
+    int complete;
+#ifdef THREADED
+    pthread_cond_t cond;
+    pthread_mutex_t lock;
+#endif
+};
+```
+
+`u`封装了数据本身，`wait/signal`实现方式如下：
+
+```
+int wait_sync_completion(struct sync_completion *sc)
+{
+    pthread_mutex_lock(&sc->lock);
+    while (!sc->complete) {
+        pthread_cond_wait(&sc->cond, &sc->lock);
+    }
+    pthread_mutex_unlock(&sc->lock);
+    return 0;
+}
+void notify_sync_completion(struct sync_completion *sc)
+{
+    pthread_mutex_lock(&sc->lock);
+    sc->complete = 1;
+    pthread_cond_broadcast(&sc->cond); 
+    pthread_mutex_unlock(&sc->lock);
+}
+```
 
 ### 2. 线程模型
 
@@ -480,4 +535,6 @@ struct ReplyHeader {
 
 序列化的相关接口都隐藏在`zookeeper.jute.h`。
 
-基本的数据结构、socket封装、序列化/反序列化先介绍这些，下篇文章开始，我们开始介绍流程的处理过程，了解了数据结构、接口的调用后，可能更容易理解本文以及作者对于数据结构的设计意图。
+基本的数据结构、socket封装、序列化/反序列化先介绍这些。
+
+下篇文章开始，我们开始介绍流程的处理过程，了解了数据结构、接口的调用后，可能更容易理解本文以及作者对于数据结构的设计意图。
