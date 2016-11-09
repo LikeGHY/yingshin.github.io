@@ -10,7 +10,7 @@ tags: [zookeeper]
 之前的几篇文章介绍了zookeeper的使用。周末稍微看了下zookeeper c客户端的代码，还是比较有意思的。虽然用纯C写成，实现复杂度会高一些，但是丝毫不影响可读性，代码量也不大。（我都不好意思说升级一个接手模块支持gcc4编译踩了无数个坑o(╯□╰)o）
 
 想了解下下zookeeper c客户端主要好奇这么几个问题：  
-1. zookeeper以回调的方式处理用户注册函数，那么是如何管理线程的？注册的回调函数、异步接口的返回数据回调是在同一个线程调用？应用方是否需要处理可能的通知乱序  
+1. zookeeper以回调的方式处理用户注册函数，那么是如何管理线程的？注册的回调函数、异步接口的返回数据回调是在同一个线程调用？应用方是否需要处理可能的通知乱序？  
 2. 单次通知的方式是如何实现的？  
 3. 注册znodeA的回调需要同步到服务端，在服务端返回确认注册回调前znodeA发生变化的话，该回调是否被调用？  
 4. 传入多个服务集群地址时是如何选择连接哪台机器？一个还是多个？  
@@ -87,7 +87,7 @@ struct _zhandle {
 
 `zk_hashtable`就是哈希表，发布在`src/hashtable`下。**可以单独拎出来编译使用**。
 
-注意zookeeper中使用的hash函数和比较函数分别为:
+注意`zk_hashtable`使用的hash函数和比较函数分别为:
 
 ```
 static unsigned int string_hash_djb2(void *str) 
@@ -107,8 +107,8 @@ static int string_equal(void *key1,void *key2)
 }
 ```
 
-`hashtable.h`中提供了hash表的常用接口：create/insert/search/remove/count/destroy  
-`hashtable_itr.h`则实现了hash表的迭代器：/advance/remove/search  
+hashtable.h中提供了hash表的常用接口：`create/insert/search/remove/count/destroy`  
+hashtable_itr.h则实现了hash表的迭代器：`/advance/remove/search`  
 
 例如单独使用hastable下的源码：  
 
@@ -133,7 +133,9 @@ static int string_equal(void *key1,void *key2)
     }
 ```
 
-zookeeper源码里hashtable为`zk_hashtable`，key为`const char*`，value为`watcher_object_t*`类型。
+zookeeper源码里hashtable为`zk_hashtable`，key为`const char*`，使用时就是上层需要监视的znode-path。
+
+value为`watcher_object_t*`类型。
 
 ```
 typedef struct _watcher_object {
@@ -147,7 +149,6 @@ struct watcher_object_list {
 };
 ```
 
-`key`就是监视的路径  
 `watcher_fn`在之前的介绍中已经很熟悉了，就是我们的监视点回调函数  
 `context`则为对应的上下文  
 `next`使得监视点以链表的形式存储下来  
