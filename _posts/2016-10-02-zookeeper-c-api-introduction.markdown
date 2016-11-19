@@ -11,7 +11,7 @@ tags: [zookeeper]
 
 1. 辅助接口：例如连接的初始化和销毁，状态的获取等  
 2. 同步接口：同步操作znode，zoo_xxx/zoo_wxxx的形式，例如创建(zoo_create），查看节点data(zoo_get/zoo_wget)等  
-3. 异步接口：异步操作znode，zoo_axxx的形式，例如创建(zoo_create/zoo_acreate)，查看节点data(zoo_get/zoo_aget)等  
+3. 异步接口：异步操作znode，zoo_axxx的形式，例如创建(zoo_acreate)，查看节点data(zoo_aget)等  
 
 <!--more-->
 
@@ -391,7 +391,6 @@ void close_zhandle(zhandle_t*&)
 ZOOAPI int zoo_create(zhandle_t *zh, const char *path, const char *value,
         int valuelen, const struct ACL_vector *acl, int flags,
         char *path_buffer, int path_buffer_len);
-
 ```
 
 ACL与权限管理有关，上个例子里不设置权限，因此取值为`ZOO_OPEN_ACL_UNSAFE`，ACL_vector初始化操作定义在zookeeper.jute.h。
