@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 追core笔记之pstack
+title: 追core笔记之一：pstack
 date: 2016-11-21 22:30:23
 excerpt: "saverng追core笔记之pstack"
 categories: [c/cpp]
