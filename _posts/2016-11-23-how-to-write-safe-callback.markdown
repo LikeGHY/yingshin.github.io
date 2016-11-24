@@ -9,6 +9,8 @@ tags: [core gdb]
 
 假设我们在模块里使用了sdk来读取远程存储，sdk提供异步读的接口来注册回调、上下文。回调在sdk的线程里调用。
 
+<!--more-->
+
 简化后的模型如下：
 
 ```
@@ -150,6 +152,8 @@ int main() {
 ### 2. weak_ptr
 
 修改后版本，我们相当于把`linkbase_reader`的生命周期交给了`RowReader`，如果回调由于某种神秘力量没有调用，那么`linkbase_reader`永远不会析构。或者在某些场景下，我们希望提前`delete linkbase_reader`，回调里做其他处理就好了，这时候需要第二个神器`weak_ptr`登场了。
+
+事实上最开始我觉得在sdk里应该提供这种方式，不过确实很少见sdk提供`shared_ptr`的返回值接口。
 
 ```
 class LinkbaseReader : public boost::enable_shared_from_this<LinkbaseReader> {
