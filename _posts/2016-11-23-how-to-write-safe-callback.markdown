@@ -145,7 +145,7 @@ int main() {
 }
 ```
 
-使用`enable_shared_from_this`后，对象必须由`shared_ptr`来管理，好在模块本身的`linkbase_reader`也是一直用智能指针来管理的，这点我觉得非常赞。在大型的项目里，使用raw指针是一件非常危险的事情。
+使用`enable_shared_from_this`后，对象必须由`shared_ptr`来管理，好在模块本身的`linkbase_reader`也是一直用智能指针来管理的，这点我觉得非常赞。在大型的项目里，使用raw指针是一件非常危险的事情。不过不要试图用`use_count`来替换掉计数器（如果你的确需要计数器的话），因为`use_count`不提供高效率的操作。
 
 这个版本我们似乎已经解决了问题，但是仔细想下，我们真的需要所有回调返回时才删除`linkbase_reader`回收内存么？
 
