@@ -36,9 +36,9 @@ int main() {
 }
 ```
 
-例子里`boost::shared_ptr<Derived> pDerived(pBase);`编译错误，因为基类指针无法强转为子类指针。
+`boost::shared_ptr<Derived> pDerived(pBase);`编译错误，因为基类指针无法强转为子类指针。
 
-摘抄了构造函数相关的代码
+摘抄了构造函数相关的源码
 
 ```
 template<class T> class shared_ptr
@@ -103,7 +103,7 @@ $1 = {
 `element_type * px`保留了传入的原始指针  
 `boost::detail::shared_count pn`包装了`sp_counted_base * pi_`，指向同一块内存的所有`shared_ptr`共同维护`pi_`指向的内存，也就是负责记录`use_count weak_count`的部分，并在引用计数降到0时析构原始指针。
 
-例如`shared_count`重载`operator =`的部分代码可以对应出上面的设计：
+例如`shared_count`重载`operator =`的源码可以对应出上面的设计：
 
 ```
     shared_count & operator= (shared_count const & r) // nothrow
@@ -133,14 +133,14 @@ $1 = {
     }
 ```
 
-`del`在构造函数里传入，`sp_counted_impl_pd`是`sp_counted_base`的子类
+`del`在构造函数里传入
 
 ```
     sp_counted_impl_pd( P p, D & d ): ptr( p ), del( d )    {    }
     sp_counted_impl_pd( P p ): ptr( p ), del()    {    }
 ```
 
-在`shared_counter`构造，再上层则是在`shared_ptr`的构造函数
+`sp_counted_impl_pd`是`sp_counted_base`的子类，在`shared_counter`构造，再上层则是`shared_ptr`的构造函数
 
 ```
     template<class Y, class D> shared_ptr( Y * p, D d ): px( p ), pn( p, d )
@@ -205,7 +205,7 @@ template<class T> inline void checked_delete(T * x)
 
 ### 8. unique
 
-有时候你需要确认下是否只有自己持有了原始指针的内存管理权，可以使用`unique`接口
+有时候你需要确认下当前是否只有自己持有了原始指针的内存管理权，可以使用`unique`接口
 
 ```
 //shared_ptr
@@ -266,7 +266,11 @@ public:
 
 ### 10. 其他
 
-`boost::shared_ptr`还提供了其他一系列方便的接口，例如比较运算，测试两个`shared_ptr`是否相等。同时提供`operator<`，因此可以用于标准关联容器，以及`operator<<`用于输出内部的指针值`owner_before`等接口。
+`boost::shared_ptr`还提供了其他一系列方便的接口。
 
-另外还有别名构造函数，`owner_less`等，包括各种类型转换的接口，例如`dynamic_pointer_cast/static_pointer_cast`等。这些我用的不多，不过毫无疑问的是基于这些接口，`shared_ptr`提供了强大的资源管理的功能。
+比较运算，测试两个`shared_ptr`是否相等。同时提供`operator<`，因此可以用于标准关联容器。
+
+以及`operator<<`用于输出内部的指针值，`owner_before`等接口。
+
+另外还有别名构造函数，`owner_less`等，包括各种类型转换的接口，例如`dynamic_pointer_cast/static_pointer_cast`。这些我用的不多，在此只是记录一下。
 
