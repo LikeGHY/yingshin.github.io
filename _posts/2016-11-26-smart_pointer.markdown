@@ -272,5 +272,7 @@ public:
 
 以及`operator<<`用于输出内部的指针值，`owner_before`等接口。
 
-另外还有别名构造函数，`owner_less`等，包括各种类型转换的接口，例如`dynamic_pointer_cast/static_pointer_cast`。这些我用的不多，在此只是记录一下。
+另外还有别名构造函数，`owner_less`等，包括各种类型转换的接口，例如`dynamic_pointer_cast/static_pointer_cast`。
+
+这些我用的不多，在此只是记录一下。
 
