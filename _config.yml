@@ -17,7 +17,6 @@ kramdown:
     css_class: 'highlight'
     line_numbers: true
     start_line: 1
-    wrap: true
 title: Ying's World 
 
 author :
