@@ -13,10 +13,7 @@ kramdown:
     - smart
   syntax_highlighter: rouge 
   syntax_highlighter_opts:
-    default_lang: c
-    css_class: 'highlight'
-    line_numbers: true
-    start_line: 1
+    default_lang: cpp
 title: Ying's World 
 
 author :
