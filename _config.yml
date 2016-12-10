@@ -3,6 +3,7 @@
 permalink: /:categories/:year/:month/:day/:title 
 
 name: Ying's Blog 
+#highlighter: rouge
 markdown: kramdown
 kramdown:
   input: GFM
@@ -10,11 +11,14 @@ kramdown:
     - autolink
     - footnotes
     - smart
-  enable_coderay: true
-  syntax_highlighter: rouge
-  coderay:
-    coderay_line_numbers:  nil
-highlighter: rouge
+  syntax_highlighter: rouge 
+  syntax_highlighter_opts:
+    default_lang: c
+    css_class: 'highlight'
+    line_numbers: true
+    start_line: 1
+    inline_theme: colorful
+    wrap: true
 title: Ying's World 
 
 author :
