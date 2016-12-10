@@ -289,4 +289,4 @@ Base::bar() in section .text of /home/users/zhangying21/Training/test/test_vptr
 
 我想，到这里已经说明白了：由于虚函数通过vtable的偏移量来寻址，因此当升级动态库的时候如果修改了之前的虚函数声明的顺序，或者新增了虚函数（vtable按照基类声明的顺序排列），都可能导致查找到的函数入口地址错误。同样不要试图在末尾添加新的接口的方式，因为你发布的类可能已经被继承。
 
-关于如何设计动态库的接口，陈硕的博客做了详细的介绍。本文避免拾人牙慧不再赘述。`pimpl`的确一个非常合理，可以参考[Qt](https://github.com/qt)在接口类里大量使用了这种方式，比如[QWidget](https://github.com/qt/qtbase/blob/dev/src/widgets/kernel/qwidget.h)的接口调用最后都会由`QWidgetData *data;`来实现。
+关于如何设计动态库的接口，陈硕的博客做了详细的介绍。本文避免拾人牙慧不再赘述。`pimpl`的建议非常通用，可以参考[Qt](https://github.com/qt)在接口类里大量使用了这种方式，比如[QWidget](https://github.com/qt/qtbase/blob/dev/src/widgets/kernel/qwidget.h)的接口调用最后都会由`QWidgetData *data;`来实现。
