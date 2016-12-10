@@ -10,7 +10,10 @@ kramdown:
     - autolink
     - footnotes
     - smart
+  enable_coderay: true
   syntax_highlighter: rouge
+  coderay:
+    coderay_line_numbers:  nil
 highlighter: rouge
 title: Ying's World 
 
