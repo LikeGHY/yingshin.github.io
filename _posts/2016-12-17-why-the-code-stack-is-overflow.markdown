@@ -1,9 +1,9 @@
 ---
 layout: post
-title: 
+title: 追core笔记之五：如何查看一个corrupt stack的core
 date: 2016-12-17 16:13:46
-excerpt: "好的程序员与好的代码"
-categories: [c/cpp]
+excerpt: "如果查看一个"
+categories: [追core笔记之五：如何查看一个corrupt stack的core]
 tags: [core global]
 ---
 
