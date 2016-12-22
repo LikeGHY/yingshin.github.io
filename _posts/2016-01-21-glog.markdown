@@ -16,12 +16,13 @@ glog是google的的一个C++轻量日志库，支持常用的日志功能：例�
 日志默认打印到屏幕，同时有一句提示  
 "WARNING: Logging before InitGoogleLogging() is written to STDERR"  
 加了这一句后`google::InitGoogleLogging(argv[0])`，日志输出到文件。  
-默认的输出位置在tmp下，具体为：  
+默认的输出位置在tmp下，文件名格式为：  
 `/tmp/<program name>.<hostname>.<username>.log.<severity level>.<data>.<time>.<pid>`  
 比如:introduction.ymac.yingshin.log.ERROR.20160102-231949.11182
 
 ### 2. 日志级别
-日志级别有4种，INFO WARNING ERROR FATAL，在`glog/log_severity.h`中定义
+
+日志级别有4种，INFO WARNING ERROR FATAL，在`glog/log_severity.h`中定义，数值越大级别越高(severity)。
 
 ```
 const int GLOG_INFO = 0, GLOG_WARNING = 1, GLOG_ERROR = 2, GLOG_FATAL = 3, NUM_SEVERITIES = 4;
@@ -46,7 +47,17 @@ Aborted (core dumped)
 不同的日志级别会输出到不同的文件，与日志级别一样，文件名后缀共有4个，分别是.INFO .WARNING .ERROR .FATAL。  
 X级别的日志会输出到所有<=X的日志文件里，例如error日志在.INFO .WARNING .ERROR日志里都会输出。  
 
-注意还有一种日志级别是DFATAL，这种级别在debug模式下为ERROR，当定义NDEBUG时则是FATAL，主要通过在NDEBUG下定义为ERROR，否则为FATAL来实现。  
+注意还有一种日志级别是DFATAL，当定义NDEBUG宏时是ERROR，否则是FATAL。主要通过在NDEBUG下定义为ERROR，否则为FATAL来实现。  
+
+```
+// glog/log_severity.h
+// DFATAL is FATAL in debug mode, ERROR in normal mode
+#ifdef NDEBUG
+#define DFATAL_LEVEL ERROR
+#else
+#define DFATAL_LEVEL FATAL
+#endif
+```
 
 例如：
 
@@ -54,22 +65,25 @@ X级别的日志会输出到所有<=X的日志文件里，例如error日志在.I
 LOG(DFATAL) << "Hello, glog fatal.";
 ```
 
-
-```
-// glog/log_severity.h里的定义
-// DFATAL is FATAL in debug mode, ERROR in normal mode
-// #ifdef NDEBUG
-// #define DFATAL_LEVEL ERROR
-// #else
-// #define DFATAL_LEVEL FATAL
-// #endif
-```
-
 两种情况下的输出分别为：
 
 ```
+//MACRO NDEBUG is defined.
 E0113 20:32:17.928611 23650 demo.cpp:27] Hello, glog fatal.
+```
+
+```
+//MACRO NDEBUG is not defined.
 F0113 20:36:49.486486 32554 demo.cpp:27] Hello, glog fatal.
+*** Check failure stack trace: ***
+    @           0x408b90  google::LogMessage::Fail()
+    @           0x408ae8  google::LogMessage::SendToLog()
+    @           0x40857d  google::LogMessage::Flush()
+    @           0x4083b1  google::LogMessage::~LogMessage()
+    @           0x4053c0  main
+    @     0x7fbdd9722bd5  __libc_start_main
+    @           0x4050f9  (unknown)
+Aborted (core dumped)
 ```
 
 
@@ -82,19 +96,27 @@ glog有很多配置项，这些配置项都是通过gflags设置的，关于gfla
    注意`FLAGS_log_dir`比较特殊，如果想要生效，需要再调用`google::InitGoogleLogging`之前。  
 3. 程序启动时在命令行配置gflags：`./your_application --logtostderr=1`  
 
-注意第三种方法需要安装了gflags库，我在编译安装glog时手动指定了gflags的位置：`--with-gflags=gflags安装路径`。  
-使用时推荐使用这种方法。  
+注意第三种方法需要安装了gflags库，我在编译安装glog时手动指定了gflags的位置：`--with-gflags=gflags安装路径`。编译的glog库是否支持gflags可以参考下logging.h这一行
+
+```
+#if 0
+#include <gflags/gflags.h>
+#endif
+```
+
+推荐使用第三种方法。  
 
 介绍下最常用的几个flag：  
-1. logtostderr: bool型，设置为true后日志不输出到文件，在屏幕打印，默认值为false。  
-2. stderrthreshold： int型，>=该值的日志级别除了输出到文件，同时在屏幕打印，默认值为2，即屏幕和日志同时输出ERROR FATAL错误。  
-3. minloglevel: int型，>=该值的日志级别才会输出到文件，默认值为0，即大于等于INFO的日志会输出的文件，也就是全部输出。  
-4. log_dir: string型，日志输出位置，默认为""。  
-5. v:自定义日志级别  
-6. vmodele:自定义文件日志级别  
+1. *logtostderr*: bool型，设置为true后日志不输出到文件，在屏幕打印，默认值为false。  
+2. stderrthreshold*： int型，>=该值的日志级别除了输出到文件，同时在屏幕打印，默认值为2，即屏幕和日志同时输出ERROR FATAL错误。  
+3. *minloglevel*: int型，>=该值的日志级别才会输出到文件，默认值为0，即大于等于INFO的日志会输出的文件，也就是全部输出。  
+4. *log_dir*: string型，日志输出位置，默认为""。  
+5. *v*:自定义日志级别  
+6. *vmodele*:自定义文件日志级别  
 
 ### 4. 条件输出
-条件输出是指，当某些变量满足某些条件时才输出日志。  
+
+条件输出是指，当某些变量满足某些条件时才输出日志。我在实际使用时也经常有这种需求，有的请求失败希望能够输出，但是全部输出磁盘IO可能又有问题，使用条件输出可以起到一个抽样的作用。  
 1. LOG\_IF(INFO, i > 5)，当条件(i > 5)满足时输出日志。  
 2. LOG\_EVERY\_N(INFO, 3)，当运行该语句时，第1,3+1,6+1,...时输出日志，google::COUNTER记录语句的执行次数。  
 3. LOG\_IF\_EVERY\_N(INFO, (i > 5), 2)，1 2的结合，当满足某些条件时，每N次输出日志。  
@@ -136,6 +158,19 @@ I0110 23:19:16.891397 17039 demo1.cpp:24] LOG_IF i > 5 i:8
 I0110 23:19:16.891402 17039 demo1.cpp:26] LOG_IF_EVERY_N i > 5 2 i:8
 I0110 23:19:16.891405 17039 demo1.cpp:24] LOG_IF i > 5 i:9
 I0110 23:19:16.891409 17039 demo1.cpp:25] LOG_EVERY_N 3 i:9 google::COUNTER:10
+```
+
+注意`google::COUNTER`并不总是生效的，例如这样输出google::COUNTER没有意义，数据全为0，使用时需要确认下。
+
+```
+        if (tera::ErrorCode::kOK != code) {
+            if (tera::ErrorCode::kNotFound != code) {
+                tera_failed = true;
+                time_t t = time(NULL);
+                LOG(WARNING) <<  
+                    "printall read failed but ret code is not kNotFound count:" << google::COUNTER;
+            }   
+        }  
 ```
 
 ### 5. DEBUG日志
@@ -228,4 +263,4 @@ CHECK系列的宏跟assert很像，都是检测某个表达式是否为真，不
 字符串的比较需要使用 CHECK\_STREQ,CHECK\_STRNE,CHECK\_STRCASEEQ,CHECK\_STRCASENE，注意这种情况下可以传入NULL，例如CHECK\_STREQ(NULL, NULL)可以正常运行。  
 
 ### 参考文档：  
-1. [glog官方文档](http://google-glog.googlecode.com/svn/trunk/doc/glog.html)  
+1. [glog官方文档](https://github.com/google/glog/blob/master/doc/glog.html)  
