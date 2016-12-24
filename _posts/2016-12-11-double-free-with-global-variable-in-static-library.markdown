@@ -4,7 +4,7 @@ title: 追core笔记之四：由FileDescriptorTables::~FileDescriptorTables看�
 date: 2016-12-11 11:21:09
 excerpt: "由FileDescriptorTables::~FileDescriptorTables看静态库共享库的全局变量double-free的问题"
 categories: [c/cpp]
-tags: [core global]
+tags: [core, global]
 ---
 
 最近把负责模块依赖的protobuf版本从2.4升级到了2.6，程序运行时正常，但是退出的时候，一个诡异的core出现了，部分core栈如下：

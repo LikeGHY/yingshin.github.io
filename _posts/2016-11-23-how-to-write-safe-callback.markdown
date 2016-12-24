@@ -4,7 +4,7 @@ title: 追core笔记之二：如何写出安全的回调
 date: 2016-11-23 23:39:16
 excerpt: "追core笔记之二：如何写出安全的回调"
 categories: [c/cpp]
-tags: [core smartptr]
+tags: [core, smartptr]
 ---
 
 假设我们在模块里使用了sdk来读取远程存储，sdk提供异步读的接口来注册回调、上下文。回调在sdk的线程里调用。
