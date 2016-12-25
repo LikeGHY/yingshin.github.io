@@ -59,6 +59,7 @@ engine = create_engine(connect_string, echo=True)
 注意格式里`ip`以及其他字段替换成你的mysql端口，`echo=True`表示回显，设置后sqlalchemy发起的数据库请求都会打印到屏幕上。
 
 这里sqlalchemy使用了`Lazy Connecting`的策略：
+
 > The Engine,when first returned by create_engine(), has not actually tried to connect to the database yet;that happends only the first time it is asked to perform a task against the database.
 
 
@@ -87,7 +88,7 @@ class User(Base):
 
 可以看到我们建立了表`users`，使用InnoDB作为存储引擎，共有4列，执行下一句可以在后端建立对应的table
 
-```
+```python
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -114,9 +115,9 @@ CREATE TABLE `users` (
 
 我们看下如何插入新的一行。
 
-在ORM里，数据库插入新的一行，相当于构造一个新的对象传递给package。在这之前，我们需要基于`engine`发起一次会话。
+在ORM里，数据库插入新的一行，相当于构造一个新的对象传递给package。在这之前，我们需要基于`engine`发起一次transcation。
 
-```
+```python
 from sqlalchemy.orm import sessionmaker
 
 SuperSession = sessionmaker(bind=engine)
@@ -127,7 +128,7 @@ session = SuperSession()
 
 例如添加新的一行
 
-```
+```python
 session = SuperSession()
 ed_user = User(name='ed', fullname='Ed Jones', password='edspassword')
 session.add(ed_user)
@@ -147,7 +148,7 @@ session.commit()提交了本次`transcation`，打开`echo=True`开关后，我�
 
 接着使用`query`查询下修改是否生效
 
-```
+```python
 print session.query(User).filter(User.name == 'ed').first()
 ```
 
@@ -159,9 +160,9 @@ print session.query(User).filter(User.name == 'ed').first()
 
 关于`query`的更多细节，可以参考*2.1.9 Querying*
 
-接着我们看下删除的用法
+看下删除的用法
 
-```
+```python
 local_jack = User(name='jack', fullname='Jack Sparrow', password='black perl')
 session.add(local_jack)
 session.commit()
@@ -179,9 +180,10 @@ print session.query(User).filter_by(name='jack').count()
 
 首先我们建立一个与`User`有约束的表
 
-```
+```python
 class Address(Base):
     __tablename__ = 'address'
+    
     id = Column(Integer, primary_key=True)
     email_address = Column(String(32), nullable=False)
     user_id = Column(Integer, ForeignKey('users.id'))
