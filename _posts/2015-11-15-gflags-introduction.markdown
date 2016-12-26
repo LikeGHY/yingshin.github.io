@@ -43,11 +43,11 @@ int main(int argc, char* argv[])
 english,french,german
 ```
 
-### 首先看下如何定义
+### 1. 如何定义
 
 flag的定义方法如下：  
 
-```
+```cpp
    #include <gflags/gflags.h>
 
    DEFINE_bool(big_menu, true, "Include 'advanced' options in the menu listing");
@@ -57,7 +57,7 @@ flag的定义方法如下：
 
 定义flag一共6个宏：  
 
-```
+```cpp
 DEFINE_bool: boolean
 DEFINE_int32: 32-bit integer
 DEFINE_int64: 64-bit integer
@@ -68,10 +68,11 @@ DEFINE_string: C++string
 
 注意DEFINE_xxx函数的3个参数都是必须的。
 
-### 如何查看程序支持了哪些flags
+### 2. 查看程序支持了哪些flags
+
 例如对上述flags的定义，-help输出如下：  
 
-```
+```cpp
   Flags from flags_help.cpp:
     -big_menu (Include 'advanced' options in the menu listing) type: bool
       default: true
@@ -79,7 +80,8 @@ DEFINE_string: C++string
       type: string default: "english,french,german"
 ```
 
-### 如何使用
+### 3. 如何使用
+
 在命令行里指定，例如`./flags_sample -big_menu=0 -languages="english"`  
 使用时，对应的变量名为`FLAGS_xxx`。  
 如果不想在命令行里指定，也可以使用-flagfile=文件名的形式。  
@@ -91,7 +93,8 @@ DEFINE_string: C++string
    DECLARE_bool(big_menu);
 ```
 
-### 如何解析
+### 4. 如何解析
+
 `gflags::ParseCommandLineFlags(&argc, &argv, remove_flags)`可以帮助解析出相应的flags  
 __argc argv__: main中的对应参数  
 注意这里的参数为[in | out]  
@@ -102,10 +105,13 @@ __remove\_flags__: 若设置为true，表示解析后将flag以及flag对应的�
 
 我觉得是返回处理后的argv第一个非flag值的下标  
 
-如果从文件中解析flags可以使用`ReadFromFlagsFile`接口。  
+注意如果使用`flagfile`传入flags配置是自动生效的。
 
-### 检查有效性
-gflags还提供了一个检查传入flag值是否有效的功能，只要定义检测函数，并且注册就可以了。  
+如果想要自己手动文件中解析flags可以使用`ReadFromFlagsFile`接口，不过该接口已经标明`DEPRECATED`，不建议使用。  
+
+### 5. 检查有效性
+
+gflags提供了一个检查传入flag值是否有效的功能，只要定义检测函数，并且注册就可以了。  
 检测函数以及注册方式的例子：  
 
 ```
@@ -120,12 +126,13 @@ static const bool port_dummy = RegisterFlagValidator(&FLAGS_port, &ValidatePort)
 ```
 
 如果注册成功，regist函数返回值为ture。否则返回false，注册失败一般是一下两种原因：  
-1. 第一个不是flag  
+1. 第一个参数不是flag  
 2. 该flag已经注册过  
 
 写了一个完整的[例子](https://gist.github.com/yingshin/35a17cc4a6631002d3e0)  
 
-### 判断一个FLAG是否被设置
+### 6. 判断一个FLAG是否被设置
+
 使用`GetCommandLineFlagInfo`即可  
 例如判断`portno`是否设置：  
 
@@ -138,8 +145,11 @@ static const bool port_dummy = RegisterFlagValidator(&FLAGS_port, &ValidatePort)
     }
 ```
 
-### 在程序里设置FLAG
-可以通过手动修改的方式： `FLAGS_protno = 9999`。  
+注意这里并不是简单比较flag值是否与默认值相同，如果设置了flag=默认值，也会输出"port is set"。
+
+### 7. 在程序里设置FLAG
+
+实际使用了我们使用flag替代了传统conf配置的形式，其中有一个需求是配置可以动态reload的。简单点通过手动修改的方式： `FLAGS_protno = 9999`。  
 比较合理的是使用`SetCommandLineOption`，函数原型为  
 
 ```
@@ -160,14 +170,15 @@ extern bool GetCommandLineOption(const char* name, std::string* OUTPUT)
 
 读写其实都可以使用`if (FLAGS_foo) FLAGS_Foo = bar`的形式，但是如果需要线程安全的调用，使用`Get/Set`接口。
 
-### version与help
+### 8. version与help
+
 一般我们的程序都需要-version提供版本信息，-help提供Usage。  
 可以使用`SetVersionString` 和 SetUsageMessage() 来实现。  
 
-### 遍历所有的flags
+### 9. 遍历所有的flags
 使用`extern void GetAllFlags(std::vector<CommandLineFlagInfo>* OUTPUT)`接口。  
 
 更多的使用接口，可以直接查看gflags/gflags.h。
 
-### 参考资料：   
+### 10. 参考资料：   
 [https://gflags.github.io/gflags/](https://gflags.github.io/gflags/)
