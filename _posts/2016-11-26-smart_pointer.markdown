@@ -1,8 +1,8 @@
 ---
 layout: post
-title: 追core笔记之三：再扯扯智能指针
+title: 追core笔记之三：扯扯智能指针
 date: 2016-11-26 23:30:39
-excerpt: "追core笔记之三：再扯扯智能指针"
+excerpt: "追core笔记之三：扯扯智能指针"
 categories: [c/cpp]
 tags: [core, smartptr]
 ---

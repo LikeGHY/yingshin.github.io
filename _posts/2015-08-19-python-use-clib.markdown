@@ -7,7 +7,7 @@ categories: [python]
 tags: [clib]
 ---
 
-这篇文章介绍在python中调用clib定义的函数，分别是__ctypes/Python API__的形式。
+这篇文章介绍在python中调用clib定义的函数，分别是**ctypes/Python API**的形式。
 
 <!--more-->
 
@@ -17,7 +17,7 @@ tags: [clib]
 
 首先准备hello.c文件：
 
-```
+```c
 #include <stdio.h>
 
 void hello()
@@ -28,7 +28,7 @@ void hello()
 
 其次准备makefile:  
 
-```
+```makefile
 ALL:
         gcc -c -fPIC -o hello.o hello.c
         gcc -shared -o libhello.so hello.o
@@ -37,7 +37,7 @@ ALL:
 执行`make`生成动态库  
 再编写hello.py:
 
-```
+```python
 #!/usr/bin/env python
 # -*- coding=utf-8 -*-
 
@@ -57,10 +57,12 @@ hellolibc.hello()
 #### 1.2 注意事项
 
 ctypes在使用上有很多需要注意的地方，这里介绍下一些常见的问题。  
-__传入可变字符串__   
+
+##### 1.2.1 传入可变字符串
+
 更新我们的hello.c文件:
 
-```
+```c
 void hello()
 {
     printf("Hello, World!\n");
@@ -78,7 +80,7 @@ void modify(char* str)
 更新hello.py文件调用该方法：  
 
 
-```
+```python
 #!/usr/bin/env python
 # -*- coding=utf-8 -*-
 
@@ -112,12 +114,13 @@ print p.value  # helloC
 AttributeError: ./libhello.so: undefined symbol: helloC
 ```
 
-可以看到我们调用的是`hello`，程序实际找的却是`helloC`这个函数名，具体原因因为还没有看过python源码没法定位，只能猜测是函数名的记录被误改写了，有谁理解具体原因欢迎留言。  
+可以看到我们调用的是`hello`，程序实际找的却是`helloC`这个函数名，具体原因因为还没有看过python源码没法定位，只能猜测是函数名的记录被误改写了。  
 
-__修改返回值__   
+##### 1.2.2. 修改返回值
+
 更新hello.c文件：  
 
-```
+```c
 unsigned long long add(unsigned long long a1, unsigned long long a2)
 {
     return a1 + a2;
@@ -127,7 +130,7 @@ unsigned long long add(unsigned long long a1, unsigned long long a2)
 
 看下在hello.py的调用部分:  
 
-```
+```python
 cadd = hellolibc.add
 print cadd(1, 2)
 print cadd(c_int(1), c_int(2))
@@ -138,12 +141,12 @@ print cadd(2147483648, 1)  # 2147483649
 
 其中第一次调用`cadd(2147483648, 1)`这句时返回了负数，是因为函数默认返回值是c_int，而这个返回值超过了int的最大值，解决办法就是重新定义`restype`这个属性。  
  
-__调用cpp文件编写的动态库__   
+##### 1.2.3 调用cpp文件编写的动态库
 
 我们知道c和cpp编译出来的函数名是不同的，对于cpp文件编译出来的动态库，上述方法是否适用？  
 编写测试用的hello.cpp文件：  
 
-```
+```c
 #include <iostream>
 
 void hello()
@@ -154,7 +157,7 @@ void hello()
 
 编写makefile:  
 
-```
+```makefile
 ALL:
         g++ -c -fPIC -o hello.o hello.cpp
         g++ -shared -o libhelloplus.so hello.o
@@ -164,7 +167,7 @@ ALL:
 
 更新hello.py中的调用部分：  
 
-```
+```python
 ellolibcpp = CDLL('./libhelloplus.so')
 hellolibcpp.hello()
 ```
@@ -177,7 +180,7 @@ AttributeError: ./libhelloplus.so: undefined symbol: hello
 
 可以看到在python中导入一个动态库时，是按照c的方式查找符号名字的。因此需要修改我们的hello.cpp:  
 
-```
+```cpp
 #include <iostream>
 
 extern "C" {
@@ -198,7 +201,7 @@ extern "C" {
 这个例子是PythonDoc里自带的    
 先看下use\_spammodule.py文件  
 
-```
+```python
 #!/usr/bin/env python
 # -*- coding=utf-8 -*-
 
@@ -207,19 +210,19 @@ import spammodule
 spammodule.system("ls -l")
 ```
 
-程序很简单，导入_spammodule_模块，然后执行模块下的方法system，这个方法会执行传入的字符串，与c使用的system非常相似。  
+程序很简单，导入*spammodule*模块，然后执行模块下的方法system，这个方法会执行传入的字符串，与c使用的system非常相似。  
 
-导入的模块_spammodule_其实是个动态库，生成该动态库的makefile如下：  
+导入的模块*spammodule*其实是个动态库，生成该动态库的makefile如下：  
 
-```
+```makefile
 PYINC = $(这里填你系统的python路径)include/python2.7
 all:
         gcc -fPIC -shared -o spammodule.so spammodule.c -I$(PYINC)
 ```
 
-可以看到是由_spammodule.c_编译出的动态库，继续看下_spammodule.c_的内容：  
+可以看到是由*spammodule.c*编译出的动态库，继续看下*spammodule.c*的内容：  
 
-```
+```c
 #include <Python.h>
 
 static PyObject *spam_system(PyObject *self, PyObject *args)
@@ -248,14 +251,14 @@ PyMODINIT_FUNC initspammodule(void)
 
 #### 2.2. Python.h
 
-Python API定义了一系列的函数、宏以及变量，所有这些都被包裹进了__Python.h__这个文件，因此只要在你的c文件最开始include这个文件就可以了。因为__Python.h__含有一些预处理定义，因此最好在所有非标准头文件导入之前导入。  
+Python API定义了一系列的函数、宏以及变量，所有这些都被包裹进了**Python.h**这个文件，因此只要在你的c文件最开始include这个文件就可以了。因为**Python.h**含有一些预处理定义，因此最好在所有非标准头文件导入之前导入。  
 
 #### 2.3. 导出函数
 
 要在Python中使用C的某个函数，首先需要为其编写对应的导出函数。上述例子中的`spam_system`就是对应的导出函数。  
 所有的导出函数形式为下面3种：  
 
-```
+```c
 # 普通参数
 static PyObject *MyFunction( PyObject *self, PyObject *args );
 # 关键字参数
