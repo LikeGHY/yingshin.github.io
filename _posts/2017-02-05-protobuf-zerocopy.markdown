@@ -33,6 +33,8 @@ message序列化和反序列化时，我们常用的有以下几种接口
   bool SerializeToZeroCopyStream(io::ZeroCopyOutputStream* output) const;
 ```
 
+<!--more-->
+
 ### 1. ZeroCopyStream的设计
 
 ZeroCopyStream在接口设计上目标是最小化数据buffer的拷贝次数，省略掉stream内部数据memcpy到用户buffer的过程。因此，ZeroCopyStream在设计上，buffer内存的管理权被stream本身接管，而不是传统上我们熟悉的调用者申请buffer内存，交给stream填充的方式。
