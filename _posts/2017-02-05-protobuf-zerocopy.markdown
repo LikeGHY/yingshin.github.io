@@ -185,14 +185,14 @@ bool Message::SerializeToFileDescriptor(int file_descriptor) const {
 }
 ```
 
-在rpc的实现里，如果消息格式使用protobuf，也会从ZeroCopyStream继承各自的输入/输出流。
-例如[sofa-pbrpc](https://github.com/baidu/sofa-pbrpc/blob/master/src/sofa/pbrpc/buffer.h)里实现了`ReadBuffer/WriteBuffer`，此外还有`GzipOutputStream/SnappyOutputStream`等。
-
-在阅读[muduo](https://github.com/chenshuo/muduo/blob/master/muduo/net/protobuf/BufferStream.h)代码时发现也有定义`BufferOutputStream`。我厂非常优秀的baidu-rpc也定义了`IOBufAsZeroCopyOutputStream`，只可惜尚未开源。
+在众多rpc的实现里，如果消息格式使用protobuf，基本都会从ZeroCopyStream继承各自的输入/输出流。
+例如[sofa-pbrpc](https://github.com/baidu/sofa-pbrpc/blob/master/src/sofa/pbrpc/buffer.h)里实现了`ReadBuffer/WriteBuffer`，此外还有`GzipOutputStream/SnappyOutputStream`等。在阅读[muduo](https://github.com/chenshuo/muduo/blob/master/muduo/net/protobuf/BufferStream.h)代码时发现也有定义`BufferOutputStream`。我厂非常优秀的baidu-rpc也定义了`IOBufAsZeroCopyOutputStream`，只可惜尚未开源。
 
 ### 4. CodedOutputStream/CodedInputStream
 
 前面提到的`SerializeToFileDescriptor`的序列化接口用到了`SerializeToZeroCopyStream`，对应的实现里则是用到了`CodedOutputStream`。
+
+在protobuf的代码里，应用层可能会更多的使用这个类。
 
 ```
 bool MessageLite::SerializeToZeroCopyStream(
@@ -202,4 +202,4 @@ bool MessageLite::SerializeToZeroCopyStream(
 }
 ```
 
-`CodedOutputStream`的构造函数接受一个`ZeroCopyOutputStream*`作为参数，并通过该参数输出到真实的数据流。对外则封装了`WriteLittleEndian32/WriteVarint32`接口，关于varint编码的更多信息可以参考[这篇笔记](http://yingshin.github.io/c/cpp/2016/08/17/protobuf-encode-varint-and-zigzag)。
+`CodedOutputStream`的构造函数接受一个`ZeroCopyOutputStream*`作为参数，并通过该参数完成真正的数据流的写入。对外则封装了`WriteLittleEndian32/WriteVarint32`接口，关于varint编码的更多信息可以参考[这篇笔记](http://yingshin.github.io/c/cpp/2016/08/17/protobuf-encode-varint-and-zigzag)。
