@@ -1,3 +1,11 @@
+- name: 恶意
+  cover: https://img3.doubanio.com/lpic/s29069735.jpg
+  start_date: 2017.2.6
+  finish_date:
+  douban_link: https://book.douban.com/subject/26877752/
+  download_link:
+  note:
+  
 - name: 三十六大
   cover: https://img1.doubanio.com/lpic/s24430317.jpg
   start_date: 2016.12.3
