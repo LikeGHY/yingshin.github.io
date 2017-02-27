@@ -11,7 +11,7 @@ tags: [Printer]
 
 作为C++的程序员，接触python后表示非常羡慕这样的字符串格式化：
 
-```
+```python
 person = {'name': 'bob', 'job': 'programer'}
 print "My name is %(name)s, I am a %(job)s" % person
 ```
@@ -36,7 +36,7 @@ protobuf的作者实现了一个简单的类似功能，就是我们今天要介
 #include <google/protobuf/stubs/common.h>
 ```
 
-对应的，我们看下`google/protobuf/compiler/cpp/cpp_file.cc`里的`FileGenerator::GeneratorHelper(io::Printer* printer)`
+负责产出这段代码的代码则是`google/protobuf/compiler/cpp/cpp_file.cc`里的`FileGenerator::GeneratorHelper(io::Printer* printer)`：
 
 ```
 void FileGenerator::GenerateHeader(io::Printer* printer) {
@@ -56,9 +56,11 @@ void FileGenerator::GenerateHeader(io::Printer* printer) {
     "filename_identifier", filename_identifier);
 ```
 
-这段代码和`addressbook.pb.h`一一对应，可以猜测`$filename$ $filename_identifier`这些是替换的源字符串，而完成替换并且格式化输出就通过`Printer::Print`完成。
+对比下可以看到和`addressbook.pb.h`一一对应，格式化输出就通过`Printer::Print`完成。同时从用法上猜测`$filename$ $filename_identifier`这些是替换的源字符串。
 
-`Printer`定义在`google/protobuf/io/printer.h`，namespace遵守目录的层级关系。是一个比较短小精悍的类，接受一个`ZeroCopyStream`作为参数，格式化之后输出。
+接下来就介绍下`Printer`。
+
+`Printer`定义在`google/protobuf/io/printer.h`，namespace遵守目录的层级关系。类的实现短小精悍，接受一个`ZeroCopyStream`作为参数：
 
 ```
   // Create a printer that writes text to the given output stream.  Use the
@@ -66,7 +68,7 @@ void FileGenerator::GenerateHeader(io::Printer* printer) {
   Printer(ZeroCopyOutputStream* output, char variable_delimiter);
 ```
 
-`output`用于输出，可以传入上篇文章介绍的各个`ZeroCopyStream`的子类，当然也可以自己继承。`variable_delimiter`用于包裹我们希望替换的源字符串，例如`$filename$`这种形式。
+`output`用于输出，可以传入上篇文章介绍的各个`ZeroCopyStream`的子类，当然也可以是自己继承的子类。`variable_delimiter`是一个字符，用于包裹我们希望替换的源字符串，例如`$filename$`，格式化时通过检测`$`来查找需要替换的源字符串`filename`。
 
 对于如何提供字符串替换，支持两种形式：map 或者直接指定k-v
 
@@ -87,7 +89,15 @@ void FileGenerator::GenerateHeader(io::Printer* printer) {
                                const char* variable2, const string& value2);
 ```
 
-另外还支持`Indent Outdent`用于缩进，当然也支持`PrintRaw`输出源字符串。
+另外还支持`Indent Outdent`用于缩进，这个功能在生成代码时是必不可少的。注意默认生成的代码是两个空格吆
+
+```
+void Printer::Indent() {
+  indent_ += "  ";
+}
+```
+
+当然也支持`PrintRaw`输出源字符串。
 
 接下来举个例子介绍下，前面例子里的代码也就明了了。
 
@@ -126,7 +136,7 @@ int main() {
 }
 ```
 
-例子里我们使用`std::cout`用于输出，分别使用了`Printer::print`的map以及直接指定key:value的接口，注意这一句
+例子里我们使用`std::cout`用于输出，因此构造了`OstreamOutputStream`，分别使用了`Printer::print`的map以及直接指定key:value的接口，注意这一句
 
 ```
     printer.Print("My name is $name$.\n");
