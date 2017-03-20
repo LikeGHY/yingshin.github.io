@@ -16,11 +16,11 @@ protobuf提供了多种基础数据格式，包括string/bytes。从字面意义
 [libprotobuf ERROR google/protobuf/wire_format.cc:1091] String field 'str' contains invalid UTF-8 data when parsing a protocol buffer. Use the 'bytes' type if you intend to send raw bytes. 
 ```
 
-那么我们接下来从源码角度分析下`string/bytes`类型的区别。
+这篇文章从源码角度分析下`string/bytes`类型的区别。
 
 <!--more-->
 
-在[之前的文章](http://yingshin.github.io/c/cpp/2016/08/27/protobuf-encoding)里介绍过protobuf序列化的过程，我们看下`string/bytes`序列化的区别。
+在[之前的文章](http://yingshin.github.io/c/cpp/2016/08/27/protobuf-encoding)里介绍过protobuf序列化的过程，我们看下`string/bytes`序列化的过程。
 
 所有的序列化操作都会在`SerializeFieldWithCachedSizes`这个函数里进行。根据不同的类型调用对应的序列化函数，例如对于`string`类型
 
@@ -55,7 +55,7 @@ protobuf提供了多种基础数据格式，包括string/bytes。从字面意义
 可以看到在序列化时主要有两点区别：
 
 1. `string`类型调用了`VerifyUTF8StringNamedField`函数  
-2. 序列化函数不同`WriteString vs WriteBytes`
+2. 序列化函数不同：`WriteString vs WriteBytes`
 
 关于第二点，两个函数都定义在`wire_format_lite.cc`，实现是相同的。
 
@@ -113,7 +113,7 @@ bool IsStructurallyValidUTF8(const char* buf, int len) {
 1. protobuf里的`string/bytes`在C++接口里实现上都是`std::string`。  
 2. 两者序列化、反序列化格式上一致，不过对于`string`格式，会有一个utf-8格式的检查。
 
-出于效率，我们不妨在确定字段编码格式后直接使用`bytes`，减少utf8编码的判断，效率上会有提高。
+出于效率，我们应当在确定字段编码格式后直接使用`bytes`，减少utf8编码的判断，效率上会有提高。
 
 注意以上代码在pb2.6下，2.4不会输出`field_name`。
 
