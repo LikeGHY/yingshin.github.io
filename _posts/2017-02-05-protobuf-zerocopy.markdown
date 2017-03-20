@@ -4,7 +4,7 @@ title: protobuf之ZeroCopy
 date: 2017-2-5 22:11:32
 excerpt: "protobuf之ZeroCopy"
 categories: [c/cpp]
-tags: [ZeroCopy]
+tags: [protobuf, ZeroCopy]
 ---
 
 protobuf作为一个消息格式的利器，在io的接口设计上也非常巧妙，本文主要想介绍下其中ZeroCopy的思想以及用途。

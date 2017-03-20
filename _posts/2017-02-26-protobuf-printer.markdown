@@ -4,7 +4,7 @@ title: protobuf之Printer
 date: 2017-2-26 10:11:21
 excerpt: "protobuf之Printer"
 categories: [c/cpp]
-tags: [Printer]
+tags: [protobuf, Printer]
 ---
 
 [上节](http://yingshin.github.io/c/cpp/2017/02/05/protobuf-zerocopy)介绍了protobuf里的ZeroCopyStream，本文介绍下对应的辅助类`Printer`。
