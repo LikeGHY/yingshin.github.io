@@ -1,10 +1,19 @@
+- name: 大明王朝的七张面孔
+  cover: https://img1.doubanio.com/lpic/s6077038.jpg
+  start_date: 2017.4.9
+  finish_date:
+  douban_link: https://book.douban.com/subject/1463256/
+  download_link:
+  note:
+
+
 - name: 恶意
   cover: https://img3.doubanio.com/lpic/s29069735.jpg
   start_date: 2017.2.6
-  finish_date:
+  finish_date: 2017.4.16
   douban_link: https://book.douban.com/subject/26877752/
   download_link:
-  note:
+  note: 鲁迅说，不惮以最坏的恶意来揣测国人。看了这本书，觉得日本是同样的。本书最大的特点是一波三折。
   
 - name: 三十六大
   cover: https://img1.doubanio.com/lpic/s24430317.jpg
