@@ -51,6 +51,13 @@ using std::weak_ptr;
 
 那么接下来说下protobuf里的实现过程。
 
+逐个介绍下
+1. `SharedPtrControlBlock`：引用计数管理  
+2. `shared_ptr`  
+3. `weak_ptr`  
+4. `enable_shared_from_this`  
+5. `static_pointer_cast`：智能指针类型转换
+
 ### 2.1. google::protobuf::internal::SharedPtrControlBlock用于计数
 
 智能指针自然少不了引用计数，计数通过`SharedPtrControlBlock`完成
@@ -158,8 +165,19 @@ shared_ptr() : ptr_(NULL), control_block_(NULL) {}
 
 `weak_count_`的值初始化为1，随着`weak_ptr`的构造和析构分别增减1。因为可以认为`ptr_`与`shared_ptr`个数相关，而`control_block_`则跟`shared_ptr/weak_ptr`个数都相关，严格来讲无论多少个`shared_ptr`，对`weak_count_`贡献都是+1，而`weak_ptr_`则每个贡献+1。上面的析构函数里当原始指针上的最后一个`shared_ptr`析构时，会对`weak_ptr_`贡献-1，此时是否`delete control_block_`则由`weak_ptr_`的个数决定。
 
-这样的设计是非常合理的，保证了`shared_ptr`与`weak_ptr_`共同管理`control_block_`，同时相比其他设计保证了自增自减的操作最少。
+boost里的注释就比较简单直接：
 
+```
+class sp_counted_base
+{
+private:
+    ...
+
+    int use_count_;        // #shared
+    int weak_count_;       // #weak + (#shared != 0)
+```
+
+这样的设计是非常合理的，保证了`shared_ptr`与`weak_ptr_`共同管理`control_block_`，同时相比其他设计保证了自增自减的操作最少。
 
 此外`shared_ptr`提供了`use_count reset unique`等常见接口。
 
@@ -215,7 +233,70 @@ shared_ptr() : ptr_(NULL), control_block_(NULL) {}
   }
 ```
 
-### 2.3. google::protobuf::internal::enable_shared_from_this
+解释下while判断条件的必要性：
+
+`CompareAndSwap`的伪代码如下：
+
+```
+Atomic32 NoBarrier_CompareAndSwap(volatile Atomic32* ptr,
+                                  Atomic32 old_value,
+                                  Atomic32 new_value)
+// Atomically execute:
+      result = *ptr;
+      if (*ptr == old_value)
+        *ptr = new_value;
+      return result;
+```
+
+**如果ptr指向的内存当前的值为old_value，那么替换为new_value，无论什么情况下都返回old_value。**
+
+为什么必须要引入这个函数呢？
+
+因为即使`control_block_->refcount_`是原子的，也不能保证在修改过程中没有其他线程在修改，因此
+
+比如假设我们这么写
+
+```
+if (old_refcount > 0) {
+  RefCountInc(&control_block_->refcount_);
+}
+```
+
+如果在if判断条件满足之后，`RefCountInc`调用之前，持有该内存的`shared_ptr`析构(if判断满足条件)。
+
+```
+      if (!RefCountDec(&control_block_->refcount_)) {
+        delete ptr_;
+```
+
+此时race condition就会出现，ptr_已经delete，但是`lock`还是返回了一个`shared_ptr`。而`CompareAndSwap`则保证了这点。参考下`lock`函数的注释：
+
+```
+  // Return a shared_ptr that owns the object we are observing. If we
+  // have expired, the shared_ptr will be empty. We have to be careful
+  // about concurrency, though, since some other thread might be
+  // destroying the last owning shared_ptr while we're in this
+  // function.  We want to increment the refcount only if it's nonzero
+  // and get the new value, and we want that whole operation to be
+  // atomic.
+```
+
+trick一点，比如我们这么写：
+
+```
+if (old_refcount > 0) {
+  RefCountInc(&control_block_->refcount_);
+}
+if (control_block->refcount_ == 1) {
+  //自己是最后一个，无效内存
+} else {
+  //有效？
+}
+```
+
+这种方式不仅不够“优雅”，而且无法解决两个`weak_ptr`同时`lock`的情况。
+
+### 2.4. google::protobuf::internal::enable_shared_from_this
 
 `enable_shared_from_this`使用时采用继承的方式。
 
@@ -259,7 +340,7 @@ void shared_ptr<T>::MaybeSetupWeakThis(enable_shared_from_this<T>* ptr) {
 3. 存储`weak_ptr_`可行，不会固定增加一个引用计数，注意`weak_this_`是在`shared_ptr::MaybeSetupWeakThis`调用时初始化的，也就是`shared_ptr::shared_ptr(T* ptr)`，这也是为什么继承`enable_shared_from_this`的子类对象一定需要是heap上对象同时由`shared_ptr`管理生命周期。代码`weak_this_->expired`接口的作用正是为了判断是否符合上述条件。  
 
 
-### 2.4. google::protobuf::internal::static_pointer_cast
+### 2.5. google::protobuf::internal::static_pointer_cast
 
 `static_pointer_cast`用于智能指针之间的类型转换，单独说下这个的原因是有个比较有意思的语法
 
