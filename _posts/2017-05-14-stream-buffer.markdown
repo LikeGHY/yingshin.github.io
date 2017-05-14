@@ -17,16 +17,14 @@ tags: [streambuf]
 
 ## 1. streambuf类简介
 
-先看下STL流相关的类关系
+先看下STL流相关的类关系：[!类关系图](http://www.cplusplus.com/img/iostream.gif)
 
-[!类关系图](http://www.cplusplus.com/img/iostream.gif)
-
-(streams)是STL里一个很重要的概念，例如std::cin/std::cout用于字符串的输入/输出。而实际上，真正的读/写操作并不是stream完成的，而是由`stream`调用`stream buffer`完成。
+流(streams)是STL里一个很重要的概念，例如`std::cin std::cout`用于终端的输入/输出。而实际上，真正的读/写操作并不是`stream`完成的，而是由`stream`调用`stream buffer`完成。
 
 用《The C++ Standard Library 》的原文来说：
 > the actual reading and writing is not done by the streams directly, but is delegated to stream buffers.
 
-而了解stream buf最推荐的也是本书里的[The Stream Buffer Classes](http://hradec.com/ebooks/C%20Stuff/%5BCHM%5D%20C++%20Standard%20Library.%20A%20Tutorial%20and%20Reference/_chapter%2013.htm#ch13lev1sec13)一节
+而了解stream buf最推荐的也是本书里的[The Stream Buffer Classes](http://hradec.com/ebooks/C%20Stuff/%5BCHM%5D%20C++%20Standard%20Library.%20A%20Tutorial%20and%20Reference/_chapter%2013.htm#ch13lev1sec13)一节。
 
 `streambuf`实际上是一个模板类
 
@@ -37,7 +35,7 @@ typedef basic_streambuf<wchar_t> wstreambuf;
 
 两个类都是虚基类，因此没法直接创建。可以派生自己的子类，以便提供其他设备/数据输入的接口。
 
-STL实现了两个子类，分别是`filebuf` 和 `stringbuf`。
+STL标准库实现了两个子类，分别是`filebuf` 和 `stringbuf`。
 
 对用户来讲，`streambuf`有两种用法，一是直接使用各个接口，二是继承并实现新的I/O channels，例如封装C里的FILE*为C++流读写的方式，封装日志库为C++输出流的方式。
 
@@ -86,7 +84,7 @@ int main() {
 2. `pptr()`: put pointer，当前可写位置  
 3. `epptr()`: end put pointer，输出缓冲流的尾指针+1，即one past the last character。
 
-通过这三个指针，我们就可以定位当前的输出缓冲区的使用情况，当然，前提是我们统一假定输出设备可以接受一个连续的字符序列。参考资料里有更直观的图解。
+通过这三个指针，我们就可以定位当前的输出缓冲区的使用情况，当然，前提是我们统一假定输出设备可以接受一个连续的字符序列。对这三个指针位置参考资料里有更直观的图解。
 
 当`pptr != epptr`时，数据默认行为是顺序更新到缓冲区，直到`pptr == epptr`，表示当前缓冲区已满(overflow)，此时会调用`overflow`方法。这是一个虚函数接口，在这个函数里我们更新到外部设备并且重置缓冲区可用即可。
 
@@ -190,7 +188,7 @@ int main() {
 }
 ```
 
-注意这个例子一个潜在的问题，就是`FdOstream`基类`std::ostream`以及成员变量`_buf`的初始化顺序，优先调用了基类的构造函数，然后才是`_buf`，因此`std::ostream(&_buf)`实际上传入的是一个未初始化的_buf。不清楚这里是不是一个设计问题，我没有想到好的办法来fix这个编译warnning。
+注意这个例子一个潜在的问题，就是`FdOstream`基类`std::ostream`以及成员变量`_buf`的初始化顺序，优先调用了基类的构造函数，然后才是`_buf`，因此`std::ostream(&_buf)`实际上传入的是一个未初始化的_buf。不清楚这里是不是一个设计问题，我没有想到好的办法来fix这个编译warning。
 
 上面的例子介绍了`streambuf`的基本用法，但都没有真正的buffer，接下来再看一个`overflow`使用的例子，定义了自己的接收buffer，并在buffer满后调用`overflow`输出。
 
@@ -270,13 +268,13 @@ int main() {
 
 相关的一些实例还可参考这个[输出增加时间戳的例子](https://savingyoutime.wordpress.com/2009/04/21/using-c-stl-streambufostream-to-create-time-stamped-logging-class/)
 
-### 自定义输入流缓冲区
+### 3.2. 自定义输入流缓冲区
 
-对输入流，同样存在三个指针位置
+与输出流对应的，对于输入流，同样存在三个指针位置：
 
-1. eback(): end back 是指缓冲区的首部  
-2. gptr(): get pointer 缓冲区当前读位置  
-3. egptr(): end get pointer 缓冲区尾部
+1. eback(): end back, 是指缓冲区的首部  
+2. gptr(): get pointer, 缓冲区当前读位置  
+3. egptr(): end get pointer, 缓冲区尾部
 
 前面介绍输出流缓冲区时，有的例子没有引入真正的buffer缓冲。但是如果要实现一个实际意义的输入流缓冲区，这点几乎是不可能的。
 

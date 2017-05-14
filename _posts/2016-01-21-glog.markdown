@@ -4,7 +4,7 @@ title:  "glog简介"
 date: 2016-01-21 00:05:47
 excerpt: "glog简介"
 categories: [c/cpp]
-tags: [log]
+tags: [glog]
 ---
 
 glog是google的的一个C++轻量日志库，支持常用的日志功能：例如日志级别，自定义级别，条件输出，DEBUG日志等，同时支持gflag的参数配置方式。  
@@ -161,7 +161,7 @@ I0110 23:19:16.891405 17039 demo1.cpp:24] LOG_IF i > 5 i:9
 I0110 23:19:16.891409 17039 demo1.cpp:25] LOG_EVERY_N 3 i:9 google::COUNTER:10
 ```
 
-注意`google::COUNTER`并不总是生效的，例如这样输出google::COUNTER没有意义，数据全为0，使用时需要确认下。
+注意`google::COUNTER`并不总是生效的，实际使用时见过这样的例子，没有意义，数据全为0：
 
 ```
         if (tera::ErrorCode::kOK != code) {
