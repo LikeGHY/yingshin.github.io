@@ -188,7 +188,7 @@ int main() {
 }
 ```
 
-注意这个例子一个潜在的问题，就是`FdOstream`基类`std::ostream`以及成员变量`_buf`的初始化顺序，优先调用了基类的构造函数，然后才是`_buf`，因此`std::ostream(&_buf)`实际上传入的是一个未初始化的_buf。不清楚这里是不是一个设计问题，我没有想到好的办法来fix这个编译warning。
+注意这个例子一个潜在的问题，就是`FdOstream`基类`std::ostream`以及成员变量`_buf`的初始化顺序，优先调用了基类的构造函数，然后才是`_buf`，因此`std::ostream(&_buf)`实际上传入的是一个未初始化的_buf。更好的写法可以参考[这里](http://ilab.usc.edu/rjpeters/groovx/stdiobuf_8h-source.html)，是南加大实现的一个同时用于输入输出的例子。
 
 上面的例子介绍了`streambuf`的基本用法，但都没有真正的buffer，接下来再看一个`overflow`使用的例子，定义了自己的接收buffer，并在buffer满后调用`overflow`输出。
 
@@ -310,6 +310,8 @@ int main() {
 当缓冲区被填充满时，会调用`underflow`接口。
 
 可以参考[这里](http://www.mr-edd.co.uk/blog/beginners_guide_streambuf)的**Example 1: FILE buffers to integrate with C code**例子。
+
+当然也可以同时实现
 
 ## 4. glog日志的应用
 
