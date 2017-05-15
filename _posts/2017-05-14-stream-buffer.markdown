@@ -311,7 +311,7 @@ int main() {
 
 可以参考[这里](http://www.mr-edd.co.uk/blog/beginners_guide_streambuf)的**Example 1: FILE buffers to integrate with C code**例子。
 
-当然也可以同时实现
+当然也可以同时实现输入输出流，例如南加州大学的[例子](http://ilab.usc.edu/rjpeters/groovx/stdiobuf_8cc-source.html)。
 
 ## 4. glog日志的应用
 
