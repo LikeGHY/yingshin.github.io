@@ -1,3 +1,11 @@
+- name: MacTalk人生元编程
+  cover: https://img3.doubanio.com/lpic/s28409836.jpg
+  start_date: 2017.5.17
+  finish_date:
+  douban_link: https://book.douban.com/subject/1463256/
+  download_link:
+  note:
+
 - name: 大明王朝的七张面孔
   cover: https://img1.doubanio.com/lpic/s6077038.jpg
   start_date: 2017.4.9
@@ -5,7 +13,6 @@
   douban_link: https://book.douban.com/subject/1463256/
   download_link:
   note:
-
 
 - name: 恶意
   cover: https://img3.doubanio.com/lpic/s29069735.jpg
