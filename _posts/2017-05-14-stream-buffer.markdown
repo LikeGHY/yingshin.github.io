@@ -7,9 +7,7 @@ categories: [c/cpp]
 tags: [streambuf]
 ---
 
-[TOC]
-
-关于`streambuf`的资料并不多，IO Streams作者Jerry Schwarz这样说道:shipit:
+关于`streambuf`的资料并不多，IO Streams作者Jerry Schwarz这样说道
 
 > "A major goal in my original design was that it be extensible in interesting ways. In particular, in the stream library the streambuf class was an implementation detail, but in the iostream library I intended it to be a usable class in its own right. I was hoping for the promulgation of many streambufs with varied functionality. I wrote a few myself, but almost no one else did. I answered many more questions of the form "how do I make my numbers look like this" than "how do I write a streambuf". And textbook authors also tended to ignore streambufs. Apparently they did not share my view that the architecture of the input/output library was an interesting case study."
 
