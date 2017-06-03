@@ -17,7 +17,7 @@ tags: [streambuf]
 
 ## 1. streambuf类简介
 
-先看下STL流相关的类关系：[!类关系图](http://www.cplusplus.com/img/iostream.gif)
+先看下STL流相关的类关系：![类关系图](http://www.cplusplus.com/img/iostream.gif)
 
 流(streams)是STL里一个很重要的概念，例如`std::cin std::cout`用于终端的输入/输出。而实际上，真正的读/写操作并不是`stream`完成的，而是由`stream`调用`stream buffer`完成。
 

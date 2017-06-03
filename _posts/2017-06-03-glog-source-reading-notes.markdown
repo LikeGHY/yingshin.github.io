@@ -9,17 +9,21 @@ tags: [glog]
 
 上次写完一篇[glog使用的笔记](http://izualzhy.cn/c/cpp/2016/01/21/glog)后，一直想抽时间分析下[glog](https://github.com/google/glog)的源码。因为实际上glog提供了比笔记里多得多的功能与接口，通过阅读源码可以更深入的理解如何使用这些接口。
 
-从这篇笔记开始，会逐渐开始介绍glog源码阅读的一些心得。首先从`LOG(INFO)`入手，看下相关调用过程，之后介绍下源码里各个类的作用。
+从这篇笔记开始，会逐渐开始介绍glog源码阅读的一些心得。
+
+本文首先从`LOG(INFO)`入手，看下相关调用过程，之后介绍下源码里各个类的作用。
 
 <!--more-->
 
-在源码里我们可以找到`logging.h.in`，通过`configure`的替换，生成`logging.h`，替换内容包括一些#include，是否支持gflags等。在`logging.h`，可以看到`LOG(xxx)`实际上通过宏定义转换为了类`LogMessage`的操作。
+glog相关源码都在src下面，并不存在我们会经常include的`logging.h`文件。但是可以找到`logging.h.in`，这个文件通过`configure`的替换，生成`logging.h`，替换内容包括一些#include，是否支持gflags等。
+
+在`logging.h`，可以看到`LOG(xxx)`实际上通过宏定义转换为了类`LogMessage`的操作。
 
 ```
 #define LOG(severity) COMPACT_GOOGLE_LOG_ ## severity.stream()
 ```
 
-`##`是连接符的作用，`COMPACT_GOOGLE_LOG_XXX.stream()`也是一个宏定义。
+`##`起到连接符的作用，`COMPACT_GOOGLE_LOG_XXX.stream()`也是一个宏定义。
 
 ```
 #define COMPACT_GOOGLE_LOG_INFO google::LogMessage( \
@@ -28,9 +32,11 @@ tags: [glog]
     __FILE__, __LINE__, google::GLOG_WARNING)
 ```
 
-可以看到针对不同的日志级别(severity)，实际上是调用了`LogMessage`不同的构造函数。（注意源码里要复杂一些，比如会判断GOOGLE_STRIP_LOG，这里为了方便说明做了简化）
+可以看到针对不同的日志级别(severity)，实际上是调用了`LogMessage`不同的构造函数。（注意源码里要复杂一些，比如会判断`GOOGLE_STRIP_LOG`，这里为了方便说明做了简化）
 
-到这一步，都是通过宏定义完成的。虽然我们在现代C++代码里应当尽量避免宏的使用，但是实际上我们总是离不开宏定义，比如这里因为需要获取到`LOG(xxx)`调用处的文件名(__FILE__)，行号(__LINE__)，就必须使用宏的替换。
+到这一步，都是通过宏定义完成的。
+
+虽然我们在现代C++代码里应当尽量避免宏的使用，但是实际上我们总是离不开宏定义，比如这里因为需要获取到`LOG(xxx)`调用处的文件名(__FILE__)，行号(__LINE__)，就必须使用宏的替换。
 
 到这里，我们可以看到`LOG(xxx)`最后替换完成的样子
 
@@ -49,7 +55,7 @@ ostream& LogMessage::stream() {
 
 那么`data_ data_->stream_`是什么？我们看下glog里重要的几个类图：
 
-[!glog_uml](assets/images/glog_uml.png)
+![glog_uml](assets/images/glog_uml.png)
 
 1. `LogMessage`:日志库的接口部分，在前面已经见到过了。提供了多个构造函数，在析构时调用`Flush`写入日志数据。也就是每次`LOG(xxx)`的调用都会生成一个`LogMessage`对象。同时对象记录了写入日志数据的函数指针：`send_method`，其中数据的存储和写入日志都委托给`LogMessageData`完成。
 2. `LogMessageData`：记录日志数据例如文件名、日志消息、日志级别、行号、时间等,同时调用`LogDestination`的静态方法组织数据的写入。
