@@ -67,9 +67,9 @@ void LogMessage::Init(const char* file,
                       int line,
                       LogSeverity severity,
                       void (LogMessage::*send_method)()) {
-    堆上分配空间并初始化LogMessageData* data_;
-    初始化内容包括severity, ts, line, filename等
-    日志数据增加logprefix，即severity，ts，线程id(syscall(__NR_gettid))，文件basename
+    //堆上分配空间并初始化LogMessageData* data_;
+    //初始化内容包括severity, ts, line, filename等
+    //日志数据增加logprefix，即severity，ts，线程id(syscall(__NR_gettid))，文件basename
 }
 //注：忽略了fatal日志特殊处理，保留errno，判断是否需要logprefix等代码，只介绍主要流程部分。本文其他地方也是如此。
 ```
