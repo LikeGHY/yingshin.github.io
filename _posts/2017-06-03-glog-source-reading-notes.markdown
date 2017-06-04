@@ -1,6 +1,6 @@
 ---
 layout: post
-title: glog源码解析
+title: glog源码解析一：类关系图
 date: 2017-06-03 20:10:11
 excerpt: "glog源码解析"
 categories: [c/cpp]
@@ -14,6 +14,8 @@ tags: [glog]
 本文首先从`LOG(INFO)`入手，看下相关调用过程，之后介绍下源码里各个类的作用。
 
 <!--more-->
+
+## 1. LOG(INFO)的宏替换
 
 glog相关源码都在src下面，并不存在我们会经常include的`logging.h`文件。但是可以找到`logging.h.in`，这个文件通过`configure`的替换，生成`logging.h`，替换内容包括一些#include，是否支持gflags等。
 
@@ -55,6 +57,7 @@ ostream& LogMessage::stream() {
 
 那么`data_ data_->stream_`是什么？我们看下glog里重要的几个类图：
 
+## 2. glog_uml 类图
 ![glog_uml](/assets/images/glog_uml.png)
 
 1. `LogMessage`:日志库的接口部分，在前面已经见到过了。提供了多个构造函数，在析构时调用`Flush`写入日志数据。也就是每次`LOG(xxx)`的调用都会生成一个`LogMessage`对象。同时对象记录了写入日志数据的函数指针：`send_method`，其中数据的存储和写入日志都委托给`LogMessageData`完成。
