@@ -1,6 +1,6 @@
 ---
 layout: post
-title: glog源码解析一：类关系图
+title: glog源码解析一：整体结构
 date: 2017-06-03 20:10:11
 excerpt: "glog源码解析"
 categories: [c/cpp]
