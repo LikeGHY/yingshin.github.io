@@ -135,7 +135,7 @@ LogMessage::~LogMessage() {
 
 ```cpp
 void LogMessage::Flush() {
-    //根据min_log_level判断是否需要分发，如果不需要，则直接返回
+    //根据 FLAGS_minloglevel 判断是否需要分发，如果不需要，则直接返回
     //是否需要添加\n（感兴趣的读者可以试下"hello\n" "hello"实际上输出了相同的日志 ）
     // Prevent any subtle race conditions by wrapping a mutex lock around
     // the actual logging action per se.
@@ -146,6 +146,18 @@ void LogMessage::Flush() {
     }
     LogDestination::WaitForSinks(data_);//等待sink完成
 ```
+
+注意这里才对`FLAGS_minloglevel`的判断，因此设置了日志级别`FLAGS_minloglevel`只能保证不再输出，`LogMessage`仍然会构造出来，并且执行后面的代码。
+
+例如这段代码
+
+```
+FLAGS_minlogleve = 1;
+int a = 1;
+LOG(INFO) << a++;
+```
+
+虽然INFO日志不会输出，但是这条语句使得`a`的值发生了变化。
 
 前面介绍过`send_method_`可能有各种赋值，不过都来源于`LogMessage`的成员函数，对于普通的日志输出，`send_method_ = &LogMessage::SendToLog`，我们看下`LogMessage::SendToLog`的定义
 
