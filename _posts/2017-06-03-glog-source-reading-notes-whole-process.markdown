@@ -157,7 +157,7 @@ int a = 1;
 LOG(INFO) << a++;
 ```
 
-虽然INFO日志不会输出，但是这条语句使得`a`的值发生了变化。
+虽然INFO日志不会输出，但是这条语句使得`a`的值发生了变化:1 -> 2。
 
 前面介绍过`send_method_`可能有各种赋值，不过都来源于`LogMessage`的成员函数，对于普通的日志输出，`send_method_ = &LogMessage::SendToLog`，我们看下`LogMessage::SendToLog`的定义
 
