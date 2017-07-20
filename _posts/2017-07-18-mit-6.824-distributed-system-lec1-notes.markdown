@@ -3,8 +3,8 @@ layout: post
 title: MIT 6.824 Distributed Systems Lec-1 学习笔记
 date: 2017-07-18 19:50:32
 excerpt: "MIT 6.824 Distributed Systems Lec-1 学习笔记"
-categories: [Distributed Systems]
-tags: [go mapreduce 6.824]
+categories: [go]
+tags: [Distributed Systems mapreduce 6.824]
 ---
 
 MIT的6.824这门课程放在收藏夹里很久了，最近终于趁着周末学习了下。
@@ -31,7 +31,7 @@ MIT的6.824这门课程放在收藏夹里很久了，最近终于趁着周末学
 
 ## 2. mapreduce简介
 
-注：简介内容全部摘抄自上述论文
+*注：简介内容全部摘抄自上述论文*
 
 mapreduce的想法实际上是来自于Lisp语言里的`map reduce`。目的是为了简化分布式系统代码的门槛，例如对于单词计数这个需求，用户可以不关心有多少台服务器在运行这个程序，只需要实现`map reduce`函数：
 
@@ -40,14 +40,14 @@ map(String key, String value):
 // key: document name
 // value: document contents
 for each word w in value:
-EmitIntermediate(w, "1");
+    EmitIntermediate(w, "1");
 
 reduce(String key, Iterator values):
 // key: a word
 // values: a list of counts
 int result = 0;
 for each v in values:
-result += ParseInt(v);
+    result += ParseInt(v);
 Emit(AsString(result));
 ```
 
@@ -55,11 +55,11 @@ Emit(AsString(result));
 
 ![Figure 1: Execution overview](http://imgsrc.baidu.com/baike/pic/item/5882b2b7d0a20cf49b9b0c7b76094b36acaf990f.jpg)
 
-从网上找了一个论文里的图:Figure 1: Execution overview，其中worker封装了文件的读写，以及用户`map/reduce`函数的调用，搞清楚上下游关系后，lab里主要的任务也是围绕worker的实现完成。
+从网上找了一个论文里的图:Figure 1: Execution overview，其中worker封装了文件的读写，以及用户`map/reduce`函数的调用，搞清楚整个数据流后，lab完成的会轻松些。
 
 ## 3. lab
 
-lab1分为5个part，Collaboration Policy要求不要公布代码，因此这里逐个part说下思路。建议也是自己动手完成，作者还是很用心的，毕竟看了论文再实现一遍的机会并不多。
+lab1分为5个part，Collaboration Policy要求不要公布代码，因此这里只是逐个part说下思路和一些注意点。建议也是自己动手完成，作者还是很用心的，毕竟看了论文再实现一遍的机会并不多。
 
 lab做的过程可以完全参考[教材](https://pdos.csail.mit.edu/6.824/labs/lab-1.html)，其中也有很多有用的go语法的提示，对我这种go新手来说也足够了。
 
