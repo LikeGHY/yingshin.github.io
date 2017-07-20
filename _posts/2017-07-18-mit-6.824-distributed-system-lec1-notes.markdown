@@ -23,7 +23,7 @@ MIT的6.824这门课程放在收藏夹里很久了，最近终于趁着周末学
 
 在[日历](https://pdos.csail.mit.edu/6.824/schedule.html)里的第一节课就是mapreduce。
 
-建议的姿势是首先看下上面链接里的mapreduce论文 by Jeffrey Dean and Sanjay Ghemawa，这两位G家大神的名字如雷贯耳，在protobuf源码里也经常看到。论文完整的介绍了mapreduce的原理、实现方案、优化点以及一些示例等。lab的目标也是跑通mapreduce的流程并实现部分示例。因此读几遍还是很有必要的，搞清楚一些疑问：例如mapper产生了多少个中间文件？task有任务失败怎么处理？哪些操作要求是原子的等，这些疑问都可以自行网上找到答案。
+建议的姿势是首先看下上面链接里的[mapreduce论文 by Jeffrey Dean and Sanjay Ghemawa](https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf)，这两位G家大神的名字如雷贯耳，在protobuf源码里也经常看到。论文完整的介绍了mapreduce的原理、实现方案、优化点以及一些示例等。lab的目标也是跑通mapreduce的流程并实现部分示例。因此读几遍还是很有必要的，搞清楚一些疑问：例如mapper产生了多少个中间文件？task有任务失败怎么处理？哪些操作要求是原子的等，这些疑问都可以自行网上找到答案。
 
 然后需要了解下Go语言，这门课程接下来的lab全部使用go语言实现，建议的文档是这篇[An Introduction to Programming In GO](https://www.golang-book.com/books/intro)，篇幅比较短小，有些语法、Go特性等都可以用到时再查询。
 
@@ -53,7 +53,7 @@ Emit(AsString(result));
 
 其中map产生`key value`的中间文件，同一个key只会交给一个reduce任务完成。这些任务分发的工作由master完成。
 
-![Figure 1: Execution overview](http://imgsrc.baidu.com/baike/pic/item/5882b2b7d0a20cf49b9b0c7b76094b36acaf990f.jpg)
+![Figure 1: Execution overview](https://hadooptutorial.wikispaces.com/file/view/MRExecution.png/235669280/800x519/MRExecution.png)
 
 从网上找了一个论文里的图:Figure 1: Execution overview，其中worker封装了文件的读写，以及用户`map/reduce`函数的调用，搞清楚整个数据流后，lab完成的会轻松些。
 
