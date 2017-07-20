@@ -1,8 +1,8 @@
 ---
 layout: post
-title: MIT 6.824 Distributed Systems Lec-1 学习笔记
+title: MIT 6.824 Distributed Systems Lab-1 笔记
 date: 2017-07-18 19:50:32
-excerpt: "MIT 6.824 Distributed Systems Lec-1 学习笔记"
+excerpt: "MIT 6.824 Distributed Systems Lab-1 笔记"
 categories: [go]
 tags: [Distributed Systems mapreduce 6.824]
 ---
@@ -15,19 +15,21 @@ MIT的6.824这门课程放在收藏夹里很久了，最近终于趁着周末学
 
 课程主要目的主要是跟进各节lecture，看论文，完成实验，在动手过程中了解分布式系统。
 
-本文lec1 + lab1的学习笔记。
+每个lab都会有对应的几节lecture，lecture上讲一些论文、go语言、分布式相关的知识，以帮助我们更好的完成lab。这个笔记系列主要是分享做lab的一些心得。
 
 <!--more-->
 
 ## 1. 如何开始
 
-在[日历](https://pdos.csail.mit.edu/6.824/schedule.html)里的第一节课就是mapreduce。
+在[日历](https://pdos.csail.mit.edu/6.824/schedule.html)里的第一个lab就是mapreduce。
 
 建议的姿势是首先看下上面链接里的[mapreduce论文 by Jeffrey Dean and Sanjay Ghemawa](https://pdos.csail.mit.edu/6.824/papers/mapreduce.pdf)，这两位G家大神的名字如雷贯耳，在protobuf源码里也经常看到。论文完整的介绍了mapreduce的原理、实现方案、优化点以及一些示例等。lab的目标也是跑通mapreduce的流程并实现部分示例。因此读几遍还是很有必要的，搞清楚一些疑问：例如mapper产生了多少个中间文件？task有任务失败怎么处理？哪些操作要求是原子的等，这些疑问都可以自行网上找到答案。
 
 然后需要了解下Go语言，这门课程接下来的lab全部使用go语言实现，建议的文档是这篇[An Introduction to Programming In GO](https://www.golang-book.com/books/intro)，篇幅比较短小，有些语法、Go特性等都可以用到时再查询。
 
 接下来就是[lab1](https://pdos.csail.mit.edu/6.824/labs/lab-1.html)了，分为五个part。实际上每个part我们都只需要实现指定的几个函数就可以了。原始代码可以从链接里通过`git`获取，完成后按照提示执行测试，能够通过就表明函数写的没有问题。
+
+lab1的要求是在第四节课之后完成，不过目前mr理论已经足够成熟了，因此做起来不会太费劲。如果对rpc、并发这些不太理解，也可以先了解下lec2里的两个例子:cralwer(并发) kv(rpc)。
 
 ## 2. mapreduce简介
 
@@ -189,6 +191,6 @@ go关键字：`map strings strconv`
 
 ## 4. 总结
 
-lab1的要求是在第四节课之后完成，不过目前mr理论已经足够成熟了，因此做起来不会太费劲。这个课程设计也非常赞，从`schedule`分发任务，到`doMap/doReduce`调用用户函数，到`mapF/reduceF`实现用户函数，整个做下来对mapreduce流程可以有一个更详细的了解，对go语言也有一个入门。
+这个lab从`schedule`分发任务，到`doMap/doReduce`调用用户函数，到`mapF/reduceF`实现用户函数，整个做下来对mapreduce流程可以有一个更详细的了解，对go语言也有一个入门。
 
 
