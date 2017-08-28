@@ -167,8 +167,10 @@ extern std::string SetCommandLineOption(const char* name, const char* value);
 ```
 extern bool GetCommandLineOption(const char* name, std::string* OUTPUT)
 ```
+OUTPUT填充了对应的设置的值，如果一个flag未设置，那么OUTPUT将填充默认值。无论flag是否设置均认为获取成功返回true，
+如果name是一个未定义的flag，则认为获取失败返回false。
 
-读写其实都可以使用`if (FLAGS_foo) FLAGS_Foo = bar`的形式，但是如果需要线程安全的调用，使用`Get/Set`接口。
+读写其实都可以使用`if (FLAGS_foo) FLAGS_Foo = bar`的形式，但是如果需要线程安全的调用，使用`GetCommandLineOption/SetCommandLineOption`接口。
 
 ### 8. version与help
 
