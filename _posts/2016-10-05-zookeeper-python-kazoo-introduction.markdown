@@ -85,11 +85,19 @@ logging.basicConfig()
 
 ### 3. CRUD
 
+关于CRUD的操作，可以直接参考[kazoo相关文档](http://kazoo.readthedocs.io/en/latest/basic_usage.html)
+
 #### 3.1 Creating
 
 `create`用于创建节点，除了ACL, 临时节点，有序节点，还支持递归创建（`makepath=True`）
 
 有的需求并不关注key对应的data，`ensure_path`在节点存在时返回True，不存在则递归创建该path。
+
+比如
+
+```
+zk.create('/ps/spider/dlb-receiver/0001')
+```
 
 #### 3.2 Reading
 
