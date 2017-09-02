@@ -249,6 +249,7 @@ engine.connect().execute(text("show databases"));
 
 返回一个`ResultProxy`对象，使用`for user in xxx`可以遍历所有符合条件的对象。
 
-在使用过程中，也遇到了不少问题，例如[select * for update的用法](http://yingshin.github.io/python/2015/04/11/sqlalchemy-with-lockmode-update-question)。
+在使用过程中，也遇到了不少问题，例如[select * for update的用法](http://izualzhy.cn/python/2015/04/11/sqlalchemy-with-lockmode-update-question)。
+在使用过程中，也遇到了不少问题，例如[select * for update的用法](http://izualzhy.cn/python/2015/04/11/sqlalchemy-with-lockmode-update-question)。
 
 更详细的用法，建议参考sqlalchemy的文档，放了一份在[百度云](https://pan.baidu.com/s/1i5fWSst)上。

@@ -20,7 +20,8 @@ protobuf提供了多种基础数据格式，包括string/bytes。从字面意义
 
 <!--more-->
 
-在[之前的文章](http://yingshin.github.io/c/cpp/2016/08/27/protobuf-encoding)里介绍过protobuf序列化的过程，我们看下`string/bytes`序列化的过程。
+在[之前的文章](http://izualzhy.cn/c/cpp/2016/08/27/protobuf-encoding)里介绍过protobuf序列化的过程，我们看下`string/bytes`序列化的过程。
+在[之前的文章](http://izualzhy.cn/c/cpp/2016/08/27/protobuf-encoding)里介绍过protobuf序列化的过程，我们看下`string/bytes`序列化的过程。
 
 所有的序列化操作都会在`SerializeFieldWithCachedSizes`这个函数里进行。根据不同的类型调用对应的序列化函数，例如对于`string`类型
 

@@ -7,7 +7,8 @@ categories: [c/cpp]
 tags: [protobuf, Printer]
 ---
 
-[上节](http://yingshin.github.io/c/cpp/2017/02/05/protobuf-zerocopy)介绍了protobuf里的ZeroCopyStream，本文介绍下对应的辅助类`Printer`。
+[上节](http://izualzhy.cn/c/cpp/2017/02/05/protobuf-zerocopy)介绍了protobuf里的ZeroCopyStream，本文介绍下对应的辅助类`Printer`。
+[上节](http://izualzhy.cn/c/cpp/2017/02/05/protobuf-zerocopy)介绍了protobuf里的ZeroCopyStream，本文介绍下对应的辅助类`Printer`。
 
 作为C++的程序员，接触python后表示非常羡慕这样的字符串格式化：
 
