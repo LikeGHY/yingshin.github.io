@@ -61,7 +61,7 @@ Emit(AsString(result));
 
 ## 3. lab
 
-lab1分为5个part，Collaboration Policy要求不要公布代码，因此这里只是逐个part说下思路和一些注意点。建议也是自己动手完成，作者还是很用心的，毕竟看了论文再实现一遍的机会并不多。
+lab1分为5个part，代码放在里[我的github上](https://github.com/yingshin/Distributed-Systems/tree/master/6.824)，这里逐个part说下思路和一些注意点。建议自己动手完成，作者还是很用心的，毕竟看了论文再实现一遍的机会并不多。
 
 lab做的过程可以完全参考[教材](https://pdos.csail.mit.edu/6.824/labs/lab-1.html)，其中也有很多有用的go语法的提示，对我这种go新手来说也足够了。
 
