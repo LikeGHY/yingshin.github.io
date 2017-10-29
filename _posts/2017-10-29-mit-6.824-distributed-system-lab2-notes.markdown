@@ -1,7 +1,7 @@
 ---
 layout: post
 title: MIT 6.824 Distributed Systems Lab-2 笔记
-date: 2017-10-29 21:41:36
+date: 2017-10-29 09:41:36
 excerpt: "MIT 6.824 Distributed Systems Lab-2 笔记"
 categories: [go]
 tags: [Distributed mapreduce 6.824]
@@ -15,7 +15,7 @@ tags: [Distributed mapreduce 6.824]
 
 ## 1. lab2介绍
 
-lab2分为了2A 2B 2C三个部分，对应的需要实现Raft里Leader election/Log replication/Persist部分。
+lab2分为了2A 2B 2C三个部分，对应的需要实现Raft里**Leader election/Log replication/Persist**部分。
 
 相比lab1的难度高了许多，需要更多的考虑锁、线程以及一些race conditon，因为不再单纯的划分为master和worker，每个进程都在三种角色间转换。
 
@@ -80,7 +80,7 @@ func TestInitialElection2A(t *testing.T) {
 
 2C的实现上，从`Figure 2`可以清晰的看到需要持久化什么数据，因此在要修改这些数据前持久化即可。注意一个原则是
 
-"Updated on stable storage before responding to RPCs"
+> Updated on stable storage before responding to RPCs
 
 实现上根据测试用例逐步推进，例如2A的实现里先不用考虑论文里提到的`Election restrction`。同时测试会越来越严格，对一些`corner case`也都能覆盖到（测试使用了很多随机sleep/disconnect/latency等行为，因此需要多次运行验证）。
 
@@ -88,15 +88,15 @@ func TestInitialElection2A(t *testing.T) {
 
 `Raft`一共有三种角色：
 
-1. Leader:负责与client交互，同步数据到其他实例。  
-2. Follower:leader的从属角色，不主动发起RPC，响应其他实例的RPC：leader选举，日志复制等。  
-3. Candidate:leader与follower的中间角色，如果follower一段时间内没有收到leader的心跳包则转为Candidate；如果Candidate获得大多数其他实例的选举投票，则转为leader。  
+1. **Leader**:负责与client交互，同步数据到其他实例。  
+2. **Follower**:leader的从属角色，不主动发起RPC，响应其他实例的RPC：leader选举，日志复制等。  
+3. **Candidate**:leader与follower的中间角色，如果follower一段时间内没有收到leader的心跳包则转为Candidate；如果Candidate获得大多数其他实例的选举投票，则转为leader。  
 
 每个`Raft`进程都可能在这三种角色间转换。
 
 ### 3.3. Follower
 
-Follower是所有Raft实例启动时默认的角色。
+**Follower**是所有Raft实例启动时默认的角色。
 
 Follower的行为要简单些，主要关注两种情况：
 
@@ -106,7 +106,7 @@ Follower的行为要简单些，主要关注两种情况：
 注：
 Follower的实现上要额外注意timer何时更新：
 
-收到更高term的RPC，无论是RequestVote还是AppendEntries
+**收到更高term的RPC，无论是RequestVote还是AppendEntries**
 
 当收到的RequestVote或者AppendEntries里包含的term，<=自身的currentTerm时，不要重置time-out timer，保证及时time out以转变为Candidate。
 
@@ -147,7 +147,7 @@ func (rf* Raft) BeFollower() {
 
 ### 3.4 Candidate
 
-Candidate是一个中间角色，当Follower time out后转变为Follower角色，参与选举。
+**Candidate**是一个中间角色，当Follower time out后转变为Follower角色，参与选举。
 
 主要关注三种情况：
 
@@ -191,7 +191,7 @@ func (rf *Raft) BeCandidate() {
 
 ### 3.5 Leader
 
-Leader负责同步数据到其他server，保证数据的一致性。当Candidate收到超过半数以上server的投票时，则胜出，成为Leader。
+**Leader**负责同步数据到其他server，保证数据的一致性。当Candidate收到超过半数以上server的投票时，则胜出，成为Leader。
 
 Leader的主要任务：  
 1. 接收来自client的数据，更新到自己的Log。  
@@ -200,8 +200,7 @@ Leader的主要任务：
 
 注：
 + leader初始化nextIndex统一为自身的len(logs)
-
-"When a leader first comes to power, it initializes all nextIndex values to the index just after the last one in tis log."
+> When a leader first comes to power, it initializes all nextIndex values to the index just after the last one in tis log.
 
 + 在我的实现里，使用matchIndex[rf.me]替代了lastApplied
 
