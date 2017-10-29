@@ -260,10 +260,10 @@ func (rf *Raft) BeLeader() {
 
 注意：
 
-1. 对于日志up-to-date的判断，先判断term，再判断长度。
-2. 当收到更高term的RPC时，设置currentTerm并转为follower。这里也是对我来讲实现上比较复杂的地方，比如对于Candidate，为了更高效的选举完成，会使用currentTerm并行发送RequestVote到其他实例，这时候就需要避免使用修改后的currentTerm构造RequestVote的参数。作为一个noob goer，我额外使用了一个channel用来保证两个线程中间不会有其他线程获取锁。相关实现可以参考`PushChangeToFollower`函数。
+1. 对于日志up-to-date的判断，先判断term，再判断长度。  
+2. 当收到更高term的RPC时，设置currentTerm并转为follower。这里也是对我来讲实现上比较复杂的地方，比如对于Candidate，为了更高效的选举完成，会使用currentTerm并行发送RequestVote到其他实例，这时候就需要避免使用修改后的currentTerm构造RequestVote的参数。作为一个noob goer，我额外使用了一个channel用来保证两个线程中间不会有其他线程获取锁。相关实现可以参考`PushChangeToFollower`函数。  
 
-```
+```go
 func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
     // Your code here (2A, 2B).
     DPrintf("[RequestVote] me:%v currentTerm:%v args:%v", rf.me, rf.CurrentTerm, args)
@@ -300,7 +300,7 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
     //If RPC request or response contains term T > currentTerm,
     //set currentTerm = T, convert to follower
     if rf.CurrentTerm < args.Term {
-        DPrintf("[RequestVote] me:%d changeToFollower:{%v, %v}", rf.me, args.Term, args.CandidateId)
+        DPrintf("[RequestVote] me:%d changeToFollower:%v, %v", rf.me, args.Term, args.CandidateId)
         rf.PushChangeToFollower(args.Term, args.CandidateId, false)
     }
 }
@@ -385,7 +385,7 @@ func (rf *Raft) AppendEntries(request *AppendEntriesArgs, response *AppendEntrie
 
         //if RPC request or response contains term T > currentTerm:
         //set currentTerm = T, convert to follower
-        DPrintf("[AppendEntries] me:%d changeToFollower <- {%v, %v} response:%v log_is_less:%v log_dismatch:%v", rf.me, request.Term, request.LeaderId, response, log_is_less, log_dismatch)
+        DPrintf("[AppendEntries] me:%d changeToFollower <- %v, %v response:%v log_is_less:%v log_dismatch:%v", rf.me, request.Term, request.LeaderId, response, log_is_less, log_dismatch)
         rf.PushChangeToFollower(request.Term, request.LeaderId, true)
     }
     DPrintf("[AppendEntries] me:%d currentTerm:%d votedFor:%d", rf.me, rf.CurrentTerm, rf.VotedFor)
