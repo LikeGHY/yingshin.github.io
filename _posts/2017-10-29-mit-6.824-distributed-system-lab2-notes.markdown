@@ -292,7 +292,7 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
     } else if rf.CurrentTerm < args.Term {
         reply.Term = args.Term
         reply.VoteGranted = true
-        DPrintf("[RequestVote] me:%d votedFor:%d VoteGranted:true", rf.me, rf.VotedFor)
+        //DPrintf("[RequestVote] me:%d votedFor:%d VoteGranted:true", rf.me, rf.VotedFor)
     } else {
         reply.Term = rf.CurrentTerm
         reply.VoteGranted = false
