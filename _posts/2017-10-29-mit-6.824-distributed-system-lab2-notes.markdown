@@ -80,7 +80,7 @@ func TestInitialElection2A(t *testing.T) {
 
 2C的实现上，从`Figure 2`可以清晰的看到需要持久化什么数据，因此在要修改这些数据前持久化即可。注意一个原则是
 
-> Updated on stable storage before responding to RPCs
+"Updated on stable storage before responding to RPCs"
 
 实现上根据测试用例逐步推进，例如2A的实现里先不用考虑论文里提到的`Election restrction`。同时测试会越来越严格，对一些`corner case`也都能覆盖到（测试使用了很多随机sleep/disconnect/latency等行为，因此需要多次运行验证）。
 
@@ -200,7 +200,8 @@ Leader的主要任务：
 
 注：
 + leader初始化nextIndex统一为自身的len(logs)
-> When a leader first comes to power, it initializes all nextIndex values to the index just after the last one in tis log.
+
+"When a leader first comes to power, it initializes all nextIndex values to the index just after the last one in tis log."
 
 + 在我的实现里，使用matchIndex[rf.me]替代了lastApplied
 
