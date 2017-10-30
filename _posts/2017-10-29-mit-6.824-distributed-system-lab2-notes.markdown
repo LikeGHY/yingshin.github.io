@@ -50,7 +50,7 @@ Raft是解决多个实例上的日志一致性算法，在Raft论文里分为了
 
 测试程序位于`test_test.go`，例如第一个测试程序`TestInitialElection2A`
 
-```
+```go
 func TestInitialElection2A(t *testing.T) {
     servers := 3
     //调用Make启动servers个Raft*
@@ -110,7 +110,7 @@ Follower的实现上要额外注意timer何时更新：
 
 当收到的RequestVote或者AppendEntries里包含的term，<=自身的currentTerm时，不要重置time-out timer，保证及时time out以转变为Candidate。
 
-```
+```go
 func (rf* Raft) BeFollower() {
     DPrintf("[BeFollower] me:%d before for looooooooop", rf.me)
     rf.role = follower
@@ -147,7 +147,7 @@ func (rf* Raft) BeFollower() {
 
 ### 3.4 Candidate
 
-**Candidate**是一个中间角色，当Follower time out后转变为Follower角色，参与选举。
+**Candidate**是一个中间角色，当Follower time out后转变为Candidate角色，参与选举。
 
 主要关注三种情况：
 
@@ -157,7 +157,7 @@ func (rf* Raft) BeFollower() {
 
 注：`StartElection`即发起选举。
 
-```
+```go
 func (rf *Raft) BeCandidate() {
     DPrintf("[BeCandidate] me:%v begin.", rf.me)
     rf.role = candidate
@@ -204,7 +204,7 @@ Leader的主要任务：
 
 + 在我的实现里，使用matchIndex[rf.me]替代了lastApplied
 
-```
+```go
 func (rf *Raft) BeLeader() {
     //异步避免 AE/RV里get lock后尝试push channel
     //而这里尝试getlock后才pop channel
@@ -317,7 +317,7 @@ AppendEtries的实现要更加复杂一些。
 注：
 论文里提到了一些log inconsistencies后的优化方法，以保证尽快与leader的log一致，但是认为这个优化不一定需要。在lab2里需要实现这点。因此我们的AppendEntries RPC的Result跟Figure2相比，增加了两个参数
 
-```
+```go
 type AppendEntriesReply struct {
     //2A
     Term int
@@ -330,7 +330,7 @@ type AppendEntriesReply struct {
 
 AppendEntries RPC的实现：
 
-```
+```go
 func (rf *Raft) AppendEntries(request *AppendEntriesArgs, response *AppendEntriesReply) {
     rf.mu.Lock()
     defer rf.mu.Unlock()
@@ -394,7 +394,7 @@ func (rf *Raft) AppendEntries(request *AppendEntriesArgs, response *AppendEntrie
 
 注意调用了`NotifyApplyCh`来push数据到ApplyMsg
 
-```
+```go
 func (rf *Raft) NotifyApplyCh(last_commit int) {
     commitIndex := rf.commitIndex
     //持久化，注意这里不判断commitIndex != last_commit才persist
@@ -420,7 +420,7 @@ func (rf *Raft) NotifyApplyCh(last_commit int) {
 
 + 并行发送LogEntry的注意点：
 
-```
+```go
 go rf.SendLogEntryToAllServer
 
 func SendLogEntryToAllServer:
@@ -434,7 +434,7 @@ func SendLogEntryToAllServer:
 
 例如这样的写法会导致deadlock
 
-```
+```go
 //routine-1
 rf.mu.Lock()
 defer rf.mu.Unlock()
@@ -455,7 +455,7 @@ select {
 
 最开始这么写，以为`defer`跟C++里的`scoped_ptr`是相同的，退出作用域时生效。后来才发现是函数return时执行。
 
-```
+```go
 {
     rf.mu.Lock()
     defer rf.mu.Unlock()
@@ -469,3 +469,36 @@ select {
 + ApplyMsg的作用
 
 在2B开始实现`log replication`后，需要及时更新到`ApplyMsg`，主要用于`config.go`里获取该`Raft`实例已经commit的日志。不直接取`log[]`的原因是为了检测：对同一index，是否在不同时刻commit了不同的数据。
+
++ RPC参数大写
+
+虽然从一开始就注意到了这点：
+
+> Go RPC sends only struct fields whose names start with capital letters. Sub-structures must also have capitalized field names (e.g. fields of log records in an array). Forgetting to capitalize field names sent by RPC is the single most frequent source of bugs in these labs.
+
+但是还是一不小心踩坑了，原因是即使是submessage，同样需要首字母大写。例如`AppendEntriesArgs`这么定义：
+
+```go
+//AppendEntries
+type AppendEntriesArgs struct {
+    //2A
+    Term int
+    LeaderId int
+
+    //2B
+    PrevLogIndex int
+    PrevLogTerm int
+    Entries []LogEntry
+    LeaderCommitIndex int
+}
+```
+
+那么`LogEntry`的各个成员需要首字母大写
+
+```go
+//LogEntry是AppendEntriesArgs的成员，因此需要大写首字母
+type LogEntry struct {
+    Command interface{}
+    Term int
+}
+```
