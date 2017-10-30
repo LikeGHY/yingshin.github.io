@@ -476,7 +476,7 @@ select {
 
 > Go RPC sends only struct fields whose names start with capital letters. Sub-structures must also have capitalized field names (e.g. fields of log records in an array). Forgetting to capitalize field names sent by RPC is the single most frequent source of bugs in these labs.
 
-但是还是一不小心踩坑了，原因是即使是submessage，同样需要首字母大写。例如`AppendEntriesArgs`这么定义：
+但是还是一不小心踩坑了，因为没有注意到Sub-structures。例如`AppendEntriesArgs`这么定义：
 
 ```go
 //AppendEntries
