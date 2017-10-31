@@ -15,29 +15,31 @@ tags: [Distributed mapreduce 6.824]
 
 ## 1. lab2介绍
 
-lab2分为了2A 2B 2C三个部分，对应的需要实现Raft里**Leader election/Log replication/Persist**部分。
+lab2分为了2A 2B 2C三个部分，对应的需要实现Raft里**Leader election**, **Log replication**, Persist**部分。
 
 相比lab1的难度高了许多，需要更多的考虑锁、线程以及一些race conditon，因为不再单纯的划分为master和worker，每个进程都在三种角色间转换。
 
 ## 2. Raft介绍
 
-Raft是解决多个实例上的日志一致性算法，在Raft论文里分为了`leader election`, `log replication`两部分，同时还介绍了snapshot以及集群实例数变更的方案。
+Raft是解决多个实例上的日志一致性算法，在Raft论文里分为了**leader election**, **log replication**两部分，同时还介绍了**snapshot**以及集群实例数变更的方案。
 
-本文主要借助MIT的6.824课程的lab2部分介绍`leader election`, `log replication`的实现。具体原理介绍、论文的解读会再下一篇笔记里分析。
+本文主要借助MIT的6.824课程的lab2部分介绍**leader election**, **log replication**的实现。具体原理介绍、论文的解读会再下一篇笔记里分析。
 
 我的实现代码放在了[github](https://github.com/yingshin/Distributed-Systems/blob/master/6.824/src/raft/raft.go)上。论文里一些重要的点都尽量添加到了注释里。
 
-每个测试运行3min左右，跑了1000次，有1次失败，其余pass。
+每个测试运行3min左右，跑了1000次，全部pass，测试脚本为[test.sh](https://github.com/yingshin/Distributed-Systems/blob/master/6.824/src/raft/test.sh)。
 
 ## 3. lab2实战
 
-尽管Raft确实相比Paxos在理解性上强了很多，但是完成lab2的各项测试在我看来依然不简单。在[student guide](https://thesquareplanet.com/blog/students-guide-to-raft/)部分给出的上手建议是这样的：
+尽管Raft确实相比Paxos在理解性上强了很多，但是完成lab2的各项测试在我看来依然不简单。
 
-| At first, you might be tempted to treat Figure 2 as sort of an informal guide; you read it once, and then start coding up an implementation that follows roughly what it says to do. Doing this, you will quickly get up and running with a mostly working Raft implementation. And then the problems start.
+在[student guide](https://thesquareplanet.com/blog/students-guide-to-raft/)部分给出的上手建议是这样的：
+
+>At first, you might be tempted to treat Figure 2 as sort of an informal guide; you read it once, and then start coding up an implementation that follows roughly what it says to do. Doing this, you will quickly get up and running with a mostly working Raft implementation. And then the problems start.
 
 个人建议同样是尽快首先按照自己的理解实现2A要求的部分，也就是`leader election`。读懂test，然后不断改进。
 
-整体上需要关注的是3个状态：leader candidate follower，以及两个RPC的实现:AppendEntries RequestVote。
+整体上，关注3个状态：leader candidate follower，以及两个RPC的实现:AppendEntries RequestVote。
 
 代码上，`type Raft struct`就是我们要实现的数据结构。需要严格按照Figure 2来实现。
 
@@ -45,8 +47,10 @@ Raft是解决多个实例上的日志一致性算法，在Raft论文里分为了
 
 ### 3.1 整体结构
 
-`Make`构造一个`Raft*`实例后返回。  
+`Make`构造一个`Raft*`实例后返回  
 `Start`由测试程序调用，传入新的`command`，也就是日志数据  
+`GetState`获取程序的term，role  
+`Kill`用于关闭这个实例，在lab里用来模仿实例退出  
 
 测试程序位于`test_test.go`，例如第一个测试程序`TestInitialElection2A`
 
@@ -82,14 +86,16 @@ func TestInitialElection2A(t *testing.T) {
 
 > Updated on stable storage before responding to RPCs
 
-实现上根据测试用例逐步推进，例如2A的实现里先不用考虑论文里提到的`Election restrction`。同时测试会越来越严格，对一些`corner case`也都能覆盖到（测试使用了很多随机sleep/disconnect/latency等行为，因此需要多次运行验证）。
+实现上根据测试用例逐步推进，例如2A的实现里先不用考虑论文里提到的`Election restrction`。
+
+同时测试会越来越严格，对一些`corner case`也都能覆盖到（测试使用了很多随机sleep/disconnect/latency等行为，因此需要多次运行验证）,这大概就是TDD :sweat_smile:。
 
 ### 3.2 Raft结构
 
 `Raft`一共有三种角色：
 
 1. **Leader**:负责与client交互，同步数据到其他实例。  
-2. **Follower**:leader的从属角色，不主动发起RPC，响应其他实例的RPC：leader选举，日志复制等。  
+2. **Follower**:leader的从属角色，不主动发起RPC，负责响应其他实例的RPC：leader选举，日志复制等。  
 3. **Candidate**:leader与follower的中间角色，如果follower一段时间内没有收到leader的心跳包则转为Candidate；如果Candidate获得大多数其他实例的选举投票，则转为leader。  
 
 每个`Raft`进程都可能在这三种角色间转换。
@@ -106,9 +112,9 @@ Follower的行为要简单些，主要关注两种情况：
 注：
 Follower的实现上要额外注意timer何时更新：
 
-**收到更高term的RPC，无论是RequestVote还是AppendEntries**
-
-当收到的RequestVote或者AppendEntries里包含的term，<=自身的currentTerm时，不要重置time-out timer，保证及时time out以转变为Candidate。
+1. Candidate发起Request-Vote，收到对方的reply后，如果发现reply.Term比自身term大，此时转为Follower。但是不应当重置timer  
+2. 收到RequestVote，如果request.Term比term大，则转为Follower。但是只有判断log inconsistency后，才决定投票给对方，这种条件下才能重置timer  
+3. 收到AppendEntries，如果request.Term比term大，才转为Follower。
 
 ```go
 func (rf* Raft) BeFollower() {
@@ -128,10 +134,10 @@ func (rf* Raft) BeFollower() {
                 return
             }
             rf.changeToFollowerDone <- true
-            if v.isLogEntry {
-                rf.followerTimeout.Reset(time.Duration(rf.ElectionTimeout()) * time.Millisecond)
+            if v.shouldResetTimer {
+                rf.timeout.Reset(time.Duration(rf.ElectionTimeout()) * time.Millisecond)
             }
-        case <- rf.followerTimeout.C:
+        case <- rf.timeout.C:
             //If a follower receives no communication over a period of time called the election timeout,
             //then it assumes thers is no viable leader and begins an election to choose a new leader.
             DPrintf("[BeFollower] me:%d timeout", rf.me)
@@ -143,16 +149,17 @@ func (rf* Raft) BeFollower() {
         }
     }
 }
+
 ```
 
 ### 3.4 Candidate
 
-**Candidate**是一个中间角色，当Follower time out后转变为Candidate角色，参与选举。
+**Candidate**是一个中间角色，当Follower time out后转变为Candidate角色，参与选举，如果选举成功则转为Leader。
 
 主要关注三种情况：
 
 1. 选举结果：胜出则转为leader
-2. 选举结果：超时则认为split vote,重新发起选举。
+2. 选举结果：超时则认为split vote，重新发起选举。
 3. 如果收到更高term的RPC，转为Follower。
 
 注：`StartElection`即发起选举。
@@ -164,6 +171,7 @@ func (rf *Raft) BeCandidate() {
     for {
         vote_ended := make(chan bool, len(rf.peers))
         go rf.StartElection(vote_ended)
+        rf.timeout.Reset(time.Duration(rf.ElectionTimeout()) * time.Millisecond)
 
         select {
         case v := <- rf.changeToFollower:
@@ -181,7 +189,7 @@ func (rf *Raft) BeCandidate() {
                 go rf.BeLeader()
                 return
             }
-        case <- time.After(time.Duration(rf.ElectionTimeout()) * time.Millisecond):
+        case <- rf.timeout.C:
             //If election timeout elapses:start new election
             DPrintf("[BeCandidate] election timeout, start new election. me:%v CurrentTerm:%v", rf.me, rf.CurrentTerm)
         }
@@ -254,14 +262,11 @@ func (rf *Raft) BeLeader() {
 
 在我看来，实现上最难的是两个RPC。因为RPC线程是我们无法控制的。
 
-`Figure2`从`Request`参数、`Response`参数、接收者的实现上都做了详细的说明。
-
-2A的测试实现时先不用考虑日志最新的问题。
-
 注意：
 
 1. 对于日志up-to-date的判断，先判断term，再判断长度。  
 2. 当收到更高term的RPC时，设置currentTerm并转为follower。这里也是对我来讲实现上比较复杂的地方，比如对于Candidate，为了更高效的选举完成，会使用currentTerm并行发送RequestVote到其他实例，这时候就需要避免使用修改后的currentTerm构造RequestVote的参数。作为一个noob goer，我额外使用了一个channel用来保证两个线程中间不会有其他线程获取锁。相关实现可以参考`PushChangeToFollower`函数。  
+3. 2A的测试实现时先不用考虑日志最新的问题。  
 
 ```go
 func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
@@ -300,8 +305,9 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
     //If RPC request or response contains term T > currentTerm,
     //set currentTerm = T, convert to follower
     if rf.CurrentTerm < args.Term {
-        DPrintf("[RequestVote] me:%d changeToFollower:%v, %v", rf.me, args.Term, args.CandidateId)
-        rf.PushChangeToFollower(args.Term, args.CandidateId, false)
+        var changeToFollower ChangeToFollower = ChangeToFollower{args.Term ,args.CandidateId, reply.VoteGranted}
+        DPrintf("[RequestVote] me:%d changeToFollower:%v", rf.me, changeToFollower)
+        rf.PushChangeToFollower(changeToFollower)
     }
 }
 ```
@@ -311,11 +317,11 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 AppendEtries的实现要更加复杂一些。
 
 复杂主要体现在两点：
-1. log inconsistencies的判断，follower的日志是可能比leader更多的，此时需要inconsistencies的判断是否响应该leader的日志。  
-2. 更新自身的commitIndex
+1. log inconsistencies的判断，follower的日志可能比leader更多，此时需要inconsistencies的判断如何响应该leader的日志  
+2. 更新自身的commitIndex  
 
 注：
-论文里提到了一些log inconsistencies后的优化方法，以保证尽快与leader的log一致，但是认为这个优化不一定需要。在lab2里需要实现这点。因此我们的AppendEntries RPC的Result跟Figure2相比，增加了两个参数
+论文里提到了一些log inconsistencies后的优化方法，以保证尽快与leader的log一致，但是认为这个优化不一定需要。在lab2里必须实现这点。因此我们的AppendEntries RPC的Result跟Figure2相比，增加了两个参数
 
 ```go
 type AppendEntriesReply struct {
@@ -385,8 +391,9 @@ func (rf *Raft) AppendEntries(request *AppendEntriesArgs, response *AppendEntrie
 
         //if RPC request or response contains term T > currentTerm:
         //set currentTerm = T, convert to follower
-        DPrintf("[AppendEntries] me:%d changeToFollower <- %v, %v response:%v log_is_less:%v log_dismatch:%v", rf.me, request.Term, request.LeaderId, response, log_is_less, log_dismatch)
-        rf.PushChangeToFollower(request.Term, request.LeaderId, true)
+        var changeToFollower ChangeToFollower = ChangeToFollower{request.Term, request.LeaderId, true}
+        DPrintf("[AppendEntries] me:%v changeToFollower:%v response:%v log_is_less:%v log_dismatch:%v", rf.me, changeToFollower, response, log_is_less, log_dismatch)
+        rf.PushChangeToFollower(changeToFollower)
     }
     DPrintf("[AppendEntries] me:%d currentTerm:%d votedFor:%d", rf.me, rf.CurrentTerm, rf.VotedFor)
 }
@@ -414,9 +421,11 @@ func (rf *Raft) NotifyApplyCh(last_commit int) {
 
 ## 4. 一些TIPS
 
-作为分布式系统的入门菜鸟一枚 + go的初学者，应该还有一些对论文理解不充分的地方。在实现过程中采用了很多trick的方案，经常压抑不住内心的洪荒之力想要重构之前的代码。不过由于时间原因，还是只好基于最初的版本，一点点的修改了出来。当然还是踩了一些坑的，这里分享一下，也欢迎留言讨论。
+作为分布式系统的入门菜鸟一枚 + go的初学者，应该还有一些对论文理解不充分的地方。
 
-+ 日志要清楚：因为进程可能在三种角色间转换，日志量会很大，可以参考下是否有更好的trace方式，我在每条日志里都会打印*rf.me*，通过`grep me:1`可以看到重点分析一个实例的日志。
+包括在实现过程中采用了很多trick的方案:shit:，经常压抑不住内心的洪荒之力想要重构之前的代码。不过由于时间原因，还是只好基于最初的版本，一点点的修改了出来。这里分享一下踩过的坑，也欢迎留言讨论。
+
++ 日志要清楚：因为进程可能在三种角色间转换，日志量会很大，可以参考下golang的包是否有更好的trace方式，我在每条日志里都会打印*rf.me*，通过`grep me:1`可以看到重点分析一个实例的日志。
 
 + 并行发送LogEntry的注意点：
 
@@ -451,7 +460,7 @@ select {
 }
 ```
 
-+ `defer`的作用
++ `defer`的生效时间
 
 最开始这么写，以为`defer`跟C++里的`scoped_ptr`是相同的，退出作用域时生效。后来才发现是函数return时执行。
 
