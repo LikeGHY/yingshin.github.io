@@ -143,3 +143,4 @@ JB :
 
 plugins:
   - jekyll-sitemap
+  - jemoji
