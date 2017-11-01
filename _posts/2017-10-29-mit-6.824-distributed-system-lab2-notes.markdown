@@ -15,7 +15,7 @@ tags: [Distributed mapreduce 6.824]
 
 ## 1. lab2介绍
 
-lab2分为了2A 2B 2C三个部分，对应的需要实现Raft里**Leader election**, **Log replication**, Persist**部分。
+lab2分为了2A 2B 2C三个部分，对应的需要实现Raft里**Leader election**, **Log replication**, **Persist**部分。
 
 相比lab1的难度高了许多，需要更多的考虑锁、线程以及一些race conditon，因为不再单纯的划分为master和worker，每个进程都在三种角色间转换。
 
@@ -37,13 +37,13 @@ Raft是解决多个实例上的日志一致性算法，在Raft论文里分为了
 
 >At first, you might be tempted to treat Figure 2 as sort of an informal guide; you read it once, and then start coding up an implementation that follows roughly what it says to do. Doing this, you will quickly get up and running with a mostly working Raft implementation. And then the problems start.
 
-个人建议同样是尽快首先按照自己的理解实现2A要求的部分，也就是`leader election`。读懂test，然后不断改进。
+个人建议同样是尽快首先按照自己的理解实现2A要求的部分，也就是**leader election**。读懂test，然后不断改进。
 
 整体上，关注3个状态：leader candidate follower，以及两个RPC的实现:AppendEntries RequestVote。
 
 代码上，`type Raft struct`就是我们要实现的数据结构。需要严格按照Figure 2来实现。
 
-其中2A 2B 2C分别需要实现`leader election`, `log replication`, `persist`部分。
+其中2A 2B 2C分别需要实现**leader election**, **log replication**, **persist**部分。
 
 ### 3.1 整体结构
 
@@ -423,7 +423,7 @@ func (rf *Raft) NotifyApplyCh(last_commit int) {
 
 ## 4. 一些TIPS
 
-作为分布式系统的入门菜鸟一枚 + go的初学者，应该还有一些对论文理解不充分的地方。
+作为分布式系统的入门菜鸟一枚 + go的初学者，应该还有一些对论文理解不充分的地方，而且相信即使`go test` 1000次也会有有些corner case没有测试到的情况。
 
 包括在实现过程中采用了很多trick的方案:shit:，经常压抑不住内心的洪荒之力想要重构之前的代码。不过由于时间原因，还是只好基于最初的版本，一点点的修改了出来。这里分享一下踩过的坑，也欢迎留言讨论。
 
@@ -461,6 +461,31 @@ select {
         ...
 }
 ```
+
+改变顺序，也不一定能解决问题
+
+```go
+//routine-1
+rf.mu.Lock()
+defer rf.mu.Unlock()
+
+rf.followerAppendEntries <- true
+
+//routine-2
+select {
+    case <- rf.followerAppendEntries:
+    ...
+}
+
+rf.mu.Lock()
+rf.mu.Unlock()
+```
+
+考虑这种情况：
+1. routine-1抢到锁，执行`rf.followerAppendEntries <- true`  
+2. routine-2触发条件`case <- rf.followerAppendEntries`，尝试抢锁  
+3. routine-1又执行到，抢到锁，执行`rf.followerAppendEntries <- true`，而2里需要先抢到锁才能返回继续触发`case <- rf.followerAppendEntries`  
+此时又出现了第一种写法的问题
 
 + `defer`的生效时间
 
@@ -513,3 +538,7 @@ type LogEntry struct {
     Term int
 }
 ```
+
++ RPC的顺序
+
+这方面需要注意的很多，比如server1在term=1时发送AppendEntries，term=3时再次选为leader发送AppendEntries，这两次可能都在term=3时收到，注意对应term=1的response应当忽略掉。
