@@ -181,6 +181,14 @@ numChildren = 2
 
 注意如果有子节点，需要使用`rmr`。
 
+注意上面的命令都可以使用非交互的方式，`-server host:port cmd args`
+
+例如
+
+```
+sh zkCli.sh -server xxx:2181 ls /
+```
+
 ### 3. 监视
 
 zkCli支持对znode添加监视点，通过help可以看到：

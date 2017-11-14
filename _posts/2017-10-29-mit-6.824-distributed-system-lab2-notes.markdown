@@ -116,7 +116,7 @@ Follower的实现上要额外注意timer何时更新：
 
 1. Candidate发起Request-Vote，收到对方的reply后，如果发现reply.Term比自身term大，此时转为Follower。但是不应当重置timer  
 2. 收到RequestVote，如果request.Term比term大，则转为Follower。但是只有判断log inconsistency后，才决定投票给对方，这种条件下才能重置timer  
-3. 收到AppendEntries，如果request.Term比term大，才转为Follower。
+3. 收到AppendEntries，如果request.Term比term大，才转为Follower，重置timer。  
 
 ```go
 func (rf* Raft) BeFollower() {
