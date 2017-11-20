@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>{{ page.title }}</title>
-        <meta name="viewport" content="width=device-width">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- <script src="http://code.jquery.com/jquery-latest.js"></script> -->
         <script src="/css/bootstrap/js/bootstrap.min.js"></script>
 
@@ -19,8 +19,8 @@
 
         <div class="container-fluid">
             <div class="row">
-            	<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-            	</div>
+                <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                </div>
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
                     <div class="page-header">
                         <h2>{{ page.title }}</h2>
@@ -35,9 +35,11 @@
             </div>
 
         </div>
-        
-            {% include previous_next_page.html %}
-    {% include share_comment.html %}
+        {% include previous_next_page.html %}
+    <!-- {% include share_comment.html %} -->
     </body>
 
+    <script type="text/javascript">
+$(".content img").addClass('img-responsive');
+    </script>
 </html>
