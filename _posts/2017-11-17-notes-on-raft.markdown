@@ -101,7 +101,7 @@ follower本身是被动的，不会主动发起RPC。
 
 角色关系的转换在Raft论文里非常清晰：
 
-![raft-role.png](/assets/images/raft-role.png)
+![raft-role.png](/assets/images/raft-role.png){:class="img-responsive"}
 
 ### 2.2 时间划分
 
@@ -115,7 +115,7 @@ follower本身是被动的，不会主动发起RPC。
 
 当然也有可能是这个follower自己网络除了问题，结果就是导致term一直自增，而其他实例term没有改变。也就是说，不同实例同一时刻认为的term是不同的，但是同一实例上，时间被划分为不同的term。
 
-![raft-term.png](/assets/images/raft-term.png)
+![raft-term.png](/assets/images/raft-term.png){:class="img-responsive"}
 
 ### 2.3 LogEntry
 
@@ -295,7 +295,7 @@ leader选举出后，开始负责与client通信：
 
 我们先直观看下log是怎么回事
 
-![raft-log-simple.png](/assets/images/raft-log-simple.png)
+![raft-log-simple.png](/assets/images/raft-log-simple.png){:class="img-responsive"}
 
 每个方格代表一个LogEntry，可以看到Log是由一个个LogEntry组成的，理想情况下所有实例上该数组都是一致的。
 
@@ -311,7 +311,7 @@ Log元素根据状态的不同，又分为未提交和已提交。只有已提�
 
 leader同步数据时，其他实例上的状态机可能是多种多样的。我们用Raft论文里的Figure7来说明下，相比上一张图，省略了Command。
 
-![raft-log.png](/assets/images/raft-log.png)
+![raft-log.png](/assets/images/raft-log.png){:class="img-responsive"}
 
 可以看到follower的情况各不相同：
 
@@ -546,7 +546,7 @@ of the leaders for all higher-numbered terms. §5.4
 
 解释下这张图：
 
-![raft-do-not-commit-entries-from-previous-terms.png](/assets/images/raft-do-not-commit-entries-from-previous-terms.png)
+![raft-do-not-commit-entries-from-previous-terms.png](/assets/images/raft-do-not-commit-entries-from-previous-terms.png){:class="img-responsive"}
 
 每个格子表示一个LogEntry，格子内数字为term值，最上面是Log的索引号。
 
