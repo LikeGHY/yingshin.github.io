@@ -41,6 +41,8 @@ slow disks, bad memory, misconfigured machines, flaky machines, etc.
 
 为了防止机器异常导致数据丢失，例如内存、硬盘数据，常用的方案就是多备份，也就是Replication，那么就会有一个新的问题：各备份实例上的数据如何保持一致。
 
+数据副本是分布式系统解决数据丢失异常的唯一手段。
+
 ### 1.2. Replicated state machines的一致性算法
 
 假定我们使用5台机器来备份，毫无疑问这5台机器上的数据需要一致：
