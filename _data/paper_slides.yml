@@ -1,0 +1,9 @@
+- title: In Search of an Understandable Consensus Algorithm
+  url: https://raft.github.io/raft.pdf
+  tag: raft
+  note: 鼎鼎大名的raft论文，文章按照Leader Election, Log Replication, Safety介绍了一致性算法，跟paxos做了对比，同时介绍了Cluster membership changes以及Log compaction.
+
+- title: MapReduce: Simplified Data Processing on Large Clusters
+  url: https://static.googleusercontent.com/media/research.google.com/zh-CN//archive/mapreduce-osdi04.pdf
+  tag: mapreduce
+  note: Jeffrey Dean and Sanjay Ghemawat的mr论文，非常详细的介绍了mr模型，包括模型是如何被提出来的，为什么定义了mapper/reducer两个用户接口，以及整体的数据处理流程，数据的准备、任务的分配，中间结果的存储以及容错。个人觉得最优秀的是从google众多的大数据计算里抽象出了mr这个模型。

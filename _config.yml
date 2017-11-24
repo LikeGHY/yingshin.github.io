@@ -24,7 +24,7 @@ author :
 home_path: /index.html
 books_path: /books.html
 about_path: /about.html
-thinking_path: /thinking.html
+paper_slides_path: /paper_slides.html
 # future: true
 
 paginate: 5

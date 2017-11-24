@@ -1,0 +1,14 @@
+---
+layout: post 
+title : What I'm Thinking.
+group: thinking
+---
+<h5>记录一些感慨 想法。</h5>
+<hr/>
+
+{% for paper_slide in site.data.paper_slides %}
+<a href={{ paper_slide.url }}>{{ paper_slide.title }} </a>
+<p><a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ paper_slide.tag }}-ref">{{ paper_slide.tag }}</a></p>
+<p>{{ paper_slide.note }}</p>
+<hr/>
+{% endfor %}
