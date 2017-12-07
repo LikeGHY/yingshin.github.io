@@ -105,9 +105,26 @@ __remove\_flags__: 若设置为true，表示解析后将flag以及flag对应的�
 
 我觉得是返回处理后的argv第一个非flag值的下标  
 
-注意如果使用`flagfile`传入flags配置是自动生效的。
+也可以在命令行传入`--flagfile`或者在程序里设置`flagfile`以解析文件中的flags。
 
-如果想要自己手动文件中解析flags可以使用`ReadFromFlagsFile`接口，不过该接口已经标明`DEPRECATED`，不建议使用。  
+```
+google::SetCommandLineOption("flagfile", "gflags_sample.flags");
+```
+
+`FLAGS_flagfile`更新后，会重新读取该文件并更新文件里的gflags。
+
+另外看过厂里很多代码使用`ReadFromFlagsFile`接口，不过该接口已经标明`DEPRECATED`，不建议使用。  
+
+```
+// These let you manually implement --flagfile functionality.
+// DEPRECATED.
+extern bool AppendFlagsIntoFile(const std::string& filename, const char* prog_name);
+extern bool ReadFromFlagsFile(const std::string& filename,
+                              const char* prog_name,
+                              bool errors_are_fatal);   // uses SET_FLAGS_VALUE
+```
+
+这几种方法可以同时使用以起到reload的效果，后者覆盖前者，如果后面调用的方法没有定义该flag，那么不影响前面方法已经解析出的value，类似于merge的效果。
 
 ### 5. 检查有效性
 
@@ -178,9 +195,34 @@ OUTPUT填充了对应的设置的值，如果一个flag未设置，那么OUTPUT�
 可以使用`SetVersionString` 和 SetUsageMessage() 来实现。  
 
 ### 9. 遍历所有的flags
+
 使用`extern void GetAllFlags(std::vector<CommandLineFlagInfo>* OUTPUT)`接口。  
 
 更多的使用接口，可以直接查看gflags/gflags.h。
 
-### 10. 参考资料：   
+### 10. 保留gflag
+
+gflags源码里有些保留的flag，不要重复定义
+
+```
+// Special flags, type 1: the 'recursive' flags.  They set another flag's val.
+DEFINE_string(flagfile,   "", "load flags from file");
+DEFINE_string(fromenv,    "", "set flags from the environment"
+                              " [use 'export FLAGS_flag1=value']");
+DEFINE_string(tryfromenv, "", "set flags from the environment if present");
+
+// Special flags, type 2: the 'parsing' flags.  They modify how we parse.
+DEFINE_string(undefok, "", "comma-separated list of flag names that it is okay to specify "
+                           "on the command line even if the program does not define a flag "
+                           "with that name.  IMPORTANT: flags in this list that have "
+                           "arguments MUST use the flag=value format");
+```
+
+否则会报错
+
+```
+multiple definition of `fLS::FLAGS_flagfile'
+```
+
+### 11. 参考资料：   
 [https://gflags.github.io/gflags/](https://gflags.github.io/gflags/)
