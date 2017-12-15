@@ -29,7 +29,7 @@ boost里unordered容器由集合(unordered_set)与映射(unordered_map)组成。
 
 这种差别本质上是底层数据结构的不同：rb tree vs hash table.
 
-本文主要介绍`boost::unordered_set boost::unordered_map`，使用上与`std::unordered_set std::unordered_map`几乎完全一致。
+本文主要介绍`boost::unordered_set boost::unordered_map`的常用接口，注意使用上与`std::unordered_set std::unordered_map`几乎完全一致。
 
 <!--more-->
 
