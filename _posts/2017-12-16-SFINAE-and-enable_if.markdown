@@ -108,8 +108,8 @@ struct foo {
 
 int main() {
     std::cout << std::boolalpha;
-    std::cout << has_typedef_iterator<int>::value << std::endl;//false
     std::cout << has_typedef_iterator<foo>::value << std::endl;//true
+    std::cout << has_typedef_iterator<int>::value << std::endl;//false
     std::cout << has_typedef_iterator<std::vector<int> >::value << std::endl;//true
 
     return 0;
