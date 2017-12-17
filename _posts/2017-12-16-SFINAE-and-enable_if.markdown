@@ -7,7 +7,25 @@ categories: [c/cpp]
 tags: [compiler, SFINAE]
 ---
 
-想写这篇文章主要是偶然看到很多代码使用[protobuf里的反射](http://izualzhy.cn/c/cpp/2016/04/22/protobuf-message-reflection)，例如`GetReflection/GetString/field/HasFeild`这些接口获取某个字段的值，例如logid，虽然pb里的反射实现上性能并没有带来明显的性能变化，不过一直在思考能否有更简洁的方案实现，比如直接调用`logid`这个方法。
+想写这篇文章主要是偶然看到很多代码使用[protobuf里的反射](http://izualzhy.cn/c/cpp/2016/04/22/protobuf-message-reflection)，例如使用`GetReflection/GetString/field/HasFeild`这些接口获取字段`common.logid`对应的value
+
+```
+    const google::protobuf::Descriptor* descriptor = message->GetDescriptor();
+    const google::protobuf::Reflection* reflection = message->GetReflection();
+    const google::protobuf::FieldDescriptor* common_field =
+        descriptor->FindFieldByName("common");
+    assert(common_field != NULL);
+
+    const google::protobuf::Message& common_message = reflection->GetMessage(*message, common_field);
+    const google::protobuf::Descriptor* common_descriptor = common_message.GetDescriptor();
+    const google::protobuf::Reflection* common_reflection = common_message.GetReflection();
+    const google::protobuf::FieldDescriptor* logid_field =
+        common_descriptor->FindFieldByName("logid");
+    assert(logid_field != NULL);
+    return common_reflection->GetString(common_message, logid_field);
+```
+
+虽然pb里的反射实现上性能并没有带来明显的性能变化，不过一直在思考能否有更简洁的方案实现，比如在不知道对象类型的情况下直接调用`logid`这个方法。
 
 而解决的方案就在于SFINAE.
 
@@ -102,13 +120,13 @@ int main() {
 
 如果T未定义iterator，例如int，由于SFINAE原则，适配第一个失败后编译器继续适配第二个并且成功，返回值为`no`。
 
-由于`yes no`的size不同，配合sizeof，我们就可以判断传入的类型是否定义了`iterator`。
+由于`yes no`被特意设计了不同的size，配合sizeof，我们就可以判断传入的类型是否定义了`iterator`。
 
 注意编译器有一个最优原则，比如`foo`同样适配于第二个`test`模板，但是第一个`test`优先级更高，因此编译器容易选择最优的第一个`test`模板，并不会报`ambiguous`。
 
 ### 2.2. 现代C++查看类是否定义了内嵌类型
 
-C++11的语法实现上要更简洁一些
+上面的功能，C++11的语法实现上要更简洁一些
 
 ```
 #include <iostream>
@@ -132,15 +150,15 @@ struct foo {
 
 int main() {
     std::cout << std::boolalpha;
-    std::cout << has_typedef_iterator<int>::value << std::endl;//false
     std::cout << has_typedef_iterator<foo>::value << std::endl;//true
+    std::cout << has_typedef_iterator<int>::value << std::endl;//false
     std::cout << has_typedef_iterator<std::vector<int> >::value << std::endl;//true
 
     return 0;
 }
 ```
 
-还有一些更加简洁的写法，需要更高级版本的编译器支持，具体可以参考附录里的wiki。
+还有一些更加简洁的写法，需要更高级版本的编译器支持，具体可以参考附录里wiki的内容。
 
 ### 2.3. 使用boost查看类是否定义了内嵌类型
 
@@ -195,9 +213,11 @@ int main() {
 
 ## 3. enable_if的作用
 
-`enable_if`的出现使得SFINAE使用上更加方便，而`enable_if`实现上也是使用了SFINAE。
+`enable_if`的出现使得SFINAE使用上更加方便，进一步扩展了上面`has_xxx is_xxx`的作用。
 
-boost与std里都有定义，因此接下来的例子可能都有用到。
+而`enable_if`实现上也是使用了SFINAE。
+
+boost与std里都有定义，接下来的例子可能都有用到。
 
 ### 3.1. cppreference的例子
 
@@ -265,7 +285,7 @@ test_enable_if.cpp:27:12: error: no type named ‘type’ in ‘struct std::enab
 
 **error: no type named ‘type’ in ‘struct std::enable_if<false, void>’**
 
-接下来我们看下`enable_if`的实现
+接下来我们看下`enable_if`的实现，就能找到这句编译失败提示的来源。
 
 ### 3.2. enable_if的实现
 
@@ -374,12 +394,12 @@ int main()
 }
 ```
 
-boost里type_traits还有例如`has_trival_copy has_virtual_detructor`等，具体可以参考boost官方文档[type_traits
+boost里type_traits还有例如`is_class has_trival_copy has_virtual_detructor`等，具体可以参考boost官方文档[type_traits
 一节](http://www.boost.org/doc/libs/1_65_1/libs/type_traits/doc/html/index.html)
 
 ## 4. 只在参数类有指定成员函数名定义的情况下调用该成员函数
 
-回到最开始的想法，假设我们希望只有传入的对象，有`logid`这个成员函数名时就调用logid，应该怎么做？
+回到最开始的想法，假设我们希望只有传入的对象，有`logid`这个成员函数时就调用logid，应该怎么做？
 
 ```
 #include <iostream>
