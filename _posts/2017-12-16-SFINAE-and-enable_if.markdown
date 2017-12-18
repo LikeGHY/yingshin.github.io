@@ -25,7 +25,7 @@ tags: [compiler, SFINAE]
     return common_reflection->GetString(common_message, logid_field);
 ```
 
-虽然pb里的反射实现上性能并没有带来明显的性能变化，不过一直在思考能否有更简洁的方案实现，比如在不知道对象类型的情况下直接调用`logid`这个方法。
+虽然pb里的反射实现上性能并没有明显降低，不过一直在思考能否有更简洁的方案实现，比如在不知道对象类型的情况下直接调用`logid`这个方法。
 
 而解决的方案就在于SFINAE.
 
@@ -61,7 +61,7 @@ int main() {
 }
 ```
 
-f<int>在适配version-1时会引发一个`template argument deduction/substitution failed`，因为没有`nested type: foo`，但是通过version-2可以实例化出一个f<int>来。
+`f<int>`在适配version-1时因为没有`nested type: foo`，会引发一个`template argument deduction/substitution failed`，但是通过version-2可以实例化出一个`f<int>`来。
 
 nm可以看到bin文件里的符号名
 
@@ -78,7 +78,7 @@ SFINAE原则最开始被设计出来，是应用于上面C++模板实例化的�
 
 ### 2.1. 查看类是否定义了内嵌类型
 
-例如我们想查看类是否有`iterator`
+例如我们想查看类T是否有`T::iterator`这个类型
 
 ```
 #include <iostream>
@@ -116,7 +116,7 @@ int main() {
 }
 ```
 
-如果T定义了nested type:iterator，例如foo,std::vector<...>，那么会适配第一个`test`模板函数，通过传入`nullptr`我们可以省略了构造一个对象的过程，返回值为`yes`。
+如果T定义了内嵌类型(nested type):iterator，例如`foo,std::vector<...>`，那么会适配第一个`test`模板函数，通过传入`nullptr`我们可以省略了构造一个对象的过程，返回值为`yes`。
 
 如果T未定义iterator，例如int，由于SFINAE原则，适配第一个失败后编译器继续适配第二个并且成功，返回值为`no`。
 
@@ -207,7 +207,7 @@ int main() {
         << has_member_function_foo<Foo, void>::value << std::endl
         << has_member_function_bar<Bar, void>::value << std::endl;
 
-        return 0;
+    return 0;
 }
 ```
 
@@ -250,10 +250,10 @@ int main() {
 }
 ```
 
-上面代表了两种enable_if的惯用方法：
+上面代表了enable_if的两种惯用方法：
 
 1. 返回值类型使用enable_if  
-2. 模板参数额外指定一个默认的参数typename std::enable_if<...>::type  
+2. 模板参数额外指定一个默认的参数class = typename std::enable_if<...>::type  
 
 推荐使用第一种，更方便些。
 
@@ -433,8 +433,8 @@ int main() {
     std::cout << has_member_function_logid<zoo, void>::value << std::endl;//true
     std::cout << has_member_function_logid<zoo, int>::value << std::endl;//false
 
-    dohana(foo());
-    dohana(zoo());
+    dohana(foo());//foo
+    dohana(zoo());//zoo
     //compiler error:error: no type named ‘type’ in ‘struct std::enable_if<false, void>’
     // dohana(bar());
     return 0;
