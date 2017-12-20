@@ -1,6 +1,18 @@
 <br/>
 <br/>
-<!-- UY BEGIN -->
-<div id="uyan_frame"></div>
-<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2141675"></script>
-<!-- UY END -->
+
+<div id="container"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+  <!-- id: '页面 ID', // 可选。默认为 location.href -->
+  owner: 'yingshin',
+  repo: 'yingshin.github.io',
+  oauth: {
+    client_id: '2112a10696f1d2eb2f90',
+    client_secret: 'cdb130b2bde2c527e97f34b31c0f6ec94dbb9ab2',
+  },
+})
+gitment.render('container')
+</script>
