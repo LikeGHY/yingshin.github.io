@@ -7,7 +7,7 @@ categories: [c/cpp]
 tags: [boost, bimap]
 ---
 
-在使用mysql时我们经常有需求对不止一列建立索引，例如我们的student表，既可能按照`id`查找，也可能按照`name`查找。
+在使用mysql时我们经常有需求对不止一列建立索引，例如对于student表，既可能按照`id`查找，也可能按照`name`查找。
 
 这种持久化存储的需求，在内存对象的使用中也经常遇到，现有的数据结构`boost::bimap`可以用于这个场景。
 
@@ -164,7 +164,30 @@ bimap里container的类型很多
 
 `boost::bimap`在引入不同类型的container后，组件变得非常复杂。在实际应用时，可以灵活使用，我使用的也并不全面，经验不多。本文大部分也是参考的[Boost程序库完全开发指南](https://book.douban.com/subject/26320630/)一文，有兴趣的读者建议深入阅读下。
 
-## 5. 参考
+## 5. 一个使用的例子
+
+回到我们最开始的关于students表的使用场景，看下`bimap`如何有效的基于`id` or `name`为key的操作。
+
+```
+    boost::bimap<boost::bimaps::tagged<int, struct id>,
+        boost::bimaps::multiset_of<boost::bimaps::tagged< std::string, struct name> > > students;
+
+    int student_id = 1;
+    students.by<id>().insert(std::make_pair(student_id++, "Jeff"));
+    students.by<id>().insert(std::make_pair(student_id++, "Tom"));
+    students.by<name>().insert(std::make_pair("Ying", student_id++));
+    students.by<name>().insert(std::make_pair("Shabby", student_id++));
+    students.by<name>().insert(std::make_pair("Tom", student_id++));
+
+    for (const auto& iter : students) {
+        std::cout << iter.left << "->" << iter.right << std::endl;
+    }
+
+    std::cout << students.by<id>().find(3)->second << std::endl;//Ying
+    std::cout << students.by<name>().count("Tom") << std::endl;//2
+```
+
+## 6. 参考
 
 1. [Boost程序库完全开发指南](https://book.douban.com/subject/26320630/)  
 2. [Boost.Bimap](https://theboostcpplibraries.com/boost.bimap)  
