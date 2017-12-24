@@ -1,17 +1,16 @@
+
 - name: 湖畔
-  cover: https://img3.doubanio.com/lpic/s28392572.jpg
+  cover: https://img1.doubanio.com/lpic/s6077038.jpg
   start_date: 2017.12.17
   finish_date: 2017.12.21
   douban_link: https://book.douban.com/subject/1463256/
-  download_link:
   note: 书比较薄，点杯咖啡，可以一个下午倚在书店的书架下面读完。很真实的描写了社会变态的一面，作者的口气平静的如同这一弯湖水。法律与灵魂的制裁，究竟哪个先来？表面的平静与内里的混乱，究竟能持续多久？
 
 - name: MacTalk人生元编程
-  cover: https://img3.doubanio.com/lpic/s28409836.jpg
+  cover: https://img1.doubanio.com/lpic/s6077038.jpg
   start_date: 2017.5.17
   finish_date: 2017.5.26
   douban_link: https://book.douban.com/subject/1463256/
-  download_link:
   note: 在多看工作的时候就听说这本书了，最近公司开发的本换成了mac，就赶紧读了一下。内容大多短小精悍，有收获。特别是各种tips，还有作者的各种扯淡。但是怎么说呢，扯淡的部分很快就看完了。
 
 - name: 大明王朝的七张面孔
@@ -19,7 +18,6 @@
   start_date: 2017.4.9
   finish_date: 2017.5.31
   douban_link: https://book.douban.com/subject/1463256/
-  download_link:
   note: 跟《万历十五年》相似，讲了七个人：朱元璋、朱棣、海瑞、魏忠贤、张献忠、吴三桂、郑成功。评论里有人说作者引据太具有个人色彩，对读者而言，我想就是要看到不一样的历史证据和观点，这大概就是为什么古人说要读万卷书的原因了。
 
 - name: 恶意
@@ -27,39 +25,32 @@
   start_date: 2017.2.6
   finish_date: 2017.4.16
   douban_link: https://book.douban.com/subject/26877752/
-  download_link:
   note: 鲁迅说，不惮以最坏的恶意来揣测国人。看了这本书，觉得日本是同样的。本书最大的特点是一波三折。
-  
+
 - name: 三十六大
   cover: https://img1.doubanio.com/lpic/s24430317.jpg
   start_date: 2016.12.3
   finish_date: 2016.12.17
   douban_link: https://book.douban.com/subject/20278799/
-  download_link:
   note: 一般，还是三部曲好看。原来金线一词是从这里出来的。
-  
+
 - name: 编写可读代码的艺术
   cover: https://img3.doubanio.com/lpic/s10328621.jpg
   start_date: 2016.11.9
   finish_date: 2016.11.23
   douban_link: https://book.douban.com/subject/10797189/
-  download_link:
   note: 工作第二年有人推荐看了这本书的英文版，在厂子里看了很多的代码，反过来再看又有一些新的心得。
 
 - name: GitHub入门与实践
-  cover: https://img3.doubanio.com/lpic/s28147406.jpg
+  cover: https://img1.doubanio.com/lpic/s29237757.jpg
   start_date: 2016.10.19
-  finish_date:
   douban_link: https://book.douban.com/subject/26462816/
-  download_link:
-  note:
 
 - name: 最后一个道士
   cover: https://img1.doubanio.com/lpic/s23139097.jpg
   start_date: 2016.10.7
   finish_date: 2016.11.2
   douban_link: https://book.douban.com/subject/19987171/
-  download_link:
   note: 在多看上看完了第三部，不清楚后面还有没，前面比较精彩。
 
 - name: ZooKeeper:分布式过程协同技术详解
@@ -67,39 +58,29 @@
   start_date: 2016.9.10
   finish_date: 2016.10.7
   douban_link: https://book.douban.com/subject/26766807/
-  download_link:
-  note:
 
 - name: 围城
   cover: https://img3.doubanio.com/lpic/s6941453.jpg
   start_date: 2016.9.11
-  finish_date:
   douban_link: https://book.douban.com/subject/1855364/
-  download_link:
-  note:
 
 - name: 秘密
   cover: https://img3.doubanio.com/lpic/s27185093.jpg
   start_date: 2016.9.13
   finish_date: 2016.9.17
   douban_link: https://book.douban.com/subject/25720041/
-  download_link:
   note: 东野的小说读的越多，越来越发现情感为主题，解谜只是部分。
 
 - name: Python网络编程攻略
-  cover: https://img3.doubanio.com/mpic/s28480936.jpg
+  cover: https://img3.doubanio.com/lpic/s28480936.jpg
   start_date: 2016.8.15
-  finish_date:
   douban_link: https://book.douban.com/subject/26230343/
-  download_link:
-  note:
 
 - name: 大漠苍狼
-  cover: https://img1.doubanio.com/mpic/s4547388.jpg
+  cover: https://img1.doubanio.com/lpic/s4547388.jpg
   start_date: 2016.7.8
   finish_date: 2016.7.9
   douban_link: https://book.douban.com/subject/5375571/
-  download_link:
   note: 号称是填坑了的一本书，但是感觉还是草草结尾。
 
 - name: 中国近代史
@@ -107,23 +88,18 @@
   start_date: 2016.7.7
   finish_date: 2016.8.31
   douban_link: https://book.douban.com/subject/2376486/
-  download_link:
   note: 历史是多面的，但是了解历史总是要从某一面开始。这本书展开了很多事情、人物的某一面。虽然无法赞同作者的很多观点，但是值得思考。比较有感触的是相比过去的大学生，现在所谓的名牌大学在灌输的更多的是精英主义、利己主义。
 
 - name: Linux Shell脚本攻略
   cover: https://img1.doubanio.com/lpic/s22702207.jpg
   start_date: 2016.6.13
-  finish_date:
   douban_link: https://book.douban.com/subject/6889456/
-  download_link:
-  note:
 
 - name: 英雄无泪
   cover: https://img3.doubanio.com/lpic/s27045485.jpg
   start_date: 2016.6.8
   finish_date: 2016.6.13
   douban_link: https://book.douban.com/subject/24760707/
-  download_link:
   note: 感觉内容太简单了，少数的几个人物串起了整个线条。
 
 - name: 卑鄙的圣人：曹操
@@ -131,179 +107,150 @@
   start_date: 2016.2.26
   finish_date: 2016.6.8
   douban_link: https://book.douban.com/subject/6533206/
-  download_link:
   note: 非常好看！读后感发表在了<a href="http://yingshin.github.io/life/2016/07/09/caocao">这里</a>
 
 - name: 肉蒲团
-  cover:
   start_date: 2016.2.6
   finish_date: 2016.2.20
-  douban_link:
-  download_link:
   note: 非常不错的一本书，一定要读！在肉欲情色中，讲一番道理。看似荒淫无耻，实际上发人深省。
 
 - name: 流行蝴蝶剑
-  cover: http://img3.douban.com/lpic/s27008990.jpg
+  cover: https://img1.doubanio.com/lpic/s28026827.jpg
   start_date: 2016.2.6
   finish_date: 2016.2.12
   douban_link: http://book.douban.com/subject/24871623/
-  download_link:
   note: 看着感觉跟小时候的莲花争霸的人物有很多重叠，查了下果然是从这部小说改编的。整体不如陆小凤、楚留香系列的好看，但是推荐看一遍。
 
 - name: 古董局中局 4
-  cover: http://img3.doubanio.com/mpic/s28340239.jpg
+  cover: https://img1.doubanio.com/lpic/s28340239.jpg
   start_date: 2016.2.3
   finish_date: 2016.2.6
   douban_link: http://book.douban.com/subject/26650970/
-  download_link:
   note: 这一部主要冲着看下老朝奉是谁去的，整体比较平常的一个结局，但是好处是作者填上了坑，没有用一系列的难以填的坑来吊读者的胃口。
 
 - name: Linux多线程服务端编程
-  cover: http://img3.doubanio.com/mpic/s24522799.jpg
+  cover: https://img1.doubanio.com/lpic/s24522799.jpg
   start_date: 2016.2.1
-  finish_date:
   douban_link: http://book.douban.com/subject/20471211/
-  download_link:
-  note: 
 
 - name: 欢乐英雄
-  cover: http://img3.douban.com/lpic/s26723000.jpg
+  cover: https://img3.doubanio.com/lpic/s26723000.jpg
   start_date: 2016.1.15
   finish_date: 2016.1.23
   douban_link: http://book.douban.com/subject/24743902/
-  download_link:
   note: 英雄也可以是欢乐的，虽然我并没有总结出来他们为什么快乐，知足？武功高？单纯？还是其他？
 
 - name: 七星龙王
-  cover: http://img3.doubanio.com/mpic/s26722998.jpg
+  cover: https://img1.doubanio.com/lpic/s26722998.jpg
   start_date: 2016.1.11
   finish_date: 2015.1.15
   douban_link: http://book.douban.com/subject/24708300/
-  download_link:
-  note: 
 
 - name: 神探伽利略2预知梦
-  cover: http://img4.douban.com/mpic/s26250817.jpg
+  cover: https://img1.doubanio.com/lpic/s26250817.jpg
   start_date: 2015.11.26
   finish_date: 2015.12.3
   douban_link: http://book.douban.com/subject/22993089/
-  download_link:
   note: 感觉一般
 
 - name: 分身
-  cover: http://img4.douban.com/mpic/s4435059.jpg
+  cover: https://img1.doubanio.com/lpic/s4435059.jpg
   start_date: 2015.10.1
   finish_date: 2015.10.3
   douban_link: http://book.douban.com/subject/4753783/
-  download_link:
   note: 关于克隆的思考，慢慢的觉得东野并不是我一直理解的推理小说作家，读多了觉得这个人对社会的思考很多。这本书里面，克隆人未必取得了成功，但至少不是孤独的，这点是最重要的。
 
 - name: 悬疑小说10年精选（下）
-  cover: http://img3.douban.com/mpic/s4524512.jpg
+  cover: https://img3.doubanio.com/lpic/s4524512.jpg
   start_date: 2015.8
   finish_date: 2015.9.9
   douban_link: http://book.douban.com/subject/5063874/
-  download_link:
   note: 最开始以为是许多精彩小故事的集合，看完觉得一般，打发时间可以看下。
 
 - name: 剑毒梅香
-  cover: http://img3.douban.com/mpic/s10203234.jpg
+  cover: https://img3.doubanio.com/lpic/s10203234.jpg
   start_date: 2015.7.12
   finish_date: 2015.8.11
   douban_link: http://book.douban.com/subject/1088777/
-  download_link:
   note: 古龙前期作品，各种奇遇，主人公宽厚仁慈人品完美，不推荐。
 
 - name: 神探伽利略
-  cover: http://img3.douban.com/mpic/s20799003.jpg
+  cover: https://img3.doubanio.com/lpic/s20799003.jpg
   start_date: 2015.7
   finish_date: 2015.7.11
   douban_link: http://book.douban.com/subject/19951185/
-  download_link:
   note: 一些小的推理故事，一般
 
 - name: 信
-  cover: http://img4.douban.com/mpic/s4514129.jpg
+  cover: https://img1.doubanio.com/lpic/s4514129.jpg
   start_date: 2015.6.27
   finish_date: 2015.6.28
   douban_link: http://book.douban.com/subject/3890174/
-  download_link:
-  note: 
 
 - name: 我是个算命先生
-  cover: http://img3.douban.com/mpic/s8993763.jpg
+  cover: https://img3.doubanio.com/lpic/s8993763.jpg
   start_date: 2015.5.16
   finish_date: 2015.6
   douban_link: http://book.douban.com/subject/10506822/
-  download_link:
   note: 很一般的一本书
 
 - name: 九州缥缈录-辰月之征
-  cover: http://img5.douban.com/lpic/s2781187.jpg
+  cover: https://img1.doubanio.com/lpic/s2781187.jpg
   start_date: 2015.5.1
   finish_date: 2015.5.9
   douban_link: http://book.douban.com/subject/2286313/
-  download_link:
   note: 五一假期偷闲重读一遍,想到了大学那个爱读奇幻的年纪,想到自己也曾经想写小说.
 
 - name: 时间之墟
-  cover: http://img5.douban.com/mpic/s27127637.jpg
+  cover: https://img1.doubanio.com/lpic/s27127637.jpg
   start_date: 2015.3.15
   finish_date: 2015.3.30
   douban_link: http://book.douban.com/subject/24935042/
-  download_link:
   note: 记得从买第一本科幻世界开始已经十几年的时间了吧，岁月如梭，青葱不再。看完了有时候觉得这不是一本科幻，如果所有人类都只能在一天里轮回，只有记忆保留，会发生怎么样的集权和暴力？乌合之众里的那些疯狂的心理是否成为现实？如果科学无法继续，又怎么去揭示一切背后的秘密呢？
 
 - name: 三国配角演义
-  cover: http://img3.douban.com/mpic/s25996301.jpg
+  cover: https://img3.doubanio.com/lpic/s25996301.jpg
   start_date: 2015.3.4
   finish_date: 2015.3.8
   douban_link: http://book.douban.com/subject/20470934/
-  download_link:
   note: 这种从细节出发进而推出阴谋论的，个人比较喜欢第一人称的叙述。有种徐徐展开、入情入理的感觉，至于一步步的推导，对于我这种理科学生，那种诗词传记透露出来的微妙的语境，很多难以理解。
 
 - name: 白玉老虎
-  cover: http://img3.douban.com/lpic/s27037124.jpg
+  cover: https://img3.doubanio.com/lpic/s27037124.jpg
   start_date: 2015.2.24
   finish_date: 2015.3.1
   douban_link: http://book.douban.com/subject/24760712/
-  download_link:
   note: 看到大半时就觉得这本书不会有结局了，事实如此，算是半部经典。读这本小说，又重新找到了当年读古龙的感觉，每个人物都仿佛值得一读，都有自己的故事，无论大风堂、霹雳堂、唐家堡，代表的都是一种势力，没有正邪，每个人都只是一颗棋子，这本书写的就是这些棋子的爱恨情仇！
 
 - name: 血鹦鹉
-  cover: http://img3.douban.com/lpic/s26723001.jpg
+  cover: https://img3.doubanio.com/lpic/s26723001.jpg
   start_date: 2015.2.16
   finish_date: 2015.2.24
   douban_link: http://book.douban.com/subject/24708485/
-  download_link:
   note: 看着无趣，感觉不像古龙的风格，后来查了下是代笔
 
 - name: 门岭怪谈
-  cover: http://img3.douban.com/mpic/s6912864.jpg
+  cover: https://img3.doubanio.com/lpic/s6912864.jpg
   start_date: 2015.2
   finish_date: 2015.2
   douban_link: http://book.douban.com/subject/6731600/
-  download_link:
-  note: 比较无聊 
+  note: 比较无聊
 
 - name: 金棺陵兽
-  cover: http://img3.douban.com/mpic/s27034153.jpg
+  cover: https://img3.doubanio.com/lpic/s28020276.jpg
   start_date: 2015.2
   finish_date: 2015.2
   douban_link: http://book.douban.com/subject/25696097/
-  download_link:
-  note: 
 
 - name: 古董局中局3
-  cover: http://img5.douban.com/mpic/s27963366.jpg
+  cover: https://img3.doubanio.com/lpic/s27963366.jpg
   start_date: 2015.1.15
   finish_date: 2015.1.23
   douban_link: http://book.douban.com/subject/26261240/
-  download_link:
   note: 小说很精彩，相比情节，各种古董轶事更加吸引人一些
 
 - name: 地狱
-  cover: http://img3.douban.com/mpic/s27173855.jpg
+  cover: https://img3.doubanio.com/lpic/s27173855.jpg
   start_date: 2014.1.15
   finish_date: 2014.2.27
   douban_link: http://book.douban.com/subject/25756947/
@@ -311,147 +258,123 @@
   note: 不如前几本好看
 
 - name: 毛泽东传
-  cover: http://img5.douban.com/mpic/s4458248.jpg
+  cover: https://img1.doubanio.com/lpic/s4458248.jpg
   start_date: 2013
   finish_date: 2014.3.9
   douban_link: http://book.douban.com/subject/5246800/
-  download_link: 
-  note: 
 
 - name: 古董局中局2
-  cover: http://img5.douban.com/lpic/s27034669.jpg
+  cover: https://img1.doubanio.com/lpic/s27034669.jpg
   start_date: 2014.3.17
   finish_date: 2014.3.23
   douban_link: http://book.douban.com/subject/24882288/
-  download_link: 
-  note: 
 
 - name: Understanding and Using C Pointers
-  cover: http://img5.douban.com/lpic/s26544167.jpg
+  cover: https://img1.doubanio.com/lpic/s26544167.jpg
   start_date: 2014.3.26
   finish_date: 2014.8.2
-  douban_link: http://book.douban.com/subject/20491037/a
-  download_link:
+  douban_link: https://book.douban.com/subject/20491037/
   note: 看完的第二本英文书，主要对英语提升帮助很多，知识点主要是温习的作用。
 
 - name: 曾国藩传
-  cover: http://img5.douban.com/lpic/s6796828.jpg
+  cover: https://img1.doubanio.com/lpic/s6796828.jpg
   start_date: 2014.5.28
   finish_date: 2014.6.10
   douban_link: http://book.douban.com/subject/6525389/
-  download_link:
-  note:
 
 - name: 中国式骗局大全
   # cover: http://img5.douban.com/lpic/s6796828.jpg
   start_date: 2014.6.24
   finish_date: 2014.6.27
   # douban_link: http://book.douban.com/subject/6525389/
-  download_link:
   note: 天涯连载小说，好像尚未出版，找了本盗版的txt来读。个人感觉非常一般，很容易猜到，文笔又不算精彩。不过作者列了一些书单，决定找几本看看。
 
 - name: 嫌疑犯x的献身
-  cover: http://img3.douban.com/mpic/s3254244.jpg
+  cover: https://img3.doubanio.com/lpic/s3254244.jpg
   start_date: 2014.6.30
   finish_date: 2014.7.2
   douban_link: http://book.douban.com/subject/3211779/
-  download_link:
   note: 看到对石神的描述联想到题目的时候，就想到献身的是谁了，悲观的英雄主义，理想和爱情，信仰，智慧，价值观的一场对决。
 
 - name: 活着活着就老了
-  cover: http://img5.douban.com/mpic/s24438387.jpg
+  cover: https://img1.doubanio.com/lpic/s24438387.jpg
   start_date: 2014.7.3
   finish_date: 2015.1.13
   douban_link: http://book.douban.com/subject/20365787/
-  download_link:
-  note: 
 
 - name: 白夜行
-  cover: http://img5.douban.com/mpic/s24514468.jpg
+  cover: https://img1.doubanio.com/lpic/s29384019.jpg
   start_date: 2014.7.3
   finish_date: 2014.7.8
   douban_link: http://book.douban.com/subject/10554308/
-  download_link:
   note: 汤川没有现身，没有诡异的案件与缜密的推理，写的是案件之后人的感情。
 
 - name: 陆小凤传奇1金鹏王朝
-  cover: http://img3.douban.com/mpic/s26681971.jpg
+  cover: https://img3.doubanio.com/lpic/s26681971.jpg
   start_date: 2014.7.13
   finish_date: 2014.7.15
   douban_link: http://book.douban.com/subject/20516999/
-  download_link:
   note: 读古龙总有一种欲罢不能的感觉，即使是重读，仍然被吸引。
 
 - name: 陆小凤传奇2绣花大盗
-  cover: http://img3.douban.com/mpic/s26307052.jpg
+  cover: https://img3.doubanio.com/lpic/s26307052.jpg
   start_date: 2014.8.3
   finish_date: 2014.8.5
   douban_link: http://book.douban.com/subject/20516998/
-  download_link:
-  note: 
 
 - name: 陆小凤传奇3决战前后
-  cover: http://img3.douban.com/mpic/s26307053.jpg
+  cover: https://img3.doubanio.com/lpic/s26307053.jpg
   start_date: 2014.7.27
   finish_date: 2014.8.3
   douban_link: http://book.douban.com/subject/20516996/
-  download_link:
   note: 月圆之夜，紫禁之巅，一剑西来，天外飞仙。叶孤城VS西门吹雪!
 
 - name: 陆小凤传奇4银钩赌坊
-  cover: http://img3.douban.com/mpic/s26306511.jpg
+  cover: https://img3.doubanio.com/lpic/s26306511.jpg
   start_date: 2014.8.3
   finish_date: 2014.8.9
   douban_link: http://book.douban.com/subject/20516997/
-  download_link:
   note: 罗刹教，飞虎堂，玉罗刹，飞天玉虎！
 
 - name: 陆小凤传奇5幽灵山庄
-  cover: http://img3.douban.com/mpic/s26306525.jpg
+  cover: https://img3.doubanio.com/lpic/s26306525.jpg
   start_date: 2014.8.10
   finish_date: 2014.8.13
   douban_link: http://book.douban.com/subject/20516992/
-  download_link:
   note: 陆小凤终究还是败给了老刀把子，可惜人算不如天算。冥冥中的那股力量啊！
 
 - name: 陆小凤传奇6凤舞九天
-  cover: http://img3.douban.com/mpic/s26317045.jpg
+  cover: https://img3.doubanio.com/lpic/s26317045.jpg
   start_date: 2014.8.13
   finish_date: 2014.8.18
   douban_link: http://book.douban.com/subject/20516993/
-  download_link:
   note: 陆小凤碰上了宫九，以一种诡异的方式结束了战斗。相比古龙笔下其他的大侠，陆小凤武功更低，缺点更多，但更接近人，真实。
 
 - name: 陆小凤传奇7剑神一笑
-  cover:  http://img3.douban.com/mpic/s26589995.jpg
+  cover: https://img3.doubanio.com/lpic/s26589995.jpg
   start_date: 2014.8.19
   finish_date: 2014.9.2
   douban_link: http://book.douban.com/subject/20516994/
-  download_link:
   note: 陆小凤系列里最无趣的一本。
 
 - name: 高级Bash脚本编程指南
-  cover: http://img5.douban.com/mpic/s24938826.jpg
+  cover: https://img3.doubanio.com/lpic/s24938826.jpg
   start_date: 2014.8.3
   finish_date: 2015.3.13
   douban_link: http://book.douban.com/subject/3010746/
   download_link: http://teliute.org/linux/abs-3.9.1/index.html
-  note: 
 
 - name: 尸语者
-  cover: http://img5.douban.com/lpic/s20710799.jpg
+  cover: https://img1.doubanio.com/lpic/s20710799.jpg
   start_date: 2014.9.2
   finish_date: 2014.9.30
   douban_link: http://book.douban.com/subject/19950139/
-  download_link:
-  note: 
 
 - name: 九州·缥缈录V·一生之盟
-  cover: http://img3.douban.com/lpic/s3879732.jpg
+  cover: https://img3.doubanio.com/lpic/s3879732.jpg
   start_date: 2014.10.2
   finish_date: 2014.10.14
   douban_link: http://book.douban.com/subject/3851790/
-  download_link:
   note: 虽然是重看，依旧感觉到热血和震撼。有时候回想，向我这种人，如果回到那个冷兵器的时代，会成为一个武士，军事还是被遗忘的炮灰。这次看有些厌倦了作者许多年以后的口气。
 
 - name: 捉鬼这些年
@@ -459,37 +382,33 @@
   start_date: 2014.10.14
   finish_date: 2014.11.3
   douban_link: http://www.duokan.com/book/49210
-  download_link:
   note: 很多网络小说都是前面看着过瘾，吊人胃口。后面却往往因为作者挖的坑太深，胡乱潦草结局。PS:最近总再重新看之前看过的书，得注意下了。
 
 - name: 三体
-  cover: http://img5.douban.com/mpic/s2865028.jpg
+  cover: https://img1.doubanio.com/lpic/s2768378.jpg
   start_date: 2014.11.3
   finish_date: 2014.11.13
   douban_link: http://book.douban.com/subject/2567698/
-  download_link:
   note: 大气之后接着煽情，大刘的节奏总是这样。
 
 - name: Learn Python the Hard Way
-  cover: http://img3.douban.com/mpic/s27256920.jpg
+  cover: https://img3.doubanio.com/lpic/s28015604.jpg
   start_date: 2014.11.2
   finish_date: 2015.2.22
   douban_link: http://book.douban.com/subject/11941213/
-  download_link:
   note: 开始还行，后来感觉看不进去，可能比较适合入门吧。
 
 - name: 解忧杂货店
-  cover: http://img5.douban.com/mpic/s27284878.jpg
+  cover: https://img3.doubanio.com/lpic/s27264181.jpg
   start_date: 2014.11.15
   finish_date: 2015.3.4
   douban_link: http://book.douban.com/subject/25862578/
-  download_link:
   note: 非常精彩的一本书
 
 - name: SQL必知必会
-  cover: http://img5.douban.com/mpic/s2593426.jpg
+  cover: https://img3.doubanio.com/lpic/s2593426.jpg
   start_date: 2014.12.1
   finish_date: 2015.4.5
   douban_link: http://book.douban.com/subject/2124377/
-  download_link:
   note: 断断续续终于看完了，入门非常不错的一本书。值得一看！
+
