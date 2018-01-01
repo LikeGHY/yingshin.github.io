@@ -51,7 +51,33 @@ p{padding-left: 20px;}
 blockquote{border-left:3px solid #ccc;margin:1em 0.5em;padding-left:0.3em;}
 ul{list-style:circle;}
 
-
+table
+{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 12px;
+    background: #fff;
+    margin: 45px;
+    width: 480px;
+    border-collapse: collapse;
+    text-align: left;
+}
+th
+{
+    font-size: 14px;
+    font-weight: normal;
+    color: #039;
+    padding: 10px 8px;
+    border-bottom: 2px solid #6678b1;
+}
+td
+{
+    color: #669;
+    padding: 9px 8px 0px 8px;
+}
+tbody tr:hover td
+{
+    color: #009;
+}
 .l{float:left;}.r{float:right;}.c{clear:both;}
 .tac{text-align:center;}
 .fix{zoom:1;}
