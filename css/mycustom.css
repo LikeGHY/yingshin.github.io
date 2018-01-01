@@ -68,11 +68,13 @@ th
     color: #039;
     padding: 10px 8px;
     border-bottom: 2px solid #6678b1;
+    border: 1px solid #f5f5f5
 }
 td
 {
     color: #669;
     padding: 9px 8px 0px 8px;
+    border: 1px solid #f5f5f5
 }
 tbody tr:hover td
 {
