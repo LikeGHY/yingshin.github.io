@@ -443,7 +443,26 @@ int main() {
 
 这样我们就实现了在编译期间调用指定函数，而不是运行期间通过反射来做。
 
-## 5. 参考
+## 5. 更多应用
+
+实际上SFINAE在大型项目里非常常见，例如protobuf里的[type_traits.h](https://github.com/google/protobuf/blob/master/src/google/protobuf/stubs/type_traits.h)有大量使用:
+
+```
+# code in template_util.h
+typedef integral_constant<bool, true>  true_type;
+typedef integral_constant<bool, false> false_type;
+
+// is_pointer is false except for pointer types. A cv-qualified type (e.g.
+// "int* const", as opposed to "int const*") is cv-qualified if and only if
+// the underlying type is.
+template <class T> struct is_pointer : false_type { };
+template <class T> struct is_pointer<T*> : true_type { };
+template <class T> struct is_pointer<const T> : is_pointer<T> { };
+template <class T> struct is_pointer<volatile T> : is_pointer<T> { };
+template <class T> struct is_pointer<const volatile T> : is_pointer<T> { };
+```
+
+## 6. 参考
 
 1. [Substitution failure is not an error
 ](https://en.wikipedia.org/wiki/Substitution_failure_is_not_an_error)
