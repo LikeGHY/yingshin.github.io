@@ -104,7 +104,7 @@ void print(const boost::tuples::null_type&) {
 print(person);
 ```
 
-gdb看下`head taile`，结构更清楚些：
+gdb看下`head tail`，结构更清楚些：
 
 ```gdb
 (gdb) p person
@@ -156,7 +156,7 @@ $4 = 1
 
 可以看到通过boost::tie产生的临时对象修改元素0后，变量`company`发生了变化。
 
-boost::tie实际上是生成了一个`tuple<std::string&, ...>`的tuple类型，注意boost还提供了`boost::tuples::ignore`来忽略不需要的变量类型，类似于go里的`_`。
+这里boost::tie实际上是生成了一个`tuple<std::string&, ...>`的tuple类型，注意boost还提供了`boost::tuples::ignore`来忽略不需要的变量，类似于go里的`_`。
 
 ## 6. 参考
 
