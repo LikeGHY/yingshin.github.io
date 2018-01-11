@@ -224,5 +224,52 @@ DEFINE_string(undefok, "", "comma-separated list of flag names that it is okay t
 multiple definition of 'fLS::FLAGS_flagfile'
 ```
 
-### 11. 参考资料：   
+### 11. 重复定义
+
+这个问题跟上面类似，不要定义相同的flag名，即使放在不同的namespace。
+
+例如我们定义了
+
+```
+namespace foo {
+DEFINE_bool(multi_thread_enabled, true, "");
+}
+namespace bar {
+DEFINE_bool(multi_thread_enabled, true, "");
+}
+```
+
+编译没有问题，但是运行会报错：
+
+```
+ERROR: flag 'multi_thread_enabled' was defined more than once
+```
+
+或者
+
+```
+ERROR: something wrong with flag ...
+```
+
+具体可以参考gflags源码：
+
+```
+  if (ins.second == false) {   // means the name was already in the map
+    if (strcmp(ins.first->second->filename(), flag->filename()) != 0) {
+      ReportError(DIE, "ERROR: flag '%s' was defined more than once "
+                  "(in files '%s' and '%s').\n",
+                  flag->name(),
+                  ins.first->second->filename(),
+                  flag->filename());
+    } else {
+      ReportError(DIE, "ERROR: something wrong with flag '%s' in file '%s'.  "
+                  "One possibility: file '%s' is being linked both statically "
+                  "and dynamically into this executable.\n",
+                  flag->name(),
+                  flag->filename(), flag->filename());
+    }
+  }
+```
+
+### 12. 参考资料：   
 [https://gflags.github.io/gflags/](https://gflags.github.io/gflags/)
