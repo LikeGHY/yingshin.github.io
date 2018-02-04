@@ -369,4 +369,3 @@ shared_ptr<T> static_pointer_cast(const shared_ptr<U>& rhs) {
 ```
 
 不过这样编译器会报错，跟[two-phase-lookup](http://izualzhy.cn/c/cpp/2016/03/30/two-phase-lookup)有关，具体可以参考[这里](http://www.aerialmantis.co.uk/blog/2017/03/17/template-keywords/)，简言之，就是编译器需要明确告诉它这是一个类型。
-不过这样编译器会报错，跟[two-phase-lookup](http://izualzhy.cn/c/cpp/2016/03/30/two-phase-lookup)有关，具体可以参考[这里](http://www.aerialmantis.co.uk/blog/2017/03/17/template-keywords/)，简言之，就是编译器需要明确告诉它这是一个类型。
