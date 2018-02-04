@@ -7,7 +7,7 @@ categories: [c/cpp]
 tags: [boost, bimap]
 ---
 
-之前介绍过[bimap](http://izualzhy.cn/c/cpp/2017/12/23/boost-bimap)用于解决双向map的需求，类似于关系数据库里对多列建立索引。boost里的**multi_index_container**则继续扩充了这个特性，将多种container的接口合并到一块。
+之前介绍过[bimap](http://izualzhy.cn/c/cpp/2017/12/23/boost-bimap)用于解决双向map的需求，类似于关系数据库里对多列建立索引。boost里的**multi_index_container**则继续扩充了这个特性，支持将多种container的接口合并到一块，想象下将std::vector和std::map合并到一个容器里。
 
 例如考虑[LRU](https://en.wikipedia.org/wiki/Cache_replacement_policies#LRU) cache，需要对数据hash和按照时间排序，实现上经常维护两个hash_table和list，更新时保证两个container的一致性。而使用**multi_index_container**可以构造出同时具有`hash_map`和`list`接口的类，用户不需要关注底层的数据实现和一致性。
 
@@ -78,7 +78,7 @@ int main() {
 }
 ```
 
-用户可以直接声明`multi_index_container<(element)>`，等价于`std::set`，容器内排序，同时可以看到`set`的接口几乎都支持，不过实测性能上要差一些（性能部分后面会单独一篇文章介绍）。
+我们上面定义了`multi_index_container<std::string>`，可以看到`set`的接口几乎都支持，比如`erase` `lower_bound` `upper_bounder`。
 
 实际上`multi_index_container<(element)>`等价于
 
@@ -91,7 +91,7 @@ multi_index_container<
 >
 ```
 
-这应该是最简单的一种`multi_index_container`，只有一个索引：对employee的name排序，单索引的`multi_index_container`退化为正常的stl容器，实际场景肯定不会这么使用。
+这应该是最简单的一种`multi_index_container`，只有一个索引：对employee的name排序，单索引的`multi_index_container`退化为正常的stl容器`std::set`，实际场景肯定不会这么使用，因为实测性能上要差一些（性能部分后面会单独一篇文章介绍）。。
 
 那么我们考虑复杂一点，假设employee除了记录姓名，还要记录编号，我们除了希望除了对name排序，对编号也能排序，这时候，多索引的`multi_index_container`就需要登场了。
 
@@ -121,7 +121,7 @@ struct Employee {
 };//Employee
 ```
 
-Employee包含id && name，实现了`opertor<`，按照`id`排序
+Employee包含id && name，实现了`opertor<`：按照`id`排序
 
 接着我们定义多索引的`multi_index_container`
 
@@ -137,7 +137,7 @@ typedef boost::multi_index::multi_index_container<
         > EmployeeSet;
 ```
 
-`multi_index_container`是一个模板类，这里我们指定了几个模板参数类
+`multi_index_container`是一个模板类，指定了几个模板参数
 
 `Employee`表示容器内的元素类型  
 `indexed_by`用于组织所有的索引类型，可以有多个索引，例如`ordered_unique` `ordered_non_unique`，称为**Index Type**，例如`ordered_unique`类似于`std::set`，而`ordered_non_unique`类似于`std::multiset`  
@@ -158,7 +158,7 @@ int main() {
     employees.insert({4, "Vlad Losev"});
 ```
 
-然后看下如何根据`id && name`遍历，首先根据第一个索引(id)遍历
+然后看下如何分别根据`id`/`name`遍历，首先根据第一个索引(id)遍历
 
 ```cpp
     //1       Google
@@ -187,7 +187,7 @@ int main() {
             std::ostream_iterator<Employee>(std::cout));
 ```
 
-注意这里我们引入了`get<N>`函数，该函数返回对应的N个索引，其中下标为[0, N)，例如此处N=2。
+注意这里我们引入了`get<N>`函数，这是一个模板函数，返回对应的N个索引，取值范围为[0, N)，例如`get<0>` `get<1>`分别返回定义的第一个和第二个索引。
 
 `x.get<0>`等价于`x`，也就是默认为第一个索引。
 
@@ -203,8 +203,9 @@ int main() {
 
 ![boost_multi_index_index_types](/assets/images/boost_multi_index_index_types.png)
 
-其中key-based需要指定key，提取key的方式，我们在下一节Key Extraction继续介绍。key-based又分为ordered/hashed两种，分别对应排序和hash两种索引。
+其中key-based需要指定key，提取key的方式，我们在下一节Key Extraction继续介绍。这一节主要介绍下索引的类型。
 
+key-based又分为ordered/hashed两种，分别对应排序和hash两种索引。
 non key-based不需要指定key，索引方式类似于std::list std::vector，支持顺序读写、随机读写。
 
 为了说的清楚些，我们看一个**Word Count**的例子，要求实现以下两个功能：  
@@ -293,6 +294,8 @@ int main() {
 }
 ```
 
+我们使用`get<1>`获得word_index索引用来插入数据，遍历word_cnt_container则获得cnt升序排列的数据。
+
 当然，对于`ordered`的索引，我们也可以指定排序方式，例如第1个索引可以修改为
 
 ```
@@ -314,7 +317,9 @@ python  2
 shell   1
 ```
 
-使用`random_access`则可以获得类似`std::vector`按照下标访问的能力，更多可以参考[boost官方文档](http://www.boost.org/doc/libs/1_66_0/libs/multi_index/doc/tutorial/indices.html)
+使用`random_access`则可以获得类似`std::vector`按照下标访问的能力，下一节我们会介绍一个相关的例子。
+
+更多索引类型介绍可以参考[boost官方文档](http://www.boost.org/doc/libs/1_66_0/libs/multi_index/doc/tutorial/indices.html)
 
 ## 3. Key extraction
 
