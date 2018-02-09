@@ -11,7 +11,7 @@ tags: [binarysearch]
 比如STL里的`lower_bound,upper_bound`。  
 
 总结一下的注意点有这么几个：   
- **1. 数组是非递增还是非递减   
+  1. 数组是非递增还是非递减   
   2. 结束条件，即while (condition) 应当是<还是<=   
   3. 求mid应当是偏向左还是右，即 mid = (left + right) >> 1, 还是 mid = (left + right + 1) >> 1    
   4. 如何得到循环不变式   
