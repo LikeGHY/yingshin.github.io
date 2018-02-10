@@ -530,6 +530,10 @@ int main() {
 
 然后通过`project`接口获取另一个索引`random_access`对应的迭代器，然后按照插入顺序遍历直到末尾元素。
 
-## 7. 参考资料
+## 7. LRU-cache
+
+cache的种类有很多种，其中boost例子里实现了[MRU](http://www.boost.org/doc/libs/1_66_0/libs/multi_index/example/serialization.cpp)，我尝试实现了下[LRU](https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_Recently_Used_(LRU))及单测，如有错误请指正，[代码地址](https://github.com/yingshin/Tiny-Tools/blob/master/cache/multi_index_lru.cp)。
+
+## 8. 参考资料
 
 1. [boost doc](http://www.boost.org/doc/libs/1_66_0/libs/multi_index/doc/tutorial/basics.html)
