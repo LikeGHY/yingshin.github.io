@@ -4,8 +4,10 @@ title: 记录一些好的paper&&slides
 group: thinking
 ---
 {% for paper_slide in site.data.paper_slides %}
-<a href={{ paper_slide.url }}>{{ paper_slide.title }} </a>
-<p><a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ paper_slide.tag }}-ref">{{ paper_slide.tag }}</a></p>
-<p>{{ paper_slide.note }}</p>
-<hr/>
+<h3><a href={{ paper_slide.url }}>{{ paper_slide.title }} </a></h3>
+<p>
+笔记:<a href="{{ BASE_PATH }}{{ site.JB.tags_path }}#{{ paper_slide.tag }}-ref">{{ paper_slide.tag }}</a>
+<br/>
+摘要:{{ paper_slide.note }}</p>
+<hr style="width:100%"/>
 {% endfor %}
