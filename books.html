@@ -1,36 +1,26 @@
 ---
-layout:  page
-title : Books
-group: books
+layout: page
+title: 在读和读过的书
 ---
-<br/>
-<table class="table table-hover table-striped">
+<table>
     <thead>
         <tr>
-            <th>BookCover</th>
-            <th>BookName</th>
-            <th>StartDate</th>
-            <th>FinishDate</th>
+            <th>Cover</th>
+            <th>Name</th>
+            <th>Start</th>
+            <th>Finish</th>
             <th>Note</th>
-            <!--<th>Download</th>-->
         </tr>
     </thead>
     <tbody>
         {% for book in site.data.books %}
-            {% if book.finish_date == null %}
-            <tr class="active">
-            {% elsif book.finish_date == 'x' %}
-            <tr class="danger">
-            {% else %}
-            <tr class="success">
-            {% endif %}
+            <tr>
                 <td><a href="{{ book.douban_link }}"><img src="{{ book.cover }}" class="img-rounder" width="60" height="80" alt="{{ book.name }}"/></td>
                 <td>{{ book.name }}</td>
                 <td>{{ book.start_date }}</td>
                 <td>{{ book.finish_date }}</td>
                 <td>{{ book.note }}</td>
-                <!--<td><a href="{{ book.download_link }}">Download</td>-->
-             </tr>
+            </tr>
         {% endfor %}
     </tbody>
 </table>

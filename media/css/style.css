@@ -242,3 +242,34 @@ footer {
     color: #999; }
 
 /*# sourceMappingURL=style.css.map */
+
+/* BEGIN added by yignshin*/
+/*table css*/
+table
+{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 12px;
+    background: #fff;
+    margin: 0px 45px 15px 45px;
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+table th
+{
+    font-size: 14px;
+    font-weight: normal;
+    color: #039;
+    padding: 10px 8px;
+    border-bottom: 2px solid #6678b1;
+}
+table td
+{
+    color: #669;
+    padding: 9px 8px 0px 8px;
+}
+table tbody tr:hover td
+{
+    color: #009;
+}
+/*END*/
