@@ -15,7 +15,7 @@ tags: [boost, multi_index]
 
 ## 1. boost里的performance
 
-### 1. emulate_std_containers
+### 1.1. emulate_std_containers
 
 **multi_index_container**支持的索引个数是没有限制的，也就是说退化为单索引的情况下，我们可以模拟stl的标准容器。
 
@@ -54,7 +54,7 @@ std::multiset<Key> ->
 对于`std::map std::multimap std::list`都可以使用`multi_index_container`得到类似的数据结构，具体可以参考[Emulating standard containers with multi_index_container
 ](http://www.boost.org/doc/libs/1_66_0/libs/multi_index/doc/tutorial/techniques.html#emulate_std_containers)
 
-### 2. performance
+### 1.2. performance
 
 实际上[boost官方文档](http://www.boost.org/doc/libs/1_66_0/libs/multi_index/doc/performance.html)里给了一部分性能比较的思路和实战。其中一部分就是通过上面的定义直接对比stl里的containers.
 
@@ -189,7 +189,7 @@ for(iterator it=c.begin();it!=c.end();)c.erase(it++);
 
 表格内时间单位为us
 
-可以看到是由于原来的lru cache实现的
+可以看到是优于原来的lru cache实现的
 
 ## 3. 结论
 
