@@ -25,14 +25,12 @@ tags: [boost, multi_index]
 
 ```
 std::set<Key,Compare,Allocator>
-
 ->
-
-  multi_index_container<
-    Key,
-    indexed_by<ordered_unique<identity<Key>,Compare> >,
-    Allocator
-  >
+multi_index_container<
+  Key,
+  indexed_by<ordered_unique<identity<Key>,Compare> >,
+  Allocator
+>
 ```
 
 默认情况(Compare=std::less<Key> and Allocator=std::allocator<Key>)，我们可以得到简化后的这个对应关系：
@@ -46,11 +44,12 @@ std::set<Key> -> multi_index_container<Key>
 `std::multi_set`也可以类似的推导关系：
 
 ```
-std::multiset<Key> ->
-  multi_index_container<
-    Key,
-    indexed_by<ordered_non_unique<identity<Key> > >
-  >
+std::multiset<Key>
+->
+multi_index_container<
+  Key,
+  indexed_by<ordered_non_unique<identity<Key> > >
+>
 ```
 
 对于`std::map std::multimap std::list`都可以使用`multi_index_container`得到类似的数据结构，具体可以参考[Emulating standard containers with multi_index_container
@@ -174,7 +173,9 @@ for(iterator it=c.begin();it!=c.end();)c.erase(it++);
   space gain:  69.23%
 ```
 
-可以看到有些情况下，相比还是要差一些的。实际应用场景中，比如需要使用`std::set`，我想很少有人会用`boost::multi_index_container<>`代替吧，性能姑且不论，可读性还是stl大部分人更熟悉些，而且没准哪天boost里的代码就被放到了标准库里😎
+百分比数值计算方式为：`multi_index_container`运行时间/组合的stl-container运行时间，可以看到有些情况下，相比还是要差一些的。
+
+实际应用场景中，比如需要使用`std::set<int.`，我想很少有人会用`boost::multi_index_container<int>`代替吧，性能姑且不论，可读性还是stl大部分人更熟悉些，而且没准哪天boost里的代码就被放到了标准库里😎
 
 最后必须要提的是[测试代码](http://www.boost.org/doc/libs/1_66_0/libs/multi_index/perf/test_perf.cpp)，这个封装与模板的使用，真的是大神级别orz，建议学习。
 
@@ -195,6 +196,6 @@ for(iterator it=c.begin();it!=c.end();)c.erase(it++);
 
 ## 3. 结论
 
-boost官方文档说全面优于stl containers的组合，觉得未必可信。凡事还要理论 + 实践，从我的测试来看lru的性能确实有提高，当然之前lru的实现应该本身有改进空间，欢迎指点。
+boost官方文档说全面优于stl containers的组合，觉得未必可信。凡事还要理论 + 实践，从我的测试来看lru的实现上性能确实有提高，当然之前lru的实现应该本身有改进空间，欢迎指点。
 
-从可读性上看，`multi_index_container`可读性要高很多，而且代码行数少很多。
+从可读性上看，`multi_index_container`可读性要高很多：代码行数少、语义直接、不容易出错。
