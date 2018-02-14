@@ -9,7 +9,9 @@ tags: [boost, multi_index]
 
 上次介绍了boost里的[multi_index_container](http://izualzhy.cn/c/cpp/2018/02/03/boost-multi-index)，通过组合不同stl容器，实用性很强。
 
-例如对于[LRU](https://en.wikipedia.org/wiki/Cache_replacement_policies#LRU) cache，可以看到[代码量](https://github.com/yingshin/Tiny-Tools/blob/master/cache/multi_index_lru.cp)可以很大精简，但是相信大部分程序员（包括我）都有一颗造轮子的心，本文尝试探索下**multi_index_container**的性能。
+例如对于[LRU](https://en.wikipedia.org/wiki/Cache_replacement_policies#LRU) cache，[代码量](https://github.com/yingshin/Tiny-Tools/blob/master/cache/multi_index_lru.cp)能够得到很大精简，但是相信大部分程序员（包括我）都有一颗造轮子的心，直接使用**multi_index_container**性能如何？
+
+本文尝试探索下**multi_index_container**的性能。
 
 <!--more-->
 
