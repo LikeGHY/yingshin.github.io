@@ -25,7 +25,7 @@ std::string extract_part ( const std::string &bar ) {
 if ( extract_part ( "ABCDEFG" ).front() == 'C' ) { /* do something */ }
 ```
 
-在上面代码执行过程中，即时经过RVO优化，仍旧不可避免的产生临时变量，例如首先"ABCDEFG"被转化成一个string作为形参，返回的substring，`front`产生的char等。
+在上面代码执行过程中，即使经过RVO优化，仍旧不可避免的产生临时变量，例如首先"ABCDEFG"被转化成一个string作为形参，返回的substring，`front`产生的char等。
 
 但是仔细分析下，这些临时变量不需要产生，例如传参时不需要拷贝，比如`const char*`，这样内存拷贝就可以避免。
 
@@ -96,7 +96,7 @@ typedef BasicStringPiece<string16> StringPiece16;
 
 因此
 
-**BasicStringPiece没有字符串的控制权，不负责构造以及销毁。调用者需要保证在BasicStringPiece的生命周期里源buffer始终有效**
+**BasicStringPiece没有字符串的控制权，不负责构造以及销毁。调用者需要保证在BasicStringPiece的生命周期里源buffer始终有效。**
 
 #### 2.2 string操作
 
@@ -224,5 +224,6 @@ template<class ForwardIterator1, class ForwardIterator2>
 std::size_t operator()(const base::StringPiece& sp) const;
 ```
 
-#### 3. 问题
-1. muduo里大量使用了`const StringPiece& string_piece`，但是chrome里明确指出了prefer这种`void MyFunction(StringPiece arg);`使用方式，个人更赞同muduo的做法  
+### 3. 问题
+
+muduo里大量使用了`const StringPiece& string_piece`，但是chrome里明确指出了prefer这种`void MyFunction(StringPiece arg);`使用方式，个人更赞同muduo的做法。
