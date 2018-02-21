@@ -875,3 +875,7 @@ stl-iterator实际上是一个很庞大的话题，细细展开已经不是一�
 
 熟练使用iterator，离我们对于代码的追求能更进一步：
 **more effecient, less buggy, more reable, more clean**
+
+# 8. 参考资料
+
+1. [helsinki公开课](https://www.cs.helsinki.fi/u/tpkarkka/alglib/k06/lectures/iterators.html)

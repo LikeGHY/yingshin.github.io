@@ -75,3 +75,16 @@ layout: default
   END comment -->
   {% endif %}
 </article>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+var gitment = new Gitment({
+    owner: 'yingshin',
+    repo: 'yingshin.github.io',
+    oauth: {
+        client_id: '2112a10696f1d2eb2f90',
+        client_secret: 'cdb130b2bde2c527e97f34b31c0f6ec94dbb9ab2',
+    },
+})
+gitment.render('container')
+</script>
