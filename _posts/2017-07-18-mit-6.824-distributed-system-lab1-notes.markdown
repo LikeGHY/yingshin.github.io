@@ -3,7 +3,6 @@ layout: post
 title: MIT 6.824 Distributed Systems Lab-1 笔记
 date: 2017-07-18 19:50:32
 excerpt: "MIT 6.824 Distributed Systems Lab-1 笔记"
-categories: [go]
 tags: [Distributed-Systems, 6.824, mapreduce]
 ---
 

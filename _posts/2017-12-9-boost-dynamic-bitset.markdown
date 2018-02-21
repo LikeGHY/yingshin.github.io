@@ -3,7 +3,6 @@ layout: post
 title: "boost容器之dynamic_bitset"
 date: 2017-12-09 21:39:48
 excerpt: "boost容器之dynamic_bitset"
-categories: [c/cpp]
 tags: [boost, dynamic_bitset]
 ---
 

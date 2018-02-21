@@ -3,7 +3,6 @@ layout: post
 title: 追core笔记之五：如何查看一个corrupt stack的core
 date: 2016-12-17 16:13:46
 excerpt: "追core笔记之五：如何查看一个corrupt stack的core"
-categories: [c/cpp]
 tags: [core, stack]
 ---
 

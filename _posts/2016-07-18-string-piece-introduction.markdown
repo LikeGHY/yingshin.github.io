@@ -3,7 +3,6 @@ layout: post
 title: StringPiece介绍
 date: 2016-7-18 21:12:11
 excerpt: "StringPiece介绍"
-categories: [c/cpp]
 tags: [chrome, StringPiece]
 ---
 

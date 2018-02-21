@@ -3,12 +3,11 @@ layout: post
 title: protobuf编码
 date: 2016-8-27 22:03:45
 excerpt: "protobuf编码"
-categories: [c/cpp]
 tags: [protobuf]
 ---
 
-[上篇文章](http://izualzhy.cn/c/cpp/2016/08/17/protobuf-encode-varint-and-zigzag)介绍了protobuf里整型的编码方式，这篇文章从整体上介绍下pb的编码规则，包括string/bytes/float/double/message等类型的序列化实例以及源码，最后分析下pb向前兼容这个特性的一些细节。
-[上篇文章](http://izualzhy.cn/c/cpp/2016/08/17/protobuf-encode-varint-and-zigzag)介绍了protobuf里整型的编码方式，这篇文章从整体上介绍下pb的编码规则，包括string/bytes/float/double/message等类型的序列化实例以及源码，最后分析下pb向前兼容这个特性的一些细节。
+[上篇文章](http://izualzhy/2016/08/17/protobuf-encode-varint-and-zigzag)介绍了protobuf里整型的编码方式，这篇文章从整体上介绍下pb的编码规则，包括string/bytes/float/double/message等类型的序列化实例以及源码，最后分析下pb向前兼容这个特性的一些细节。
+[上篇文章](http://izualzhy/2016/08/17/protobuf-encode-varint-and-zigzag)介绍了protobuf里整型的编码方式，这篇文章从整体上介绍下pb的编码规则，包括string/bytes/float/double/message等类型的序列化实例以及源码，最后分析下pb向前兼容这个特性的一些细节。
 
 <!--more-->
 
@@ -60,8 +59,8 @@ pbmessage序列化以二进制流的方式存储，按照定义的字段顺序�
 ### 3. key的序列化
 
 #### 3.1 规则
-key的序列化使用了varint编码，在[上一节](http://izualzhy.cn/c/cpp/2016/08/17/protobuf-encode-varint-and-zigzag)也简单介绍了下。
-key的序列化使用了varint编码，在[上一节](http://izualzhy.cn/c/cpp/2016/08/17/protobuf-encode-varint-and-zigzag)也简单介绍了下。
+key的序列化使用了varint编码，在[上一节](http://izualzhy/2016/08/17/protobuf-encode-varint-and-zigzag)也简单介绍了下。
+key的序列化使用了varint编码，在[上一节](http://izualzhy/2016/08/17/protobuf-encode-varint-and-zigzag)也简单介绍了下。
 
 序列化的公式为`varint(field_number << 3 | wire_type)`，field\_number为proto定义里的序列号，wire\_type指定了编码方式，不同类型的数据可能不一样。
 

@@ -3,12 +3,11 @@ layout: post
 title: 追core笔记之三：扯扯智能指针
 date: 2016-11-26 23:30:39
 excerpt: "追core笔记之三：扯扯智能指针"
-categories: [c/cpp]
 tags: [core, smartptr]
 ---
 
-[上篇文章](http://izualzhy.cn/c/cpp/2016/11/23/how-to-write-safe-callback)介绍了在回调时使用智能指针。可能因为智能指针太智能了，使用起来需要思考的很少。本文试图稍微总结一下“使用很自然但仔细想想很巧妙”的地方，所有例子均使用`boost::shared_ptr`。
-[上篇文章](http://izualzhy.cn/c/cpp/2016/11/23/how-to-write-safe-callback)介绍了在回调时使用智能指针。可能因为智能指针太智能了，使用起来需要思考的很少。本文试图稍微总结一下“使用很自然但仔细想想很巧妙”的地方，所有例子均使用`boost::shared_ptr`。
+[上篇文章](http://izualzhy/2016/11/23/how-to-write-safe-callback)介绍了在回调时使用智能指针。可能因为智能指针太智能了，使用起来需要思考的很少。本文试图稍微总结一下“使用很自然但仔细想想很巧妙”的地方，所有例子均使用`boost::shared_ptr`。
+[上篇文章](http://izualzhy/2016/11/23/how-to-write-safe-callback)介绍了在回调时使用智能指针。可能因为智能指针太智能了，使用起来需要思考的很少。本文试图稍微总结一下“使用很自然但仔细想想很巧妙”的地方，所有例子均使用`boost::shared_ptr`。
 
 <!--more-->
 

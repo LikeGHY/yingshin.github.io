@@ -3,7 +3,6 @@ layout: post
 title: 追core笔记之二：如何写出安全的回调
 date: 2016-11-23 23:39:16
 excerpt: "追core笔记之二：如何写出安全的回调"
-categories: [c/cpp]
 tags: [core, smartptr]
 ---
 

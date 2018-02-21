@@ -3,7 +3,6 @@ layout: post
 title:  实现一个简单的boost::any类
 date: 2015-11-13 21:39:38
 excerpt: "实现一个简单的boost::any类"
-categories: [c/cpp]
 tags: [boost]
 ---
 

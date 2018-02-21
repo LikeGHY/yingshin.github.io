@@ -3,7 +3,6 @@ layout: post
 title: "boost容器之tuple"
 date: 2018-01-06 22:22:05
 excerpt: "boost容器之tuple"
-categories: [c/cpp]
 tags: [boost, tuple]
 ---
 

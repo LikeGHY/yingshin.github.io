@@ -3,7 +3,6 @@ layout: post
 title: 使用zkcli实现一个主-从模式的架构
 date: 2016-9-25 21:59:19
 excerpt: "使用zkcli实现一个主-从模式的架构"
-categories: [c/cpp]
 tags: [zookeeper]
 ---
 

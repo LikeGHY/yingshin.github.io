@@ -3,7 +3,6 @@ layout: post
 title: "boost容器之circular_buffer"
 date: 2017-12-10 16:02:46
 excerpt: "boost容器之circular_buffer"
-categories: [c/cpp]
 tags: [boost, circular_buffer]
 ---
 

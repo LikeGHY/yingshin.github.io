@@ -3,7 +3,6 @@ layout: post
 title:  "protobuf反射详解"
 date: 2016-04-22 15:19:03
 excerpt: "protobuf反射详解"
-categories: [c/cpp]
 tags: [protobuf, reflection]
 ---
 

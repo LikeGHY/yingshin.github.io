@@ -3,7 +3,6 @@ layout: post
 title:  "leetcode上2Sum 3Sum 4Sum以及kSum问题的分析"
 date: 2014-04-17 17:52:21
 excerpt: "TwoSum,3Sum,4Sum,kSum problems on leetcode."
-categories: [algorithm]
 tags: [sort, leetcode]
 ---
 

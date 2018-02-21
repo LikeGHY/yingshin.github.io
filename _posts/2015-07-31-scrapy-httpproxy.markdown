@@ -3,7 +3,6 @@ layout: post
 title:  "scrapy笔记一proxy的抓取"
 date: 2015-07-31 23:03:31
 excerpt: "scrapy笔记一proxy的抓取"
-categories: [python]
 tags: [scrapy]
 ---
 

@@ -3,7 +3,6 @@ layout: post
 title: protobuf之ZeroCopy
 date: 2017-2-5 22:11:32
 excerpt: "protobuf之ZeroCopy"
-categories: [c/cpp]
 tags: [protobuf, ZeroCopy]
 ---
 
@@ -202,5 +201,5 @@ bool MessageLite::SerializeToZeroCopyStream(
 }
 ```
 
-`CodedOutputStream`的构造函数接受一个`ZeroCopyOutputStream*`作为参数，并通过该参数完成真正的数据流的写入。对外则封装了`WriteLittleEndian32/WriteVarint32`接口，关于varint编码的更多信息可以参考[这篇笔记](http://izualzhy.cn/c/cpp/2016/08/17/protobuf-encode-varint-and-zigzag)。
-`CodedOutputStream`的构造函数接受一个`ZeroCopyOutputStream*`作为参数，并通过该参数完成真正的数据流的写入。对外则封装了`WriteLittleEndian32/WriteVarint32`接口，关于varint编码的更多信息可以参考[这篇笔记](http://izualzhy.cn/c/cpp/2016/08/17/protobuf-encode-varint-and-zigzag)。
+`CodedOutputStream`的构造函数接受一个`ZeroCopyOutputStream*`作为参数，并通过该参数完成真正的数据流的写入。对外则封装了`WriteLittleEndian32/WriteVarint32`接口，关于varint编码的更多信息可以参考[这篇笔记](http://izualzhy/2016/08/17/protobuf-encode-varint-and-zigzag)。
+`CodedOutputStream`的构造函数接受一个`ZeroCopyOutputStream*`作为参数，并通过该参数完成真正的数据流的写入。对外则封装了`WriteLittleEndian32/WriteVarint32`接口，关于varint编码的更多信息可以参考[这篇笔记](http://izualzhy/2016/08/17/protobuf-encode-varint-and-zigzag)。

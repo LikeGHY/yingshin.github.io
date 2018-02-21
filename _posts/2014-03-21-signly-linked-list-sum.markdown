@@ -2,7 +2,6 @@
 layout: post
 title:  "单链表之和"
 date:   2014-03-21 17:23:03
-categories: [algorithm]
 tags: [list, interview]
 ---
 

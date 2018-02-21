@@ -3,7 +3,6 @@ layout: post
 title: glog源码解析四：如何获取函数的调用栈
 date: 2017-06-24 12:15:36
 excerpt: "glog源码解析"
-categories: [c/cpp]
 tags: [glog]
 ---
 

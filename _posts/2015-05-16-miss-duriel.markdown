@@ -3,7 +3,6 @@ layout: post
 title:  "想念那只大虫子"
 date: 2015-05-16 20:09:05
 excerpt: "想念那只大虫子"
-categories: [life]
 tags: [life]
 ---
 

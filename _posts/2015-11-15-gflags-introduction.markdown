@@ -3,7 +3,6 @@ layout: post
 title: "参数解析gflags介绍"
 date: 2015-11-15 00:22:58
 excerpt: "参数解析gflags介绍"
-categories: [c/cpp]
 tags: [gflags]
 ---
 

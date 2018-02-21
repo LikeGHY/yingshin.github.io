@@ -3,7 +3,6 @@ layout: post
 title:  "sqlalchemy使用with_lockmode的问题记录"
 date: 2015-04-11 20:37:35
 excerpt: "sqlalchemy使用with_lockmode的问题记录"
-categories: [python]
 tags: [sqlalchemy]
 ---
 

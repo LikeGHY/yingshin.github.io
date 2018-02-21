@@ -3,7 +3,6 @@ layout: post
 title:  "jekyll-bootstrap折腾记"
 date:   2014-3-4 16:26:50
 excerpt: "记录使用jekyll-bootstrap搭建博客的过程"
-categories: [tools]
 tags: [jekyll,bootstrap,blog]
 ---
 

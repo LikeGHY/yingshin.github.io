@@ -3,7 +3,6 @@ layout: post
 title: 排序可视化
 date: 2016-9-10 18:30:08
 excerpt: "排序可视化"
-categories: [c/cpp]
 tags: [sort]
 ---
 

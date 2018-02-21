@@ -2,11 +2,10 @@
 layout: post
 title: "boost容器之multi_index"
 date: 2018-02-03 23:14:21
-categories: [c/cpp]
 tags: [boost, multi_index]
 ---
 
-之前介绍过[bimap](http://izualzhy.cn/c/cpp/2017/12/23/boost-bimap)用于解决双向map的需求，类似于关系数据库里对多列建立索引。boost里的**multi_index_container**则继续扩充了这个特性，支持将多种container的接口合并到一块，想象下将std::vector和std::map合并到一个容器里组成一个新的容器。
+之前介绍过[bimap](http://izualzhy/2017/12/23/boost-bimap)用于解决双向map的需求，类似于关系数据库里对多列建立索引。boost里的**multi_index_container**则继续扩充了这个特性，支持将多种container的接口合并到一块，想象下将std::vector和std::map合并到一个容器里组成一个新的容器。
 
 例如考虑[LRU](https://en.wikipedia.org/wiki/Cache_replacement_policies#LRU) cache，需要对数据hash和按照时间排序，实现上经常维护两个hash_table和list，更新时保证两个container的一致性。而使用**multi_index_container**可以构造出同时具有`hash_map`和`list`接口的类，用户不需要关注底层的数据实现和一致性。
 

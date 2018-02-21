@@ -3,7 +3,6 @@ layout: post
 title: 单机zookeeper的安装
 date: 2016-9-24 22:37:43
 excerpt: "单机zookeeper的安装"
-categories: [c/cpp]
 tags: [zookeeper]
 ---
 

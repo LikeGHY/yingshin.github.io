@@ -3,7 +3,6 @@ layout: post
 title: zookeeper c客户端源码分析二：接口调用后发生了什么？
 date: 2016-10-23 11:14:42
 excerpt: "zookeeper c客户端源码分析二：接口调用后发生了什么？"
-categories: [c/cpp]
 tags: [zookeeper]
 ---
 
