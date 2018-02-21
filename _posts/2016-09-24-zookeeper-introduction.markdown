@@ -48,8 +48,8 @@ znode节点可以使持久(persistent)节点，还可以是临时(ephemeral)节�
 Created /tasks/tasks-0000000000
 ```
 
-上述来自zk提供的shell，`zkCli`，将在[zkCli的使用](http://izualzhy/2016/09/24/zkcli-introduction)单独介绍。
-上述来自zk提供的shell，`zkCli`，将在[zkCli的使用](http://izualzhy/2016/09/24/zkcli-introduction)单独介绍。
+上述来自zk提供的shell，`zkCli`，将在[zkCli的使用](http://izualzhy.cn/zkcli-introduction)单独介绍。
+上述来自zk提供的shell，`zkCli`，将在[zkCli的使用](http://izualzhy.cn/zkcli-introduction)单独介绍。
 
 因此znode一共有四种类型：
 

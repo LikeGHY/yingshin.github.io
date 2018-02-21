@@ -167,7 +167,7 @@ Raft按照问题把整个流程分为了两部分：
 
 **leader在何时被选举，如何选举出来，选举出来做什么。**
 
-关于更多代码上的介绍，可以参考[上篇笔记](http://izualzhy/2017/07/18/mit-6.824-distributed-system-lab1-notes)，*show me your code*.
+关于更多代码上的介绍，可以参考[上篇笔记](http://izualzhy.cn/mit-6.824-distributed-system-lab1-notes)，*show me your code*.
 
 Raft论文里提到:
 

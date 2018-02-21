@@ -6,7 +6,7 @@ excerpt: "github博客绑定域名"
 tags: [github]
 ---
 
-终于开通自己的域名啦！[izualzhy/
+终于开通自己的域名啦！[izualzhy.cn/
 
 简单介绍下流程：
 

@@ -53,8 +53,8 @@ __setttings.py__:定制Scrpy组件的设置，包括core, extension, pipleline�
 __DoubanBook.py__:爬虫代码，解析出抓取地址集，以及需要的结构化数据  
 __proxymiddlewares.py__: 设置proxy的中间件  
 __sql_model.py__:写入数据库的orm model，使用的是sqlalchemy  
-__proxy.csv__:proxy的列表，通过[这篇笔记](http://izualzhy/2015/07/31/scrapy-httpproxy/)获取    
-__proxy.csv__:proxy的列表，通过[这篇笔记](http://izualzhy/2015/07/31/scrapy-httpproxy/)获取    
+__proxy.csv__:proxy的列表，通过[这篇笔记](http://izualzhy.cn/scrapy-httpproxy/)获取    
+__proxy.csv__:proxy的列表，通过[这篇笔记](http://izualzhy.cn/scrapy-httpproxy/)获取    
 __uamiddlewares.py__:设置User-Agent的中间件    
 
 
@@ -187,8 +187,8 @@ _doubanbook.proxymiddlewares.ProxyMiddleWare_: 随机选取代理
 _doubanbook.uamiddlewares.UserAgentMiddleware_:  随机选取UA  
 _doubanbook.pipelines.DoubanbookPipeline_: 存储抓取到的目标数据  
 
-注意settings.py还有很多其他设置，感兴趣的可以一一了解下，注意在这里也可以定义我们自己的设置，比如PROXY_LIST就是存放代理的文件，生成该文件的方法参考另外一篇[文章](http://izualzhy/2015/07/31/scrapy-httpproxy/)。
-注意settings.py还有很多其他设置，感兴趣的可以一一了解下，注意在这里也可以定义我们自己的设置，比如PROXY_LIST就是存放代理的文件，生成该文件的方法参考另外一篇[文章](http://izualzhy/2015/07/31/scrapy-httpproxy/)。
+注意settings.py还有很多其他设置，感兴趣的可以一一了解下，注意在这里也可以定义我们自己的设置，比如PROXY_LIST就是存放代理的文件，生成该文件的方法参考另外一篇[文章](http://izualzhy.cn/scrapy-httpproxy/)。
+注意settings.py还有很多其他设置，感兴趣的可以一一了解下，注意在这里也可以定义我们自己的设置，比如PROXY_LIST就是存放代理的文件，生成该文件的方法参考另外一篇[文章](http://izualzhy.cn/scrapy-httpproxy/)。
 
 #### 代理中间件
 设置代理的代码也很简单，从PROXY\_LIST里读取所有代理并随机选择一个：  

@@ -87,7 +87,7 @@ from Tkinter import *
 import HttpUtil
 
 #a simple util to set webreqeust and get result visiually.
-#author: izualzhy@163.com
+#author: izualzhy.cn/com
 class MainWindow(object):
     def __init__(self):
         self.httpUtil = HttpUtil.HttpUtil()

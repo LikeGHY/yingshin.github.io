@@ -96,8 +96,8 @@ for i : 1 to m
 
 
 就会超时，更直接的思路是直接二分求结果。    
-注意二分的结束条件，关于二分的一篇[笔记](http://izualzhy/2014/04/18/binary-search-analysis/)  
-注意二分的结束条件，关于二分的一篇[笔记](http://izualzhy/2014/04/18/binary-search-analysis/)  
+注意二分的结束条件，关于二分的一篇[笔记](http://izualzhy.cn/binary-search-analysis/)  
+注意二分的结束条件，关于二分的一篇[笔记](http://izualzhy.cn/binary-search-analysis/)  
 数组water\_cnt记录对第i朵花实际浇了多少次可以到希望的高度。   
 scurr维护了浇到当前花的次数（包括之前和当前花的次数，即water\_cnt[i - w + 1] + ... + water_cnt[i])  
 对下朵花，只要减去water_cnt[i - w + 1]就可以了，计算完后加上water\_cnt[i + 1]就可以更新scurr。  

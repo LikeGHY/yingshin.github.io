@@ -20,7 +20,7 @@ tags: [core]
 
 <!--more-->
 
-首先的思路是通过[core的分类来抓住问题的重点](http://izualzhy/2016/11/21/pstack)，然后发现异步回调时使用了一些wild pointer导致的，所以有了这篇总结：[如何写出安全的回调](http://izualzhy/2016/11/23/how-to-write-safe-callback)。模块大部分都使用了智能指针，防止了内存泄露的问题，追core的过程中总结了下[自己对于智能指针的理解](http://izualzhy/2016/11/26/smart_pointer)。升级protobuf到2.6的过程中，引入了一个新的core，根本原因还是动态库的滥用但是没有正常的发布，因此记录在了[由FileDescriptorTables::~FileDescriptorTables看静态库共享库的全局变量double-free的问题](http://izualzhy/2016/12/11/double-free-with-global-variable-in-static-library)，最后总结了下[core栈为什么会乱的原因](http://izualzhy/2016/12/17/why-the-code-stack-is-overflow)。这些问题都在追core的过程中一一遇到，个人稍微总结了下，隐藏了很多细节，希望对读者有用。
+首先的思路是通过[core的分类来抓住问题的重点](http://izualzhy.cn/pstack)，然后发现异步回调时使用了一些wild pointer导致的，所以有了这篇总结：[如何写出安全的回调](http://izualzhy.cn/how-to-write-safe-callback)。模块大部分都使用了智能指针，防止了内存泄露的问题，追core的过程中总结了下[自己对于智能指针的理解](http://izualzhy.cn/smart_pointer)。升级protobuf到2.6的过程中，引入了一个新的core，根本原因还是动态库的滥用但是没有正常的发布，因此记录在了[由FileDescriptorTables::~FileDescriptorTables看静态库共享库的全局变量double-free的问题](http://izualzhy.cn/double-free-with-global-variable-in-static-library)，最后总结了下[core栈为什么会乱的原因](http://izualzhy.cn/why-the-code-stack-is-overflow)。这些问题都在追core的过程中一一遇到，个人稍微总结了下，隐藏了很多细节，希望对读者有用。
 
 追core，很多时候是排查很多种可能的原因，最终定位的一个过程，时间会比较漫长，而且无聊。如果有同学遇到跟我类似的状态，建议一定要多总结，因为这个过程不像在写新的代码，如果不总结一下，可能自己的提升就更有限了。
 

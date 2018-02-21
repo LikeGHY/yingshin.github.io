@@ -314,7 +314,7 @@ int main() {
 
 ## 4. glog日志的应用
 
-[glog](http://izualzhy/2016/01/21/glog)记录的输入形式采用了C++流的方式，代码里也采用了继承`std::streambuf std::ostream`的实现方式。
+[glog](http://izualzhy.cn/glog)记录的输入形式采用了C++流的方式，代码里也采用了继承`std::streambuf std::ostream`的实现方式。
 
 摘抄下相关代码：
 

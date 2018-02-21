@@ -6,7 +6,7 @@ excerpt: "C++模板技术之SFINAE与enable_if的使用"
 tags: [compiler, SFINAE]
 ---
 
-想写这篇文章主要是偶然看到很多代码使用[protobuf里的反射](http://izualzhy/2016/04/22/protobuf-message-reflection)，例如使用`GetReflection/GetString/field/HasFeild`这些接口获取字段`common.logid`对应的value
+想写这篇文章主要是偶然看到很多代码使用[protobuf里的反射](http://izualzhy.cn/protobuf-message-reflection)，例如使用`GetReflection/GetString/field/HasFeild`这些接口获取字段`common.logid`对应的value
 
 ```
     const google::protobuf::Descriptor* descriptor = message->GetDescriptor();

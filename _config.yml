@@ -1,5 +1,5 @@
 name: "Ying's Blog"
-permalink: /:year/:month/:day/:title
+permalink: /:title
 # permalink: /:categories/:year/:month/:day/:title
 
 author: "yingshin"

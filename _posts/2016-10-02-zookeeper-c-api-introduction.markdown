@@ -458,8 +458,8 @@ typedef void (*acl_completion_t)(int rc, struct ACL_vector *acl,
 
 ### 7. 实战
 
-之前介绍过使用`zlcli`模拟一个[主-从实例](http://izualzhy/2016/09/25/zkcli-example)，如果需要查看对应的master c代码，可以参考fpj大神的的[github](https://github.com/fpj/zookeeper-book-example)。
-之前介绍过使用`zlcli`模拟一个[主-从实例](http://izualzhy/2016/09/25/zkcli-example)，如果需要查看对应的master c代码，可以参考fpj大神的的[github](https://github.com/fpj/zookeeper-book-example)。
+之前介绍过使用`zlcli`模拟一个[主-从实例](http://izualzhy.cn/zkcli-example)，如果需要查看对应的master c代码，可以参考fpj大神的的[github](https://github.com/fpj/zookeeper-book-example)。
+之前介绍过使用`zlcli`模拟一个[主-从实例](http://izualzhy.cn/zkcli-example)，如果需要查看对应的master c代码，可以参考fpj大神的的[github](https://github.com/fpj/zookeeper-book-example)。
 
 ### 8. 注意
 

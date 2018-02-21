@@ -6,8 +6,8 @@ excerpt: "3Sum Closest problems on leetcode."
 tags: [sort, leetcode]
 ---
 
-与[这篇文章](http://izualzhy/2014/04/17/ksum-problems/)的思路非常类似，题目链接如下：  
-与[这篇文章](http://izualzhy/2014/04/17/ksum-problems/)的思路非常类似，题目链接如下：  
+与[这篇文章](http://izualzhy.cn/ksum-problems/)的思路非常类似，题目链接如下：  
+与[这篇文章](http://izualzhy.cn/ksum-problems/)的思路非常类似，题目链接如下：  
 [3Sum Closest ](http://oj.leetcode.com/problems/3sum-closest/)  
 **Given an array S of n integers, find three integers in S such that the sum is closest to a given number, target. Return the sum of the three integers. You may assume that**
 

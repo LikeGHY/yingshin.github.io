@@ -6,7 +6,7 @@ excerpt: "glog源码解析"
 tags: [glog]
 ---
 
-[上篇笔记:glog源码解析二：从LOG(INFO)到写入日志的代码分析](http://izualzhy/2017/06/03/glog-source-reading-notes-whole-process)介绍了glog的部分源码，这篇笔记尝试从实用角度看下如何修改和扩展glog的功能。我在实际工作中想尝试解决以下几个问题：
+[上篇笔记:glog源码解析二：从LOG(INFO)到写入日志的代码分析](http://izualzhy.cn/glog-source-reading-notes-whole-process)介绍了glog的部分源码，这篇笔记尝试从实用角度看下如何修改和扩展glog的功能。我在实际工作中想尝试解决以下几个问题：
 
 1. glog按照大小`FLAGS_max_log_size`分隔，公司内的log是按天分隔的，对于追查问题更方便些，如何修改为按天分割日志?
 2. glog是否有退场功能?

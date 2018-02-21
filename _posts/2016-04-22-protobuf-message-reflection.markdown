@@ -32,11 +32,11 @@ person.set_age(21);
 |uid          |name               |yingshin             |
 |uid          |age                |21                   |
 
-如果设置了新的字段，比如`person.set_email("izualzhy@163.com")`，则自动添加新的一列：  
+如果设置了新的字段，比如`person.set_email("izualzhy.cn/com")`，则自动添加新的一列：  
 
 |key          |column-name        |column-value         |
 |-------------|-------------------|---------------------|
-|uid          |email              |izualzhy@163.com     |
+|uid          |email              |izualzhy.cn/com     |
 
 答案就是 **pb的反射功能**。
 
