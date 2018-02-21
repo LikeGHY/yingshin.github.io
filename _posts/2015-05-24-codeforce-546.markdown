@@ -3,7 +3,6 @@ layout: post
 title:  "Codeforec Contest 546"
 date: 2015-05-24 19:24:35
 excerpt: "submissions for codeforce contest 546"
-categories: [algorithm]
 tags: [codeforce]
 ---
 
