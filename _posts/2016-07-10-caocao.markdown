@@ -3,7 +3,6 @@ layout: post
 title: 《卑鄙的圣人：曹操》读后感
 date: 2016-07-09 10:43:02
 excerpt: "《卑鄙的圣人：曹操》读后感"
-categories: [life]
 tags: [read]
 ---
 

@@ -3,7 +3,6 @@ layout: post
 title: 避免使用虚函数作为动态库的接口
 date: 2016-12-3 11:47:09
 excerpt: "避免使用虚函数作为动态库的接口"
-categories: [c/cpp]
 tags: [vtable, lib]
 ---
 

@@ -3,7 +3,6 @@ layout: post
 title:  "two word break problems"
 date:   2014-04-11 18:19:03
 excerpt: "Word Break"
-categories: [algorithm]
 tags: [dp, leetcode]
 ---
 

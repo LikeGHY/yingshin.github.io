@@ -3,7 +3,6 @@ layout: post
 title:  "C++中闭包的简单实现"
 date: 2015-12-01 15:07:28
 excerpt: "C++中闭包的简单实现"
-categories: [c/cpp]
 tags: [closure]
 ---
 

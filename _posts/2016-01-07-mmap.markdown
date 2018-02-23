@@ -3,7 +3,6 @@ layout: post
 title:  "共享内存mmap介绍"
 date: 2016-01-07 20:26:17
 excerpt: "共享内存mmap介绍"
-categories: [c/cpp]
 tags: [IPC, mmap]
 ---
 

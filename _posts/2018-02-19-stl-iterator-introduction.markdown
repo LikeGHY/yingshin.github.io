@@ -3,7 +3,6 @@ layout: post
 title: "stl iterator介绍"
 date: 2018-02-19 14:27:56
 excerpt: "stl iterator"
-categories: [c/cpp]
 tags: [stl, iterator]
 ---
 
@@ -727,7 +726,7 @@ foo(Iterator Iter, std::input_iterator_tag)
 foo(Iterator Iter, std::random_access_iterator_tag)
 ```
 
-当然，借助[std::enable_if](http://izualzhy.cn/c/cpp/2017/12/16/SFINAE-and-enable_if)我们可以有另一种实现方案（原理相同）
+当然，借助[std::enable_if](http://izualzhy.cn/SFINAE-and-enable_if)我们可以有另一种实现方案（原理相同）
 
 ```
 template<class BDIter,

@@ -3,7 +3,6 @@ layout: post
 title: zookeeper指南
 date: 2016-10-6 00:40:18
 excerpt: "zookeeper指南"
-categories: [c/cpp]
 tags: [zookeeper]
 ---
 
@@ -19,23 +18,23 @@ zookeeper实现了一组核心操作，通过这些可以实现很多常见分�
 
 几篇文章主要包括安装、介绍、zkcli、c/python的客户端lib解析及介绍，并推荐阅读[ZooKeeper:Distributed Process Coordination](http://pan.baidu.com/s/1nuT9tUx)以及中文版。
 
-1. [单机zookeeper的安装](http://izualzhy.cn/c/cpp/2016/09/24/zookeeper-install)  
-1. [单机zookeeper的安装](http://izualzhy.cn/c/cpp/2016/09/24/zookeeper-install)  
-2. [zookeeper介绍](http://izualzhy.cn/c/cpp/2016/09/24/zookeeper-introduction)  
-2. [zookeeper介绍](http://izualzhy.cn/c/cpp/2016/09/24/zookeeper-introduction)  
-3. [zookeeper之zkCli的使用](http://izualzhy.cn/c/cpp/2016/09/24/zkcli-introduction)  
-3. [zookeeper之zkCli的使用](http://izualzhy.cn/c/cpp/2016/09/24/zkcli-introduction)  
-4. [使用zkcli实现一个主-从模式的架构](http://izualzhy.cn/c/cpp/2016/09/25/zkcli-example)  
-4. [使用zkcli实现一个主-从模式的架构](http://izualzhy.cn/c/cpp/2016/09/25/zkcli-example)  
-5. [zookeeper C API介绍](http://izualzhy.cn/c/cpp/2016/10/02/zookeeper-c-api-introduction)  
-5. [zookeeper C API介绍](http://izualzhy.cn/c/cpp/2016/10/02/zookeeper-c-api-introduction)  
-6. [zookeeper-kazoo介绍](http://izualzhy.cn/c/cpp/2016/10/05/zookeeper-python-kazoo-introduction)  
-6. [zookeeper-kazoo介绍](http://izualzhy.cn/c/cpp/2016/10/05/zookeeper-python-kazoo-introduction)  
-7. [c客户端源码分析一：数据结构与线程](http://izualzhy.cn/c/cpp/2016/10/22/zookeeper-c-client-src-structure-and-thread)  
-7. [c客户端源码分析一：数据结构与线程](http://izualzhy.cn/c/cpp/2016/10/22/zookeeper-c-client-src-structure-and-thread)  
-8. [c客户端源码分析二：接口调用后发生了什么？](http://izualzhy.cn/c/cpp/2016/10/23/zookeeper-c-client-src-user-thread)  
-8. [c客户端源码分析二：接口调用后发生了什么？](http://izualzhy.cn/c/cpp/2016/10/23/zookeeper-c-client-src-user-thread)  
-9. [c客户端源码分析三：两个线程](http://izualzhy.cn/c/cpp/2016/10/23/zookeeper-c-client-src-lib-thread)  
-9. [c客户端源码分析三：两个线程](http://izualzhy.cn/c/cpp/2016/10/23/zookeeper-c-client-src-lib-thread)  
+1. [单机zookeeper的安装](http://izualzhy.cn/zookeeper-install)  
+1. [单机zookeeper的安装](http://izualzhy.cn/zookeeper-install)  
+2. [zookeeper介绍](http://izualzhy.cn/zookeeper-introduction)  
+2. [zookeeper介绍](http://izualzhy.cn/zookeeper-introduction)  
+3. [zookeeper之zkCli的使用](http://izualzhy.cn/zkcli-introduction)  
+3. [zookeeper之zkCli的使用](http://izualzhy.cn/zkcli-introduction)  
+4. [使用zkcli实现一个主-从模式的架构](http://izualzhy.cn/zkcli-example)  
+4. [使用zkcli实现一个主-从模式的架构](http://izualzhy.cn/zkcli-example)  
+5. [zookeeper C API介绍](http://izualzhy.cn/zookeeper-c-api-introduction)  
+5. [zookeeper C API介绍](http://izualzhy.cn/zookeeper-c-api-introduction)  
+6. [zookeeper-kazoo介绍](http://izualzhy.cn/zookeeper-python-kazoo-introduction)  
+6. [zookeeper-kazoo介绍](http://izualzhy.cn/zookeeper-python-kazoo-introduction)  
+7. [c客户端源码分析一：数据结构与线程](http://izualzhy.cn/zookeeper-c-client-src-structure-and-thread)  
+7. [c客户端源码分析一：数据结构与线程](http://izualzhy.cn/zookeeper-c-client-src-structure-and-thread)  
+8. [c客户端源码分析二：接口调用后发生了什么？](http://izualzhy.cn/zookeeper-c-client-src-user-thread)  
+8. [c客户端源码分析二：接口调用后发生了什么？](http://izualzhy.cn/zookeeper-c-client-src-user-thread)  
+9. [c客户端源码分析三：两个线程](http://izualzhy.cn/zookeeper-c-client-src-lib-thread)  
+9. [c客户端源码分析三：两个线程](http://izualzhy.cn/zookeeper-c-client-src-lib-thread)  
 
 

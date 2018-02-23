@@ -3,7 +3,6 @@ layout: post
 title:  "python装饰器介绍"
 date: 2015-08-04 19:13:04
 excerpt: "python装饰器介绍"
-categories: [python]
 tags: [decorator]
 ---
 

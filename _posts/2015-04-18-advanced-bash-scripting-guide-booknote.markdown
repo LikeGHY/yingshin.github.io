@@ -3,7 +3,6 @@ layout: post
 title:  "高级Bash脚本编程指南读书笔记"
 date: 2015-04-18 17:33:59
 excerpt: "高级Bash脚本编程指南读书笔记"
-categories: [bash]
 tags: [bash]
 ---
 本文是[《高级Bash脚本编程指南》](http://teliute.org/linux/abs-3.9.1/index.html)的读书笔记。主要记录了自己觉得容易忘记的地方。

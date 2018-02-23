@@ -1,5 +1,6 @@
 name: "Ying's Blog"
-permalink: /:categories/:year/:month/:day/:title
+permalink: /:title
+# permalink: /:categories/:year/:month/:day/:title
 
 author: "yingshin"
 atom-baseurl: "http://izualzhy.cn"

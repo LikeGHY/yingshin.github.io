@@ -3,7 +3,6 @@ layout: post
 title: 追core笔记之四：由FileDescriptorTables::~FileDescriptorTables看静态库共享库的全局变量double-free的问题
 date: 2016-12-11 11:21:09
 excerpt: "由FileDescriptorTables::~FileDescriptorTables看静态库共享库的全局变量double-free的问题"
-categories: [c/cpp]
 tags: [core, global]
 ---
 

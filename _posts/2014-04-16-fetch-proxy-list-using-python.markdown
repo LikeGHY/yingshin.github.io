@@ -3,8 +3,6 @@ layout: post
 title:  "使用python获取IP代理列表"
 date:   2014-04-16 15:33:03
 excerpt: "Fetch active proxy list using python."
-categories: [tools]
-categories: [tools]
 tags: [proxy, python]
 ---
 

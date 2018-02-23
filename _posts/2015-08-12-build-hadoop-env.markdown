@@ -3,7 +3,6 @@ layout: post
 title:  "hadoop环境搭建笔记"
 date: 2015-08-12 20:02:53
 excerpt: "hadoop环境搭建笔记"
-categories: [tools]
 tags: [hadoop]
 ---
 

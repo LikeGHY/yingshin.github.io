@@ -3,7 +3,6 @@ layout: post
 title:  "glog简介"
 date: 2016-01-21 00:05:47
 excerpt: "glog简介"
-categories: [c/cpp]
 tags: [glog]
 ---
 
@@ -89,8 +88,8 @@ Aborted (core dumped)
 
 ### 3. 配置
 
-glog有很多配置项，这些配置项都是通过gflags设置的，关于gflags的使用可以参考[这篇文章](http://izualzhy.cn/c/cpp/2015/11/15/gflags-introduction)。  
-glog有很多配置项，这些配置项都是通过gflags设置的，关于gflags的使用可以参考[这篇文章](http://izualzhy.cn/c/cpp/2015/11/15/gflags-introduction)。  
+glog有很多配置项，这些配置项都是通过gflags设置的，关于gflags的使用可以参考[这篇文章](http://izualzhy.cn/gflags-introduction)。  
+glog有很多配置项，这些配置项都是通过gflags设置的，关于gflags的使用可以参考[这篇文章](http://izualzhy.cn/gflags-introduction)。  
 例如对于logtostderr这个配置，有3种方法可以设置：  
 1. 设置GLOG\_前缀名的系统环境变量：`export GLOG_logtostderr=1;./your_application`  
 2. 手动在程序里修改gflags配置变量：`FLAGS_logtostderr = 1;LOG(INFO) << ...`。  

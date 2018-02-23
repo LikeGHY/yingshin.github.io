@@ -3,8 +3,6 @@ layout: post
 title:  "一个简易的GET/POST工具"
 date: 2014-04-21 11:03:18
 excerpt: "一个简易的GET/POST工具，可以设置request参数，类型，cookie等，使用python。"
-categories: [tools]
-categories: [tools]
 tags: [python]
 ---
 
@@ -89,7 +87,7 @@ from Tkinter import *
 import HttpUtil
 
 #a simple util to set webreqeust and get result visiually.
-#author: izualzhy@163.com
+#author: izualzhy.cn/com
 class MainWindow(object):
     def __init__(self):
         self.httpUtil = HttpUtil.HttpUtil()

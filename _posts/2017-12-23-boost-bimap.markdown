@@ -3,7 +3,6 @@ layout: post
 title: "boost容器之bimap"
 date: 2017-12-23 19:14:46
 excerpt: "boost容器之bimap"
-categories: [c/cpp]
 tags: [boost, bimap]
 ---
 

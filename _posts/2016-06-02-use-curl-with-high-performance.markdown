@@ -3,7 +3,6 @@ layout: post
 title: 使用curl进行http高并发访问
 date: 2016-06-01 18:30:21
 excerpt: "使用curl进行http高并发访问"
-categories: [c/cpp]
 tags: [curl]
 notebook: blog article notes
 ---

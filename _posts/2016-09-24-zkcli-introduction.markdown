@@ -3,7 +3,6 @@ layout: post
 title: zookeeper之zkCli的使用
 date: 2016-9-24 23:25:08
 excerpt: "zookeeper之zkCli的使用"
-categories: [c/cpp]
 tags: [zookeeper]
 ---
 

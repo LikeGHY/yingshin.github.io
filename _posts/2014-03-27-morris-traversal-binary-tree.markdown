@@ -2,15 +2,14 @@
 layout: post
 title:  "Morris遍历二叉树"
 date:   2014-03-26 14:36:03
-categories: [algorithm]
 tags: [binarytree, leetcode]
 ---
 
 Morris遍历不使用栈，O(1)空间进行二叉树的遍历。  
 原理就是：  
 > 利用叶子结点的右空指针，临时性的指向中序遍历的后继结点。    
-与*[这篇文章](http://izualzhy.cn/algorithm/2014/03/17/traversal-binary-tree-nonrecursively/)*的想法类似，前序和中序非常相近，顺序是相同的，不同的是访问的时机。  
-与*[这篇文章](http://izualzhy.cn/algorithm/2014/03/17/traversal-binary-tree-nonrecursively/)*的想法类似，前序和中序非常相近，顺序是相同的，不同的是访问的时机。  
+与*[这篇文章](http://izualzhy.cn/traversal-binary-tree-nonrecursively/)*的想法类似，前序和中序非常相近，顺序是相同的，不同的是访问的时机。  
+与*[这篇文章](http://izualzhy.cn/traversal-binary-tree-nonrecursively/)*的想法类似，前序和中序非常相近，顺序是相同的，不同的是访问的时机。  
 
 
 #### 前序、中序遍历  

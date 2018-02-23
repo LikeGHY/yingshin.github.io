@@ -3,7 +3,6 @@ layout: post
 title: protobuf编码之varint/zigzag
 date: 2016-8-17 20:45:25
 excerpt: "protobuf编码之varint/zigzag"
-categories: [c/cpp]
 tags: [protobuf, varint, zigzag]
 ---
 

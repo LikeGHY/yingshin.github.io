@@ -3,7 +3,6 @@ layout: post
 title:  "python调用clib的两种方法"
 date: 2015-08-19 16:45:29
 excerpt: "python调用clib的两种方法"
-categories: [python]
 tags: [clib]
 ---
 

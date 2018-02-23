@@ -3,7 +3,6 @@ layout: post
 title: 三座城市的印象：苏州、杭州和南京
 date: 2017-05-21 16:28:59
 excerpt: "三座城市的印象：苏州、杭州和南京"
-categories: [life]
 tags: [travel]
 ---
 

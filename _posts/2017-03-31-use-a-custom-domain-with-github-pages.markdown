@@ -3,11 +3,10 @@ layout: post
 title: github博客绑定域名
 date: 2017-3-31 16:35:32
 excerpt: "github博客绑定域名"
-categories: [c/cpp]
 tags: [github]
 ---
 
-终于开通自己的域名啦！[izualzhy.cn](izualzhy.cn)。
+终于开通自己的域名啦！[izualzhy.cn/
 
 简单介绍下流程：
 

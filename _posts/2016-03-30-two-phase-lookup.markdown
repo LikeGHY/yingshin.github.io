@@ -3,7 +3,6 @@ layout: post
 title:  "C++里的Two phase lookup"
 date: 2016-03-30 22:19:03
 excerpt: "Two phase lookup"
-categories: [c/cpp]
 tags: [compliler]
 ---
 

@@ -3,7 +3,6 @@ layout: post
 title: sqlalchemy十分钟入门
 date: 2016-12-24 22:05:43
 excerpt: "sqlalchemy十分钟入门"
-categories: [python]
 tags: [mysql, sqlalchemy]
 ---
 
@@ -11,14 +10,13 @@ tags: [mysql, sqlalchemy]
 
 <!--more-->
 
-ORM即Object Relational Mappers，将数据库的一行转变为对象的操作，上层只需要关注
-对象的读写，真正与数据库的交互隐藏了了package里。使得开发变得非常简便。本文主要介绍sqlalchemy的入门用法，试图在短时间内让读者可以掌握使用的技巧，更多的细节会给出对应的文档章节，建议深入阅读。
+ORM即Object Relational Mappers，将数据库的一行转变为对象的操作，上层只需要关注对象的读写，真正与数据库的交互隐藏到了package里。使得开发变得非常简便。本文主要介绍sqlalchemy的入门用法，试图在短时间内让读者可以掌握使用的技巧，更多的细节会给出对应的文档章节，建议深入阅读。
 
 话不多说，下面开始。
 
 ### 1. SQLAlchemy
 
-SQLAlchemy支持多种数据库（如SQLite/MySQL,Postgres,Oracle)等，本文使用mysql作为后端数据库引擎。
+SQLAlchemy支持多种数据库（如SQLite/MySQL/Postgres/Oracle)等，本文使用mysql作为后端数据库引擎。
 
 安装使用`pip install sqlalchemy`即可。
 
@@ -54,7 +52,7 @@ connect_string = "%(db)s://%(user)s:%(password)s@%(ip)s:\
 engine = create_engine(connect_string, echo=True)
 ```
 
-使用`create_engine`我们希望与数据库后端进行链接。
+使用`create_engine`与数据库后端进行链接。
 
 注意格式里`ip`以及其他字段替换成你的mysql端口，`echo=True`表示回显，设置后sqlalchemy发起的数据库请求都会打印到屏幕上。
 
@@ -97,7 +95,7 @@ Base.metadata.create_all(engine)
 
 注意`create_all`会建立所有`Base`子类的表，`drop_all`则删除这些表。
 
-执行完后，我们在后端使用命令行确认下建表是否成功
+执行完后，回显命令行显示建表成功
 
 ```
 CREATE TABLE `users` (
@@ -113,7 +111,7 @@ CREATE TABLE `users` (
 
 ### 4. 数据库的操作
 
-我们看下如何插入新的一行。
+看下如何插入新的一行。
 
 在ORM里，数据库插入新的一行，相当于构造一个新的对象传递给package。在这之前，我们需要基于`engine`发起一次transcation。
 
@@ -241,7 +239,7 @@ mysql> select * from test.address;
             return getattr(self.session, name)
 ```
 
-`sqlalchemy`里的`connect`默认不是transcation
+`sqlalchemy`里的`connect`默认不是transcation，例如：
 
 ```
 engine.connect().execute(text("show databases"));
@@ -249,7 +247,6 @@ engine.connect().execute(text("show databases"));
 
 返回一个`ResultProxy`对象，使用`for user in xxx`可以遍历所有符合条件的对象。
 
-在使用过程中，也遇到了不少问题，例如[select * for update的用法](http://izualzhy.cn/python/2015/04/11/sqlalchemy-with-lockmode-update-question)。
-在使用过程中，也遇到了不少问题，例如[select * for update的用法](http://izualzhy.cn/python/2015/04/11/sqlalchemy-with-lockmode-update-question)。
+在使用过程中，也遇到了不少问题，例如[select * for update的用法](http://izualzhy.cn/sqlalchemy-with-lockmode-update-question)。
 
 更详细的用法，建议参考sqlalchemy的文档，放了一份在[百度云](https://pan.baidu.com/s/1i5fWSst)上。

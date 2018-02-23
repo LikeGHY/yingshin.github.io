@@ -3,7 +3,6 @@ layout: post
 title: 好的程序员与好的代码
 date: 2016-12-17 16:13:46
 excerpt: "好的程序员与好的代码"
-categories: [c/cpp]
 tags: [summary]
 ---
 

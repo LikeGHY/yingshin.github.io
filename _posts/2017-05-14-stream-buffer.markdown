@@ -3,7 +3,6 @@ layout: post
 title: std::streambuf从示例到应用
 date: 2017-5-14 17:34:05
 excerpt: "std::streambuf从示例到应用"
-categories: [c/cpp]
 tags: [streambuf]
 ---
 
@@ -315,7 +314,7 @@ int main() {
 
 ## 4. glog日志的应用
 
-[glog](http://izualzhy.cn/c/cpp/2016/01/21/glog)记录的输入形式采用了C++流的方式，代码里也采用了继承`std::streambuf std::ostream`的实现方式。
+[glog](http://izualzhy.cn/glog)记录的输入形式采用了C++流的方式，代码里也采用了继承`std::streambuf std::ostream`的实现方式。
 
 摘抄下相关代码：
 

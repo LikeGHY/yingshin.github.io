@@ -3,7 +3,6 @@ layout: post
 title: "boost容器之unordered"
 date: 2017-12-14 23:21:45
 excerpt: "boost容器之unordered"
-categories: [c/cpp]
 tags: [boost, unordered]
 ---
 

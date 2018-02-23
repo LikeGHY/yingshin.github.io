@@ -3,12 +3,11 @@ layout: post
 title: zookeeper-kazoo介绍
 date: 2016-10-5 11:34:36
 excerpt: "zookeeper-kazoo介绍"
-categories: [c/cpp]
 tags: [zookeeper]
 ---
 
-在[zookeeper的c客户端](http://izualzhy.cn/c/cpp/2016/10/02/zookeeper-c-api-introduction)里，更多的是提供了食材，至于最后如何完成食谱(recipe)，则由使用方自己根据场景实现。因此经常给人一种接口很多，貌似实现了分布式的协调服务，但是却又需要自己实现一遍的感觉。
-在[zookeeper的c客户端](http://izualzhy.cn/c/cpp/2016/10/02/zookeeper-c-api-introduction)里，更多的是提供了食材，至于最后如何完成食谱(recipe)，则由使用方自己根据场景实现。因此经常给人一种接口很多，貌似实现了分布式的协调服务，但是却又需要自己实现一遍的感觉。
+在[zookeeper的c客户端](http://izualzhy.cn/zookeeper-c-api-introduction)里，更多的是提供了食材，至于最后如何完成食谱(recipe)，则由使用方自己根据场景实现。因此经常给人一种接口很多，貌似实现了分布式的协调服务，但是却又需要自己实现一遍的感觉。
+在[zookeeper的c客户端](http://izualzhy.cn/zookeeper-c-api-introduction)里，更多的是提供了食材，至于最后如何完成食谱(recipe)，则由使用方自己根据场景实现。因此经常给人一种接口很多，貌似实现了分布式的协调服务，但是却又需要自己实现一遍的感觉。
 
 相比c++，java拥有更高级别的封装库：Curator。本文想要介绍的是python下非常好用的库：**Kazoo**。
 
@@ -142,8 +141,8 @@ stat = zk.exists("/my/favorite", watch=watch_func)
 
 当"/my/favorite"发生关心的变化时，例如`get`，`exists`关心"/my/favorite"创建删除和data改变，`get_children`关心"/my/favorite"和子节点的创建删除。
 
-以上set watch参数跟c客户端相同，都是单次触发。其实并不难理解，因为何时通知是在服务端确定的。但是借助python[装饰器](http://izualzhy.cn/python/2015/08/04/python-decorator-notes)，Kazoo在客户端实现了触发后自动继续注册监视点的方式。
-以上set watch参数跟c客户端相同，都是单次触发。其实并不难理解，因为何时通知是在服务端确定的。但是借助python[装饰器](http://izualzhy.cn/python/2015/08/04/python-decorator-notes)，Kazoo在客户端实现了触发后自动继续注册监视点的方式。
+以上set watch参数跟c客户端相同，都是单次触发。其实并不难理解，因为何时通知是在服务端确定的。但是借助python[装饰器](http://izualzhy.cn/python-decorator-notes)，Kazoo在客户端实现了触发后自动继续注册监视点的方式。
+以上set watch参数跟c客户端相同，都是单次触发。其实并不难理解，因为何时通知是在服务端确定的。但是借助python[装饰器](http://izualzhy.cn/python-decorator-notes)，Kazoo在客户端实现了触发后自动继续注册监视点的方式。
 
 ```
 class kazoo.recipe.watchers.DataWatch(client, path, func=None, *args, **kwargs)

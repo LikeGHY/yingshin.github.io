@@ -3,12 +3,11 @@ layout: post
 title: 再扯扯智能指针之protobuf
 date: 2017-3-26 17:33:13
 excerpt: "再扯扯智能指针之protobuf"
-categories: [c/cpp]
 tags: [protobuf, smartptr]
 ---
 
-一直对智能指针很感兴趣，之前写过一篇[扯扯智能指针](http://izualzhy.cn/c/cpp/2016/11/26/smart_pointer)，平时没事也会翻出来boost chrome源码里的智能指针学习下。
-一直对智能指针很感兴趣，之前写过一篇[扯扯智能指针](http://izualzhy.cn/c/cpp/2016/11/26/smart_pointer)，平时没事也会翻出来boost chrome源码里的智能指针学习下。
+一直对智能指针很感兴趣，之前写过一篇[扯扯智能指针](http://izualzhy.cn/smart_pointer)，平时没事也会翻出来boost chrome源码里的智能指针学习下。
+一直对智能指针很感兴趣，之前写过一篇[扯扯智能指针](http://izualzhy.cn/smart_pointer)，平时没事也会翻出来boost chrome源码里的智能指针学习下。
 
 在这个过程中发现一个有趣的现象，很多项目在选择开源的时候，为了减少用户使用的成本，往往希望尽量少的@第三方代码，特别是有些源码比较庞大、编译耗时的第三方库，例如boost。我厂开源的sofa-rpc里为了不依赖boost同时又使用智能指针，就有大量的[smartptr代码](https://github.com/baidu/sofa-pbrpc/tree/master/src/sofa/pbrpc/smart_ptr)，看了下感觉是从boost拿过来的，不过本身已经依赖了boost，有些画蛇添足。
 
@@ -337,8 +336,8 @@ void shared_ptr<T>::MaybeSetupWeakThis(enable_shared_from_this<T>* ptr) {
 这里重点说下为什么要使用`weak_ptr_`？如果要通过`shared_from_this`返回自身的智能指针，那么保存的成员变量无非有三种选择：raw-pointer/shared-pointer/weak-pointer。
 
 1. 存储原始指针`T* ptr_`不可行：`shared_from_this`调用时返回`shared_ptr<T>(ptr_)`不可行，因为每个返回的`shared_ptr<T>`都会尝试释放`ptr_`  
-2. 存储`shared_ptr_`不可行，因为一个对象不应该包含指向自己的智能指针作为成员变量，否则引用计数永远>1，这点和之前介绍的[交叉引用](http://izualzhy.cn/c/cpp/2016/11/26/smart_pointer)很像。  
-2. 存储`shared_ptr_`不可行，因为一个对象不应该包含指向自己的智能指针作为成员变量，否则引用计数永远>1，这点和之前介绍的[交叉引用](http://izualzhy.cn/c/cpp/2016/11/26/smart_pointer)很像。  
+2. 存储`shared_ptr_`不可行，因为一个对象不应该包含指向自己的智能指针作为成员变量，否则引用计数永远>1，这点和之前介绍的[交叉引用](http://izualzhy.cn/smart_pointer)很像。  
+2. 存储`shared_ptr_`不可行，因为一个对象不应该包含指向自己的智能指针作为成员变量，否则引用计数永远>1，这点和之前介绍的[交叉引用](http://izualzhy.cn/smart_pointer)很像。  
 3. 存储`weak_ptr_`可行，不会固定增加一个引用计数，注意`weak_this_`是在`shared_ptr::MaybeSetupWeakThis`调用时初始化的，也就是`shared_ptr::shared_ptr(T* ptr)`，这也是为什么继承`enable_shared_from_this`的子类对象一定需要是heap上对象同时由`shared_ptr`管理生命周期。代码`weak_this_->expired`接口的作用正是为了判断是否符合上述条件。  
 
 
@@ -368,4 +367,4 @@ shared_ptr<T> static_pointer_cast(const shared_ptr<U>& rhs) {
   lhs.InitializeWithStaticCast<T>(rhs);
 ```
 
-不过这样编译器会报错，跟[two-phase-lookup](http://izualzhy.cn/c/cpp/2016/03/30/two-phase-lookup)有关，具体可以参考[这里](http://www.aerialmantis.co.uk/blog/2017/03/17/template-keywords/)，简言之，就是编译器需要明确告诉它这是一个类型。
+不过这样编译器会报错，跟[two-phase-lookup](http://izualzhy.cn/two-phase-lookup)有关，具体可以参考[这里](http://www.aerialmantis.co.uk/blog/2017/03/17/template-keywords/)，简言之，就是编译器需要明确告诉它这是一个类型。

@@ -3,7 +3,6 @@ layout: post
 title:  "如何写出正确的二分法以及分析"
 date: 2014-04-18 16:43:18
 excerpt: "binary search problems analysis."
-categories: [algorithm]
 tags: [binarysearch]
 ---
 

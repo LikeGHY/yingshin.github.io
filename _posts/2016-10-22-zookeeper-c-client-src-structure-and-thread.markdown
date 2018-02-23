@@ -3,7 +3,6 @@ layout: post
 title: zookeeper c客户端源码分析一：数据结构与线程
 date: 2016-10-22 21:32:49
 excerpt: "zookeeper c客户端源码分析一：数据结构与线程"
-categories: [c/cpp]
 tags: [zookeeper]
 ---
 
