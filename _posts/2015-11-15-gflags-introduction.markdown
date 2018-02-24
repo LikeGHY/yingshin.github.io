@@ -11,7 +11,6 @@ gflags里参数的定义可以分散在各个源文件处，而不是只能在ma
 使用时只要链接gflags库和指定所在的头文件路径即可。  
 
 <!--more-->
-
 当然，如果两个源文件定义了相同的flag，链接时会报重复定义的错误。  
 
 先看个简单的例子:   
@@ -36,7 +35,6 @@ int main(int argc, char* argv[])
 上述代码包含了引用头文件、定义、解析、使用flags。
 
 输出如下：  
-
 ```
 1
 english,french,german
@@ -54,7 +52,7 @@ flag的定义方法如下：
                  "comma-separated list of languages to offer in the 'lang' menu");
 ```
 
-定义flag一共6个宏：  
+定义flag一共6个宏，分别对应6种类型：  
 
 ```cpp
 DEFINE_bool: boolean
@@ -105,15 +103,13 @@ __remove\_flags__: 若设置为true，表示解析后将flag以及flag对应的�
 我觉得是返回处理后的argv第一个非flag值的下标  
 
 也可以在命令行传入`--flagfile`或者在程序里设置`flagfile`以解析文件中的flags。
-
 ```
 google::SetCommandLineOption("flagfile", "gflags_sample.flags");
 ```
 
-`FLAGS_flagfile`更新后，会重新读取该文件并更新文件里的gflags。
+`FLAGS_flagfile`更新后，会自动重新读取该文件并更新文件里的gflags。
 
 另外看过厂里很多代码使用`ReadFromFlagsFile`接口，不过该接口已经标明`DEPRECATED`，不建议使用。  
-
 ```
 // These let you manually implement --flagfile functionality.
 // DEPRECATED.
@@ -141,11 +137,11 @@ DEFINE_int32(port, 0, "What port to listen on");
 static const bool port_dummy = RegisterFlagValidator(&FLAGS_port, &ValidatePort);
 ```
 
-如果注册成功，regist函数返回值为ture。否则返回false，注册失败一般是一下两种原因：  
-1. 第一个参数不是flag  
-2. 该flag已经注册过  
+如果注册成功，regist函数返回值为ture。否则返回false，注册失败一般是一下两种原因：
+1. 第一个参数不是flag
+2. 该flag已经注册过
 
-写了一个完整的[例子](https://gist.github.com/yingshin/35a17cc4a6631002d3e0)  
+写了一个完整的[例子](https://gist.github.com/yingshin/35a17cc4a6631002d3e0)放在了gist上。
 
 ### 6. 判断一个FLAG是否被设置
 
@@ -161,25 +157,26 @@ static const bool port_dummy = RegisterFlagValidator(&FLAGS_port, &ValidatePort)
     }
 ```
 
-注意这里并不是简单比较flag值是否与默认值相同，如果设置了flag=默认值，也会输出"port is set"。
+注意这里**不是简单比较flag值是否与默认值相同**，如果设置了flag=默认值，也会输出"port is set"。
 
 ### 7. 在程序里设置FLAG
 
-实际使用了我们使用flag替代了传统conf配置的形式，其中有一个需求是配置可以动态reload的。简单点通过手动修改的方式： `FLAGS_protno = 9999`。  
+实际项目里，我们使用gflag替代了传统conf配置，其中有一个需求是配置可以动态reload的。简单点通过手动修改的方式： `FLAGS_protno = 9999`。  
 比较合理的是使用`SetCommandLineOption`，函数原型为  
 
 ```
 extern std::string SetCommandLineOption(const char* name, const char* value);
 ```
 
-注意bool int类型都使用字符串的方式修改，例如：  
-`google::SetCommandLineOption("bvar_dump", "true")`
-`google::SetCommandLineOption("portno", "9999")`  
+注意bool int类型都使用字符串的方式修改，例如：
+```
+google::SetCommandLineOption("bvar_dump", "true")
+google::SetCommandLineOption("portno", "9999")
+```
 
 成功返回"portno set to 9999"，失败则返回空字符串。
 
-与此类似的是读取flag的接口：  
-
+与此类似的是读取flag的接口：
 ```
 extern bool GetCommandLineOption(const char* name, std::string* OUTPUT)
 ```
@@ -228,7 +225,6 @@ multiple definition of 'fLS::FLAGS_flagfile'
 这个问题跟上面类似，不要定义相同的flag名，即使放在不同的namespace。
 
 例如我们定义了
-
 ```
 namespace foo {
 DEFINE_bool(multi_thread_enabled, true, "");
@@ -239,19 +235,16 @@ DEFINE_bool(multi_thread_enabled, true, "");
 ```
 
 编译没有问题，但是运行会报错：
-
 ```
 ERROR: flag 'multi_thread_enabled' was defined more than once
 ```
 
 或者
-
 ```
 ERROR: something wrong with flag ...
 ```
 
 具体可以参考gflags源码：
-
 ```
   if (ins.second == false) {   // means the name was already in the map
     if (strcmp(ins.first->second->filename(), flag->filename()) != 0) {
@@ -270,5 +263,6 @@ ERROR: something wrong with flag ...
   }
 ```
 
-### 12. 参考资料：   
+### 12. 参考资料
+
 [https://gflags.github.io/gflags/](https://gflags.github.io/gflags/)

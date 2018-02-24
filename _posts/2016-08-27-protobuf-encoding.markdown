@@ -7,7 +7,6 @@ tags: [protobuf]
 ---
 
 [上篇文章](http://izualzhy.cn/protobuf-encode-varint-and-zigzag)介绍了protobuf里整型的编码方式，这篇文章从整体上介绍下pb的编码规则，包括string/bytes/float/double/message等类型的序列化实例以及源码，最后分析下pb向前兼容这个特性的一些细节。
-[上篇文章](http://izualzhy.cn/protobuf-encode-varint-and-zigzag)介绍了protobuf里整型的编码方式，这篇文章从整体上介绍下pb的编码规则，包括string/bytes/float/double/message等类型的序列化实例以及源码，最后分析下pb向前兼容这个特性的一些细节。
 
 <!--more-->
 
@@ -59,7 +58,7 @@ pbmessage序列化以二进制流的方式存储，按照定义的字段顺序�
 ### 3. key的序列化
 
 #### 3.1 规则
-key的序列化使用了varint编码，在[上一节](http://izualzhy.cn/protobuf-encode-varint-and-zigzag)也简单介绍了下。
+
 key的序列化使用了varint编码，在[上一节](http://izualzhy.cn/protobuf-encode-varint-and-zigzag)也简单介绍了下。
 
 序列化的公式为`varint(field_number << 3 | wire_type)`，field\_number为proto定义里的序列号，wire\_type指定了编码方式，不同类型的数据可能不一样。
@@ -115,7 +114,8 @@ inline void CodedOutputStream::WriteTag(uint32 value) {
 
 先看一个例子，定义proto `optional string a = 1;`，然后赋值`test.set_a("teststring");`。  
 
-查看序列化后的值为`0a0a 7465 7374 7374 7269 6e67`
+查看序列化后的值为`0a0a 7465 7374 7374 7269 6e67`。
+
 对string/bytes类型，假设写入的字符串为value，序列化后的值简单讲就是`key + varint(value.size) + value`  
 
 编码key时的wiretype = 2，因此key编码后的数据为`varint(1 << 3 | 2)`，即`0x0a`  
@@ -139,11 +139,8 @@ void WireFormatLite::WriteString(int field_number, const string& value,
 ```
 
 注意`WriteTag`的`type`类型传入的是`WIRETYPE_LENGTH_DELIMITED`，对应的值为2，表示变长类型。
-
 `WriteVarint32`出现次数很多就不介绍了
-
 `CodedOutputStream::WriteString(const string& str)`是调用`memcpy`写入value的值。
-
 `bytes`类型调用`WriteBytes`，实现上跟`WriteString`一致。
 
 ### 5. float/double的序列化
@@ -153,9 +150,7 @@ void WireFormatLite::WriteString(int field_number, const string& value,
 float/double比较简单，就是`key + value`，key里使用的type为`WIRETYPE_FIXED32 = 5`。
 
 比如定义了`optional float a = 1;`，赋值`test.set_a(1.2345);`，序列化后的值为`0d19 049e 3f`。
-
-其中`0d`是key编码后的值，即`varint(1 << 3 | 5) = 0x0d`  
-`19 04 9e 3f`是`1.2345`对应的内存数据。
+其中`0d`是key编码后的值，即`varint(1 << 3 | 5) = 0x0d`，`19 04 9e 3f`是`1.2345`对应的内存数据。
 
 #### 5.2 源码解析
 
@@ -175,7 +170,6 @@ void WireFormatLite::WriteFloat(int field_number, float value,
 也是由两个函数调用组成
 
 `EncodeFloat`转化float到对应的int32
-
 ```
 inline uint32 WireFormatLite::EncodeFloat(float value) {
   union {float f; uint32 i;};
@@ -219,11 +213,7 @@ message Test1 {
     test.mutable_a()->set_a(1.2345);
 ```
 
-从上一节可以知道test.a序列化后的值为`0d19 049e 3f`
-
-序列化之后的内容为`0a05 0d19 049e 3f`
-
-其中`0a`是key编码后的内容，`05`是value的长度，`0d19 049e 3f`就是Test2对象序列化后的值。
+从上一节可以知道test.a序列化后的值为`0d19 049e 3f`，序列化之后的内容为`0a05 0d19 049e 3f`，其中`0a`是key编码后的内容，`05`是value的长度，`0d19 049e 3f`就是Test2对象序列化后的值。
 
 ### 7. unknown字段的解析和序列化
 
