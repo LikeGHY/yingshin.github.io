@@ -20,7 +20,7 @@ navigations:
     href: /books.html
   - title: Paper_Slides
     class: fa fa-newspaper-o
-    href: /paper_slides.html
+    href: /paper_slides.markdown
   - title: Subscribe
     class: fa fa-rss
     href: /atom.xml
