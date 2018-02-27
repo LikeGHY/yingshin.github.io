@@ -6,9 +6,17 @@ excerpt: "C++模板技术之SFINAE与enable_if的使用"
 tags: [compiler, SFINAE]
 ---
 
-想写这篇文章主要是偶然看到很多代码使用[protobuf里的反射](http://izualzhy.cn/protobuf-message-reflection)，例如使用`GetReflection/GetString/field/HasFeild`这些接口获取字段`common.logid`对应的value
+想写这篇文章主要是偶然看到很多代码使用[protobuf里的反射](http://izualzhy.cn/protobuf-message-reflection)，例如我们想要获取字段`common.logid`对应的value，很多实现使用`GetReflection/GetString/field/HasFeild`这些接口来获取。
 
 ```
+/*
+部分schema定义
+message Common {
+    optional string logid = 1;
+}
+optional Common common = 1;
+*/
+
     const google::protobuf::Descriptor* descriptor = message->GetDescriptor();
     const google::protobuf::Reflection* reflection = message->GetReflection();
     const google::protobuf::FieldDescriptor* common_field =
@@ -24,7 +32,7 @@ tags: [compiler, SFINAE]
     return common_reflection->GetString(common_message, logid_field);
 ```
 
-虽然pb里的反射实现上性能并没有明显降低，不过一直在思考能否有更简洁的方案实现，比如在不知道对象类型的情况下直接调用`logid`这个方法。
+虽然pb里的反射实现上性能并没有明显降低，不过一直在思考能否有更简洁的方案实现，比如直接调用`logid`这个方法，但是不知道对象类型的情况下，这么写一定会导致编译错误。
 
 而解决的方案就在于SFINAE.
 
@@ -32,7 +40,7 @@ tags: [compiler, SFINAE]
 
 ## 1. SFINAE是什么
 
-SFINAE是C++模板编译的一个原则，全名叫做**Substitution failure is not an error**
+SFINAE是C++模板编译的一个原则，全名叫做**Substitution Failure Is Not An Error**
 
 C++编译过程中，如果模板实例化后的某个模板函数（模板类）对该调用无效，那么将继续寻找其他重载决议，而不是引发一个编译错误。
 
@@ -60,7 +68,8 @@ int main() {
 }
 ```
 
-`f<int>`在适配version-1时因为没有`nested type: foo`，会引发一个`template argument deduction/substitution failed`，但是通过version-2可以实例化出一个`f<int>`来。
+模板函数`f`一共定义了两个版本。
+`f<int>`在适配version-1时因为没有`nested type: foo`，会引发一个`template argument deduction/substitution failed`，编译器不会报错，而是通过version-2实例化出一个`f<int>`来。
 
 nm可以看到bin文件里的符号名
 
@@ -115,13 +124,13 @@ int main() {
 }
 ```
 
-如果T定义了内嵌类型(nested type):iterator，例如`foo,std::vector<...>`，那么会适配第一个`test`模板函数，通过传入`nullptr`我们可以省略了构造一个对象的过程，返回值为`yes`。
+如果T定义了内嵌类型(nested type): iterator，例如`foo,std::vector<...>`，那么会适配第一个`test`模板函数，通过传入`nullptr`我们可以省略了构造一个对象指针的过程，返回值为`yes`。
 
 如果T未定义iterator，例如int，由于SFINAE原则，适配第一个失败后编译器继续适配第二个并且成功，返回值为`no`。
 
 由于`yes no`被特意设计了不同的size，配合sizeof，我们就可以判断传入的类型是否定义了`iterator`。
 
-注意编译器有一个最优原则，比如`foo`同样适配于第二个`test`模板，但是第一个`test`优先级更高，因此编译器容易选择最优的第一个`test`模板，并不会报`ambiguous`。
+注意编译器有一个最优原则，比如`foo`同样适配于第二个`test`模板，但是第一个`test`优先级更高(更加适配)，因此编译器选择最优的第一个`test`模板，并不会报`ambiguous`。
 
 ### 2.2. 现代C++查看类是否定义了内嵌类型
 
