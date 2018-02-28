@@ -8,11 +8,10 @@ tags: [binarytree, leetcode]
 Morris遍历不使用栈，O(1)空间进行二叉树的遍历。  
 原理就是：  
 > 利用叶子结点的右空指针，临时性的指向中序遍历的后继结点。    
-与*[这篇文章](http://izualzhy.cn/traversal-binary-tree-nonrecursively/)*的想法类似，前序和中序非常相近，顺序是相同的，不同的是访问的时机。  
+
 与*[这篇文章](http://izualzhy.cn/traversal-binary-tree-nonrecursively/)*的想法类似，前序和中序非常相近，顺序是相同的，不同的是访问的时机。  
 
-
-#### 前序、中序遍历  
+### 1. 前序、中序遍历  
 
 ```
 #pseudo code
@@ -30,7 +29,6 @@ while 结点存在:
 ```  
 
 <!--more-->
-
 
 Morris遍历与利用栈遍历都是非递归的，不过不同的是空间复杂度由O(n)&rarr;O(1)。    
 对任意一个根结点，实际上是有两次经过的，存在左子树的情况下：   
@@ -119,7 +117,7 @@ void MorrisInorder(Node* node)
 }
 ```
 
-#### 后序遍历  
+### 2. 后序遍历  
 跟使用栈遍历的方法类似，后序会比较麻烦些。  
 先说下步骤，再说下我的理解。  
 注意:   

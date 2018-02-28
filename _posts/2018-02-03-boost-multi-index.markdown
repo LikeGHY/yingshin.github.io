@@ -5,15 +5,15 @@ date: 2018-02-03 23:14:21
 tags: [boost, multi_index]
 ---
 
-之前介绍过[bimap](http://izualzhy.cn/boost-bimap)用于解决双向map的需求，类似于关系数据库里对多列建立索引。boost里的**multi_index_container**则继续扩充了这个特性，支持将多种container的接口合并到一块，想象下将std::vector和std::map合并到一个容器里组成一个新的容器。
+之前介绍过[bimap](http://izualzhy.cn/boost-bimap)用于解决双向map的需求，类似于关系数据库里对多列建立索引。boost里的**multi_index_container**则继续扩充了这个特性，支持将多种container的接口合并到一块，想象下将`std::vector`和`std::map`合并到一个容器里组成一个新的容器，既支持数据的顺序写入，也支持k-v映射。
 
-例如考虑[LRU](https://en.wikipedia.org/wiki/Cache_replacement_policies#LRU) cache，需要对数据hash和按照时间排序，实现上经常维护两个hash_table和list，更新时保证两个container的一致性。而使用**multi_index_container**可以构造出同时具有`hash_map`和`list`接口的类，用户不需要关注底层的数据实现和一致性。
+考虑实际应用场景，例如[LRU](https://en.wikipedia.org/wiki/Cache_replacement_policies#LRU) cache，需要对数据hash和按照时间排序，实现上经常维护两个容器：hash_table和list，更新时保证两个container的一致性。而使用**multi_index_container**可以构造出同时具有`hash_map`和`list`接口的类，用户不需要关注底层的数据实现和一致性。
 
 实际上，**multi_index_container**可以根据需要组装出各种接口，比如多种index方式，同时支持sequence接口：
 
 ![boost-multi_index_container](http://www.boost.org/doc/libs/1_66_0/libs/multi_index/doc/tutorial/multi_index_cont_example.png)
 
-这个类2004年就已经由boost推出，个人觉得非常好用，接下来我们介绍下用法。
+这个类2004年就已经由boost推出，将storage和index interfaces解耦开来，个人觉得非常好用，接下来我们介绍下用法。
 
 <!--more-->
 
@@ -76,7 +76,7 @@ int main() {
 }
 ```
 
-我们上面定义了`multi_index_container<std::string>`，可以看到`set`的接口几乎都支持，比如`erase` `lower_bound` `upper_bounder`。
+我们上面定义了`multi_index_container<std::string>`，可以看到`set`的接口几乎都支持，比如`erase`、`lower_bound`、`upper_bounder`。
 
 实际上`multi_index_container<(element)>`等价于
 
@@ -89,13 +89,13 @@ multi_index_container<
 >
 ```
 
-这应该是最简单的一种`multi_index_container`，只有一个索引：对employee的name排序，单索引的`multi_index_container`退化为正常的stl容器`std::set`，实际场景肯定不会这么使用，因为实测性能上要差一些（性能部分后面会单独一篇文章介绍）。。
+这应该是最简单的一种`multi_index_container`，只有一个索引：对employee的name排序。单索引的`multi_index_container`退化为正常的stl容器`std::set`，实际场景肯定不会这么使用，因为实测性能上要差一些（性能部分参考[笔记](https://izualzhy.cn/boost-multi-index-performance)）。。
 
-那么我们考虑复杂一点，假设employee除了记录姓名，还要记录编号，我们除了希望除了对name排序，对编号也能排序，这时候，多索引的`multi_index_container`就需要登场了。
+接下来我们考虑复杂一点，假设employee除了记录姓名，还要记录编号，我们除了希望除了对name排序，对编号也能排序，这时候，多索引的`multi_index_container`就需要登场了。
 
 ### 1.2. Multiple sorts on a single set
 
-接下来我们扩展了Employee为一个struct，包含id + name
+扩展Employee为一个struct，包含id + name
 
 ```cpp
 struct Employee {
@@ -137,16 +137,15 @@ typedef boost::multi_index::multi_index_container<
 
 `multi_index_container`是一个模板类，指定了几个模板参数
 
-`Employee`表示容器内的元素类型  
-`indexed_by`用于组织所有的索引类型，可以有多个索引，例如`ordered_unique` `ordered_non_unique`，称为**Index Type**，例如`ordered_unique`类似于`std::set`，而`ordered_non_unique`类似于`std::multiset`  
-无论`ordered_unique`还是`ordered_non_unique`，都需要判断key来确定索引顺序，例如`identity`表示直接使用元素本身作为key比较大小（实现operator<），`member`表示使用某个成员变量作为比较的key，称为**Key Extraction**
+1. `Employee`表示容器内的元素类型  
+2. `indexed_by`用于组织所有的索引类型，可以有多个索引，例如`ordered_unique` `ordered_non_unique`，称为**Index Type**，指定对应IndexType后会生成对应container的接口。例如`ordered_unique`生成`std::set`接口，而`ordered_non_unique`生成`std::multiset`接口。  
+无论`ordered_unique`还是`ordered_non_unique`，都需要比较key来确定索引顺序：例如`identity`表示直接使用元素本身作为key比较大小（实现operator<），`member`表示使用某个成员变量作为比较的key，这个提取key的方法称为**Key Extraction**
 
 **Index Type/Key Extraction**接下来会详细介绍下，我们继续看`EmployeeSet`本身。
 
 定义完成后，我们先添加部分数据
 
 ```cpp
-int main() {
     EmployeeSet employees;
 
     employees.insert({5, "Jeff Dean"});
@@ -156,7 +155,8 @@ int main() {
     employees.insert({4, "Vlad Losev"});
 ```
 
-然后看下如何分别根据`id`/`name`遍历，首先根据第一个索引(id)遍历
+然后看下如何分别根据`id`/`name`遍历
+首先根据第一个索引(id)遍历
 
 ```cpp
     //1       Google
@@ -187,7 +187,7 @@ int main() {
 
 注意这里我们引入了`get<N>`函数，这是一个模板函数，返回对应的N个索引，取值范围为[0, N)，例如`get<0>` `get<1>`分别返回定义的第一个和第二个索引。
 
-`x.get<0>`等价于`x`，也就是默认为第一个索引。
+`x`等价于`x.get<0>`，也就是默认为第一个索引。
 
 返回类型为`x::nth_index<N>::type`，在C++11里可以使用auto代替，注意`get`函数返回的是index的引用，而不是一个index对象，因为脱离container单独构造或者维护一个index对象没有意义。
 
@@ -195,7 +195,7 @@ int main() {
 
 ## 2. Index types
 
-上面的例子里，`ordered_unique` `ordered_non_unique`都是索引类型，表示对指定的key排序索引。
+上面的例子里，`ordered_unique` `ordered_non_unique`都是索引类型，表示对指定的key索引方式为排序。
 
 `multi_index_container`支持多种索引类型
 
@@ -204,7 +204,7 @@ int main() {
 其中key-based需要指定key，提取key的方式，我们在下一节Key Extraction继续介绍。这一节主要介绍下索引的类型。
 
 key-based又分为ordered/hashed两种，分别对应排序和hash两种索引。
-non key-based不需要指定key，索引方式类似于std::list std::vector，支持顺序读写、随机读写。
+non key-based不需要指定key，索引方式类似于`std::list std::vector`，支持顺序读写、随机读写。
 
 为了说的清楚些，我们看一个**Word Count**的例子，要求实现以下两个功能：  
 1. 解析输入的文本得到所有单词，统计所有单词出现的个数
