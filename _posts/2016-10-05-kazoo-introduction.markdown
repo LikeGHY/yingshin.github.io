@@ -7,7 +7,6 @@ tags: [zookeeper]
 ---
 
 在[zookeeper的c客户端](http://izualzhy.cn/zookeeper-c-api-introduction)里，更多的是提供了食材，至于最后如何完成食谱(recipe)，则由使用方自己根据场景实现。因此经常给人一种接口很多，貌似实现了分布式的协调服务，但是却又需要自己实现一遍的感觉。
-在[zookeeper的c客户端](http://izualzhy.cn/zookeeper-c-api-introduction)里，更多的是提供了食材，至于最后如何完成食谱(recipe)，则由使用方自己根据场景实现。因此经常给人一种接口很多，貌似实现了分布式的协调服务，但是却又需要自己实现一遍的感觉。
 
 相比c++，java拥有更高级别的封装库：Curator。本文想要介绍的是python下非常好用的库：**Kazoo**。
 
