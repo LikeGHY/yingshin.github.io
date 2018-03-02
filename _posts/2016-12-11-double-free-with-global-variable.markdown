@@ -35,10 +35,10 @@ class FileDescriptorTables
 结构如下：
 
 ```cpp
-static library:libfoo.a，定义了static变量(类static，等价于namespace下的全局static变量)
-dynamic library:libfoo.so
+# 静态库:libfoo.a，定义了static变量(类static，等价于namespace下的全局static变量)
+# 动态库:libfoo.so
     static link libfoo.a
-executable elf:main
+# 可执行文件:main
     static link libfoo.a
     dynamic link libfoo.so
 ```
@@ -155,9 +155,9 @@ leave main
 ~Foo this:0x601808
 *** Error in `./main': double free or corruption (fasttop): 0x0000000000602040 ***
 ...
-7f1bfa9c1000-7f1bfa9c2000 r-xp 00000000 07:05 3736227                    /home/users/zhangying21/Training/test/libtest/so_should_with_no_static_lib/libbar.so
-7f1bfa9c2000-7f1bfabc2000 ---p 00001000 07:05 3736227                    /home/users/zhangying21/Training/test/libtest/so_should_with_no_static_lib/libbar.so
-7f1bfabc2000-7f1bfabc3000 rw-p 00001000 07:05 3736227                    /home/users/zhangying21/Training/test/libtest/so_should_with_no_static_lib/libbar.so
+7f1bfa9c1000-7f1bfa9c2000 r-xp 00000000 07:05 3736227                    /home/users/y/Training/test/libtest/so_should_with_no_static_lib/libbar.so
+7f1bfa9c2000-7f1bfabc2000 ---p 00001000 07:05 3736227                    /home/users/y/Training/test/libtest/so_should_with_no_static_lib/libbar.so
+7f1bfabc2000-7f1bfabc3000 rw-p 00001000 07:05 3736227                    /home/users/y/Training/test/libtest/so_should_with_no_static_lib/libbar.so
 ...
 ```
 
@@ -204,7 +204,7 @@ $ nm main | c++filt  | grep s_foo
 
 `foo.o`里的`s_foo`被链接到了`main`和`libbar.so`，因此共有两个`s_foo`对象存在，所以会构造和析构两次，那么问题来了，这两个对象为什么会有相同个地址？
 
-这个问题要从地址无关代码（Postion-independent Code）说起，我们知道**共享对象在编译时不能假设自己在进程虚拟地址空间中的位置**，而对编译器来讲，产生地址无关代码要采用相对偏移的寻址方式。对于模块间的数据访问，ELF的做法是在数据段里面建立一个指向这些变量的指针数组，也被成为全局偏移表(Global Offset Table, GOT)，当代码需要引用该数据时，可以通过GOT中相对应的项间接引用。
+这个问题要从地址无关代码（Postion-independent Code）说起，我们知道**共享对象在编译时不能假设自己在进程虚拟地址空间中的位置**，而对编译器来讲，产生地址无关代码要采用相对偏移的寻址方式。对于模块间的数据访问，ELF的做法是在数据段里面建立一个指向这些变量的指针数组，也被称为全局偏移表(Global Offset Table, GOT)，当代码需要引用该数据时，可以通过GOT中相对应的项间接引用。
 
 看下demo里的.GOT段
 
@@ -310,9 +310,9 @@ Foo  this:0x601808
 从maps的内存映射可以看到`0x7fc1058aa2c0`正是位于`libbar.so`的映射区间
 
 ```
-7f1d7d7fb000-7f1d7d7fc000 r-xp 00000000 07:05 3736228                    /home/users/zhangying21/Training/test/libtest/so_should_with_no_static_lib/libbar.so
-7f1d7d7fc000-7f1d7d9fc000 ---p 00001000 07:05 3736228                    /home/users/zhangying21/Training/test/libtest/so_should_with_no_static_lib/libbar.so
-7f1d7d9fc000-7f1d7d9fd000 rw-p 00001000 07:05 3736228                    /home/users/zhangying21/Training/test/libtest/so_should_with_no_static_lib/libbar.so
+7f1d7d7fb000-7f1d7d7fc000 r-xp 00000000 07:05 3736228                    /home/users/y/Training/test/libtest/so_should_with_no_static_lib/libbar.so
+7f1d7d7fc000-7f1d7d9fc000 ---p 00001000 07:05 3736228                    /home/users/y/Training/test/libtest/so_should_with_no_static_lib/libbar.so
+7f1d7d9fc000-7f1d7d9fd000 rw-p 00001000 07:05 3736228                    /home/users/y/Training/test/libtest/so_should_with_no_static_lib/libbar.so
 ```
 
 可以看下加了`-Wl, -Bsymbolic`的`libbar.so`的.GOT段没有`Foo::s_foo`。
