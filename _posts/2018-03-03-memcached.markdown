@@ -239,9 +239,9 @@ decr cnt 50
 
 ## 3. 客户端
 
-`c`客户端连接 memcached 的方案可以使用[libMemcached](http://libmemcached.org/libMemcached.html)。
+`c`客户端连接 memcached 的方案可以使用 [libMemcached](http://libmemcached.org/libMemcached.html)。
 
-不过我们这里介绍下使用[baidu-rpc](https://github.com/brpc/brpc/blob/master/docs/cn/memcache_client.md)的方案。
+不过我们这里介绍下使用 [baidu-rpc](https://github.com/brpc/brpc/blob/master/docs/cn/memcache_client.md) 的方案。
 
 ```
 #include "baidu/rpc/memcache.h"
@@ -282,7 +282,7 @@ int main() {
 
 ## 4. twempoxy
 
-前面提到了 memcached 要想实现分布式的功能，需要客户端自己实现 hash 分环，因此很多 memcache 的实际应用里会使用 proxy。
+前面提到了 memcache 要想实现分布式的功能，需要客户端自己实现 hash 分环，因此很多 memcache 的实际应用里会使用 proxy。
 
 [twemproxy](https://github.com/twitter/twemproxy) 是 twitter 提供的访问 redis/memcache 的轻量级 proxy，相比客户端自己实现 hash 分环，主要有三个优点：
 1. 与后端 memcache server保持一个长连接，避免 client 直连 cache server, 提高通信效率
