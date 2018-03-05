@@ -155,11 +155,11 @@ END
 
 ### 2.5. gets/cas
 
-`gets/cas`提供了类似事务的操作，`gets`返回一个类似于版本号的数值，称为token。`cas`更新数据时需要提供对应的token，否则更新失败。`cas`成功更新数据后，会更新该token。
+`gets/cas`提供了类似事务的操作，`gets`返回一个类似于版本号的数值，称为token。`cas`更新数据时需要提供对应的token，否则更新失败。`cas`成功更新数据后，会更新该 token。
 
-例如我们首先设置了`hello -> world`。
+例如我们首先写入键值对：`hello -> world`。
 
-`gets`的语法跟`get`一致，使用`gets`获取数据：
+`gets`的语法跟`get`一致，使用`gets`获取`hello`对应的 value：
 
 ```
 gets hello
@@ -168,7 +168,7 @@ world
 END
 ```
 
-最后一列数字代表了 hello 的 token：26
+返回值里最后一列数字代表了 hello 的 token：26
 
 `cas`的语法跟`set`一致，只是第一行最后需要增加 token：
 
@@ -282,14 +282,14 @@ int main() {
 
 ## 4. twempoxy
 
-前面提到了memcached要想实现分布式的功能，需要客户端自己实现hash分环，因此有了proxy的想法。
+前面提到了 memcached 要想实现分布式的功能，需要客户端自己实现 hash 分环，因此很多 memcache 的实际应用里会使用 proxy。
 
-[twemproxy](https://github.com/twitter/twemproxy)是twitter提供的访问redis/memcache的轻量级proxy，相比客户端自己实现hash分环，主要有三个优点：
-1. 与后端memcache server保持一个长连接，避免client直连cache server, 提高通信效率
-2. 一致性hash路由规则：将请求均匀的分散到后端server上。同时后端server挂了时，避免命中率明显下降
-3. 自动屏蔽failure servers
+[twemproxy](https://github.com/twitter/twemproxy) 是 twitter 提供的访问 redis/memcache 的轻量级 proxy，相比客户端自己实现 hash 分环，主要有三个优点：
+1. 与后端 memcache server保持一个长连接，避免 client 直连 cache server, 提高通信效率
+2. 一致性 hash 路由规则：将请求均匀的分散到后端 server 上。同时后端 server 挂了时，避免命中率明显下降
+3. 自动屏蔽 failure servers
 
-用户可以像访问单实例一样，访问memcache集群。
+用户可以像访问单实例一样，访问 memcache 集群。
 
 安装方式也比较简单
 
@@ -326,7 +326,7 @@ delta:
 
 该配置监听22124端口，后端的memcached pool包含10个实例:`127.0.0.1:11214 ... 127.0.0.1:11223`。
 
-启动这个10个`memcached`实例（端口11214 .. 11223），然后启动`nutcracker`：
+启动这10个`memcached`实例（端口11214 .. 11223），然后启动`nutcracker`：
 
 ```
 [zhangying21@bjyz-rdqa-dev095-zhangying21 twemproxy]$ ./src/nutcracker
@@ -356,7 +356,7 @@ world
 END
 ```
 
-数据按照指定的hash算法存储在了某个实例上：
+数据实际上按照指定的hash算法存储在了某个实例上：
 
 ```
 [zhangying21@bjyz-rdqa-dev095-zhangying21 test]$ (echo 'get hello' && sleep 1) | telnet 0 11217
