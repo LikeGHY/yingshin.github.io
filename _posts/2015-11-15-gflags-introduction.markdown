@@ -7,13 +7,12 @@ tags: [gflags]
 ---
 
 gflags是google一个开源的处理命令行参数的库，相比getopt，更加容易使用。  
-gflags里参数的定义可以分散在各个源文件处，而不是只能在main文件处，使得使用更加灵活，复用性更强。  
-使用时只要链接gflags库和指定所在的头文件路径即可。  
+gflags里参数的定义可以分散在各个源文件处，而不是只能在main文件，使得使用更加灵活，复用性更强。  
 
 <!--more-->
 当然，如果两个源文件定义了相同的flag，链接时会报重复定义的错误。  
 
-先看个简单的例子:   
+看个简单的例子:   
 
 ```
 #include <iostream>
@@ -45,11 +44,11 @@ english,french,german
 flag的定义方法如下：  
 
 ```cpp
-   #include <gflags/gflags.h>
+#include <gflags/gflags.h>
 
-   DEFINE_bool(big_menu, true, "Include 'advanced' options in the menu listing");
-   DEFINE_string(languages, "english,french,german",
-                 "comma-separated list of languages to offer in the 'lang' menu");
+DEFINE_bool(big_menu, true, "Include 'advanced' options in the menu listing");
+DEFINE_string(languages, "english,french,german",
+             "comma-separated list of languages to offer in the 'lang' menu");
 ```
 
 定义flag一共6个宏，分别对应6种类型：  
@@ -69,7 +68,7 @@ DEFINE_string: C++string
 
 例如对上述flags的定义，-help输出如下：  
 
-```cpp
+```
   Flags from flags_help.cpp:
     -big_menu (Include 'advanced' options in the menu listing) type: bool
       default: true
@@ -82,7 +81,7 @@ DEFINE_string: C++string
 在命令行里指定，例如`./flags_sample -big_menu=0 -languages="english"`  
 使用时，对应的变量名为`FLAGS_xxx`。  
 如果不想在命令行里指定，也可以使用-flagfile=文件名的形式。  
-如果使用时不想在main文件里定义flag，例如需要在flag1.cpp flags.cpp里定义,可以这么使用:  
+如果使用时不想在main文件里定义flag，例如需要在flag1.cpp flags.cpp里定义,可以分别声明和定义:  
 在flags1.cpp flags2.cpp里分别定义各自的flag，然后在flag.h声明，需要使用的文件直接`include flags.h`就可以了。  
 声明的函数如下：  
 

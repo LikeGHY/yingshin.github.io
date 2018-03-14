@@ -337,9 +337,9 @@ void shared_ptr<T>::MaybeSetupWeakThis(enable_shared_from_this<T>* ptr) {
 
 1. 存储原始指针`T* ptr_`不可行：`shared_from_this`调用时返回`shared_ptr<T>(ptr_)`不可行，因为每个返回的`shared_ptr<T>`都会尝试释放`ptr_`  
 2. 存储`shared_ptr_`不可行，因为一个对象不应该包含指向自己的智能指针作为成员变量，否则引用计数永远>1，这点和之前介绍的[交叉引用](http://izualzhy.cn/smart_pointer)很像。  
-2. 存储`shared_ptr_`不可行，因为一个对象不应该包含指向自己的智能指针作为成员变量，否则引用计数永远>1，这点和之前介绍的[交叉引用](http://izualzhy.cn/smart_pointer)很像。  
 3. 存储`weak_ptr_`可行，不会固定增加一个引用计数，注意`weak_this_`是在`shared_ptr::MaybeSetupWeakThis`调用时初始化的，也就是`shared_ptr::shared_ptr(T* ptr)`，这也是为什么继承`enable_shared_from_this`的子类对象一定需要是heap上对象同时由`shared_ptr`管理生命周期。代码`weak_this_->expired`接口的作用正是为了判断是否符合上述条件。  
 
+因此注意不要在构造函数/析构函数里调用`shared_from_this`，`weak_this_`还没有指向任何shared_ptr.
 
 ### 2.5. google::protobuf::internal::static_pointer_cast
 
