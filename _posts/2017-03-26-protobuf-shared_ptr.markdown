@@ -7,7 +7,6 @@ tags: [protobuf, smartptr]
 ---
 
 一直对智能指针很感兴趣，之前写过一篇[扯扯智能指针](http://izualzhy.cn/smart_pointer)，平时没事也会翻出来boost chrome源码里的智能指针学习下。
-一直对智能指针很感兴趣，之前写过一篇[扯扯智能指针](http://izualzhy.cn/smart_pointer)，平时没事也会翻出来boost chrome源码里的智能指针学习下。
 
 在这个过程中发现一个有趣的现象，很多项目在选择开源的时候，为了减少用户使用的成本，往往希望尽量少的@第三方代码，特别是有些源码比较庞大、编译耗时的第三方库，例如boost。我厂开源的sofa-rpc里为了不依赖boost同时又使用智能指针，就有大量的[smartptr代码](https://github.com/baidu/sofa-pbrpc/tree/master/src/sofa/pbrpc/smart_ptr)，看了下感觉是从boost拿过来的，不过本身已经依赖了boost，有些画蛇添足。
 
