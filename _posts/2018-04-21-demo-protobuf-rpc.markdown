@@ -11,11 +11,18 @@ protobuf 实现了序列化部分，并且预留了 RPC 接口，但是没有实
 
 本文想介绍下，如何实现基于 protobuf 实现一个极简版的 RPC ，这样有助于我们阅读 RPC 源码。
 
+一次完整的 RPC 通信实际上是有三部分代码共同完成：
+1. protobuf 自动生成的代码
+2. RPC 框架
+3. 用户填充代码
+
+本文假设用户熟悉 protobuf 并且有 RPC 框架的使用经验。首先介绍下 protobuf 自动生成的代码，接着介绍下用户填充代码，然后逐步介绍下极简的 RPC 框架的实现思路，相关代码可以直接跳到文章最后。
+
 <!--more-->
 
 ## 1. proto
 
-我们定义了`EchoService`，其中 client 发送`EchoRequest`格式的数据，server 返回`EchoResponse`，对应的 method 为`Echo`.
+我们定义了`EchoService`, method 为`Echo`.
 
 ```
 package echo;
@@ -35,15 +42,14 @@ service EchoService {
 }
 ```
 
-protoc 会生成`echo.pb.h echo.pb.cc`两部分代码.
-
-其中 `service EchoService` 部分，对应的生成`EchoService EchoService_Stub`两个类，分别是 server 端和 client 端需要关心的。
+protoc 自动生成`echo.pb.h echo.pb.cc`两部分代码.
+其中`service EchoService`这一句会生成`EchoService EchoService_Stub`两个类，分别是 server 端和 client 端需要关心的。
 
 对 server 端，通过`EchoService::Echo`来处理请求，代码未实现，需要子类来 override.
 
 ```
 class EchoService : public ::google::protobuf::Service {
-...
+  ...
   virtual void Echo(::google::protobuf::RpcController* controller,
                        const ::echo::EchoRequest* request,
                        ::echo::EchoResponse* response,
@@ -54,6 +60,7 @@ void EchoService::Echo(::google::protobuf::RpcController* controller,
                          const ::echo::EchoRequest*,
                          ::echo::EchoResponse*,
                          ::google::protobuf::Closure* done) {
+  //代码未实现
   controller->SetFailed("Method Echo() not implemented.");
   done->Run();
 }
@@ -64,7 +71,7 @@ void EchoService::Echo(::google::protobuf::RpcController* controller,
 
 ```
 class EchoService_Stub : public EchoService {
-    ...
+  ...
   void Echo(::google::protobuf::RpcController* controller,
                        const ::echo::EchoRequest* request,
                        ::echo::EchoResponse* response,
@@ -135,14 +142,14 @@ int main() {
 这样的用法看起来很自然，但是仔细想想背后的实现，肯定会有很多疑问：
 
 1. 为什么 server 端只需要实现`MyEchoService::Echo`函数，client端只需要调用`EchoService_Stub::Echo`就能发送和接收对应格式的数据？中间的调用流程是怎么样子的？
-2. 如果 server 端接收多种 pb 数据（例如还有一个 service 叫做 LookingService 用于查找服务端数据），那么怎么区分接收到的是哪个格式？
-3. 区分之后，又如何构造出对应的对象来？例如`MyEchoService::Echo`参数里的`EchoRequest EchoResponse`，因为 rpc 框架并不清楚这些具体类的存在，这样似乎接口的设计上都是问题（框架并不清楚具体类的名字，也不清楚 method 名字，却要能够构造对象并调用这个 method ）？
+2. 如果 server 端接收多种 pb 数据（例如还有一个 method `rpc Post(DeepLinkReq) returns (DeepLinkResp);`），那么怎么区分接收到的是哪个格式？
+3. 区分之后，又如何构造出对应的对象来？例如`MyEchoService::Echo`参数里的`EchoRequest EchoResponse`，因为 rpc 框架并不清楚这些具体类和函数的存在，框架并不清楚具体类的名字，也不清楚 method 名字，却要能够构造对象并调用这个函数？
 
 可以推测答案在`MyServer MyChannel MyController`里，接下来我们逐步分析下。
 
 ## 3. 处理流程
 
-我们猜测下 server 端的处理流程
+考虑下 server 端的处理流程
 
 1. 从对端接收数据
 2. 通过标识机制判断如何反序列化到 request 数据类型
@@ -151,9 +158,9 @@ int main() {
 5. 序列化 response
 6. 发送数据回对端
 
-具体讲下上一节提到的接口设计的问题，体现在2 3 4步骤里，还是上面 Echo 的例子，因为 RPC 框架并不能提前知道`EchoService::Echo`这个函数，怎么调用这个函数呢？`EchoService::Echo`参数里需要传递`EchoRequest EchoResponse`参数，RPC 框架并不能提前知道这两个数据类型，怎么能构造出来并且传入呢？
+具体讲下上一节提到的接口设计的问题，体现在2 3 4步骤里，还是上面 Echo 的例子，因为 RPC 框架并不能提前知道`EchoService::Echo`这个函数，怎么调用这个函数呢？
 
-看下`google/protobuf/service.h`里`::google::protobuf::Service`的源码
+`google/protobuf/service.h`里`::google::protobuf::Service`的源码如下：
 
 ```
 class LIBPROTOBUF_EXPORT Service {
@@ -188,7 +195,7 @@ void EchoService::CallMethod(const ::google::protobuf::MethodDescriptor* method,
 }
 ```
 
-可以看到这里会有一次数据转化`down_cast`，因此框架可以通过调用`CallMethod`函数来调用`Echo`，数据统一为`Message*`格式，这样就可以解决框架的接口问题了。
+可以看到这里会有一次数据转化`down_cast`，因此框架可以通过调用`::google::protobuf::ServiceCallMethod`函数来调用`Echo`，数据统一为`Message*`格式，这样就可以解决框架的接口问题了。
 
 再考虑下 client 端处理流程。
 
@@ -199,7 +206,7 @@ void EchoService::CallMethod(const ::google::protobuf::MethodDescriptor* method,
                        controller, request, response, done);
 ```
 
-我们先看下`::google::protobuf::RpcChannel`的实现:
+因此先看下`::google::protobuf::RpcChannel`的实现:
 
 ```
 // Abstract interface for an RPC channel.  An RpcChannel represents a
@@ -248,18 +255,18 @@ pb 的注释非常清晰，channel 可以理解为一个通道，连接了 rpc �
 
 最简单暴力的方式就是在每组数据里都标识下是什么格式的，返回值希望是什么格式的，这样一定能解决问题。
 
-但是 pb 里明显不用这样，因为 server/client 使用相同（或者兼容）的 proto，只要标识下数据类型名就可以了。不过遇到相同处理的method也会有问题，例如
+但是 pb 里明显不用这样，因为 server/client 使用相同（或者兼容）的 proto，只要标识下数据类型名就可以了。不过遇到相同类型的 method 也会有问题，例如
 
 ```
 service EchoService {
     rpc Echo(EchoRequest) returns (EchoResponse);
-    rpc EchoV2(EchoRequest) returns (EchoResponse)
+    rpc AnotherEcho(EchoRequest) returns (EchoResponse)
 }
 ```
 
-因此应当添加上 service 和 method 名字，但反过来一想，如果我们标识了 service && method 名字，那么通过 proto 就可以知道 request/response 类型了！
+因此可以使用 service 和 method 名字，通过 proto 就可以知道 request/response 类型了。
 
-因此，结论是： **我们在每次数据传递里加上`service method`名字就可以了。**
+因此，结论是：**我们在每次数据传递里加上`service method`名字就可以了。**
 
 pb 里有很多 xxxDescriptor 的类，`service method`也不例外。例如`GetDescriptor`可以获取`ServiceDescriptor`.
 
@@ -309,7 +316,7 @@ class LIBPROTOBUF_EXPORT MethodDescriptor {
 
 ## 5. 构造参数
 
-实现 RPC 框架时，肯定是不知道`EchoRequest EchoResponse`类名的，但是通过`::google::protobuf::Service`的接口可以构造出对应的对象来
+前面还提到的一个问题，是如何构造具体参数的问题。实现 RPC 框架时，肯定是不知道`EchoRequest EchoResponse`类名的，但是通过`::google::protobuf::Service`的接口可以构造出对应的对象来
 
 ```
   //   const MethodDescriptor* method =
