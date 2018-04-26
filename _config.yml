@@ -3,7 +3,7 @@ permalink: /:title
 # permalink: /:categories/:year/:month/:day/:title
 
 author: "yingshin"
-atom-baseurl: "http://izualzhy.cn"
+atom-baseurl: "https://izualzhy.cn"
 
 navigations:
   - title: Archive
