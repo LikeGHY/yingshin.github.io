@@ -1,8 +1,8 @@
 - name: 见识
-  cover: https://img3.doubanio.com/view/subject/l/public/s29575321.jpg
+  cover: https://img3.doubanio.com/lpic/s29575321.jpg
   start_date: 2018.4.24
   finish_date:
-  douban_link: https://book.douban.com/subject/1456960/
+  douban_link: https://book.douban.com/subject/27167992/
   note: 
 
 - name: Effective STL
