@@ -302,11 +302,20 @@ void base::SetLogger(LogSeverity severity, base::Logger* logger) {
 `LogFileObject::write`函数负责创建日志文件、写入等：
 
 ```cpp
+  //加锁，避免同时操作同一文件
+  MutexLock l(&lock_);
   //是否需要重新创建日志文件
   if (static_cast<int>(file_length_ >> 20) >= MaxLogSize() ||
       PidHasChanged()) {
   //调用fwrite写入日志
   //判断是否需要fflush落盘
+  // See important msgs *now*.  Also, flush logs at least every 10^6 chars,
+  // or every "FLAGS_logbufsecs" seconds.
+  if ( force_flush ||
+       (bytes_since_flush_ >= 1000000) ||
+       (CycleClock_Now() >= next_flush_time_) ) {
+    FlushUnlocked();
+  ...
 ```
 
 标准日志的默认输出方式到这里就结束了。对于用户自定义的输出方式，则是通过`LogDestination::LogToSinks`完成。
