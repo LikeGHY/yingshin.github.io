@@ -7,7 +7,7 @@ tags: [protobuf]
 
 C++ 提供了多种 cast 的方式:`static_cast/dynamic_cast/const_cast/interpret_cast`。
 
-其中[google代码规范](https://google.github.io/styleguide/cppguide.html#Run-Time_Type_Information__RTTI_)明确表示了不建议使用[RTTI](https://en.wikibooks.org/wiki/C%2B%2B_Programming/RTTI)，本文介绍下protobuf里`down_cast`的使用。
+其中[google代码规范](https://google.github.io/styleguide/cppguide.html#Run-Time_Type_Information__RTTI_)明确表示了不建议使用[RTTI](https://en.wikibooks.org/wiki/C%2B%2B_Programming/RTTI)，也就是尽量少使用`dynamic_cast`。本文介绍下 protobuf 里是如何使用`down_cast`替代`dynamic_cast`的。
 
 <!--more-->
 
@@ -59,7 +59,7 @@ public:
 };
 ```
 
-`static_cast`的缺点是无法保证类型，`dynamic_cast`可以保证这点。
+当需要类型间的转换，`static_cast`的缺点是无法保证类型，`dynamic_cast`则可以保证这点。
 
 ```
 AnotherDerived ad;
