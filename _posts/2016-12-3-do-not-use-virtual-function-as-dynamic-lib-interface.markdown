@@ -113,7 +113,7 @@ void Foo::another_func_in_new_version() { printf("Foo::another_func_in_new_versi
 因为只是增加了一个接口，我们可能认为并不存在二进制的兼容性问题，不需要发布一个2.0版本。直接替换main所使用的的libfoo.so。
 
 ```
-[zhangying21@cq01-rdqa-dev095 shared_lib_with_virtual_function_as_interface]$ ./main 
+$ ./main 
 ./main: Symbol `_ZTV3Foo' has different size in shared object, consider re-linking
 Foo::foo
 Foo::another_func_in_new_version

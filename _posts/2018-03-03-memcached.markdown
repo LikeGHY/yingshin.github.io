@@ -329,7 +329,7 @@ delta:
 启动这10个`memcached`实例（端口11214 .. 11223），然后启动`nutcracker`：
 
 ```
-[zhangying21@bjyz-rdqa-dev095-zhangying21 twemproxy]$ ./src/nutcracker
+$ ./src/nutcracker
 [2018-03-04 10:56:55.666] nc.c:189 nutcracker-0.4.0.2015.09.07 built for Linux 2.6.32_1-16-0-0_virtio x86_64 started on pid 16667
 [2018-03-04 10:56:55.666] nc.c:194 run, rabbit run / dig that hole, forget the sun / and when at last the work is done / don't sit down / it's time to dig another one
 [2018-03-04 10:56:55.688] nc_core.c:44 max fds 10240 max client conns 10197 max server conns 11
@@ -359,7 +359,7 @@ END
 数据实际上按照指定的hash算法存储在了某个实例上：
 
 ```
-[zhangying21@bjyz-rdqa-dev095-zhangying21 test]$ (echo 'get hello' && sleep 1) | telnet 0 11217
+$ (echo 'get hello' && sleep 1) | telnet 0 11217
 Trying 0.0.0.0...
 Connected to 0.
 Escape character is '^]'.

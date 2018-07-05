@@ -65,7 +65,8 @@ code {
   font-family: "Courier New", Fira Mono, monospace; }
 
 h1, h2 {
-  font-size: 1.4em; }
+  font-size: 1.4em;
+  margin-top: 20px; }
 
 time {
   font-family: Ubuntu, monospace; }

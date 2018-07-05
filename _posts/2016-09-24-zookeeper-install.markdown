@@ -122,7 +122,7 @@ Stopping zookeeper ... STOPPED
 [smoketest](https://github.com/phunt/zk-smoketest)项目用于检测服务集群的可用性、延迟等。
 
 ```
-[zhangying21@cq01-rdqa-dev095 zk-smoketest]$ python zk-smoketest.py --servers "127.0.0.1:2181"
+$ python zk-smoketest.py --servers "127.0.0.1:2181"
 Connecting to 127.0.0.1:2181
 Connected in 7 ms, handle is 0
 Connecting to 127.0.0.1:2181
@@ -130,7 +130,7 @@ Connected in 7 ms, handle is 1
 Connecting to 127.0.0.1:2181
 Connected in 15 ms, handle is 0
 Smoke test successful
-[zhangying21@cq01-rdqa-dev095 zk-smoketest]$ python zk-latencies.py --servers "127.0.0.1:2181" --znode_count=100   
+$ python zk-latencies.py --servers "127.0.0.1:2181" --znode_count=100
 Connecting to 127.0.0.1:2181
 Connected in 15 ms, handle is 0
 Testing latencies on server 127.0.0.1:2181 using asynchronous calls
