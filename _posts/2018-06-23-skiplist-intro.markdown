@@ -11,7 +11,7 @@ tags: [leveldb, skiplist]
 
 ## 1. 背景
 
-有序数组的好处是可以通过二分实现O(lgn)的高效查找，然而插入元素时，为了保证有序性，时间复杂度是O(n)的。链表则刚好相反，插入数据是O(1)，查找元素则是O(n)的。
+有序数组的好处是可以通过二分实现O(lgn)的高效查找，然而插入元素时，为了保证有序性，时间复杂度是O(n)的。链表则刚好相反，插入数据是O(1)，查找元素则是O(n)的。即使链表数据是有序的，查找元素仍然是O(n)的，因为本质上，链表不支持`random access`.
 
 那么，是否存在一种链表，既支持高效的数据插入，又可以实现高效的查找？
 
@@ -44,7 +44,7 @@ bui自然要尽快去吃喝玩乐，那么怎么能尽快的到达城市H呢？�
 
 **通过使用数据量更少（子集）的辅助有序链表，我们能够实现更快速的查找**
 
-这就是**跳表**最朴素的想法(so young, so naive, so simple👏)
+这就是**跳表**最朴素的想法(really pretty simple👏 so young so naive.)
 
 ## 2. 推导
 
@@ -196,9 +196,34 @@ insert/delete的分析与search类似，不再赘述，详细的实现在代码�
 
 但在实际工作中，可以工作的很好。
 
-## 5. 参考资料
+## 5. 论文补充
+
+skiplist 相比 balanced trees的优势
+
+>For many applications,
+skip lists are a more natural representation than trees, also
+leading to simpler algorithms. The simplicity of skip list algorithms
+makes them easier to implement and provides significant
+constant factor speed improvements over balanced tree
+and self-adjusting tree algorithms. Skip lists are also very
+space efficient. They can easily be configured to require an
+average of 1 1/3 pointers per element (or even less) and do not
+require balance or priority information to be stored with each
+node.
+
+建议同时设置一个 MaxLevel
+
+>Determining MaxLevel
+Since we can safely cap levels at L(n), we should choose
+MaxLevel = L(N) (where N is an upper bound on the number
+of elements in a skip list). If p = 1/2, using MaxLevel = 16 is
+appropriate for data structures containing up to 216 elements.
+
+## 6. 参考资料
 
 1. [Skip_list](https://en.wikipedia.org/wiki/Skip_list)
 2. [col106](http://www.cse.iitd.ac.in/~mohanty/col106/Resources/SkipLists.pdf)
 3. [6.046J-lecture](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-design-and-analysis-of-algorithms-spring-2015/lecture-notes/MIT6_046JS15_lec07.pdf)
 4. [6.046J-Hand written](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-design-and-analysis-of-algorithms-spring-2015/lecture-notes/MIT6_046JS15_writtenlec7.pdf)
+5. [Skip Lists: A Probabilistic Alternative to
+Balanced Trees](https://epaperpress.com/sortsearch/download/skiplist.pdf)

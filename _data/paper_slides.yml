@@ -1,3 +1,9 @@
+- title: 'Skip Lists: A Probabilistic Alternative to
+Balanced Trees'
+  url: 'https://epaperpress.com/sortsearch/download/skiplist.pdf'
+  tag: 'skiplist'
+  note: 'skiplist 是一种概率数据结构，大概率下拥有和红黑树同样的查找和修改性能，但是实现简单很多，在很多场景都有使用，例如leveldb redis， 论文和c实现可以参考这里 ftp://ftp.cs.umd.edu/pub/skipLists。'
+
 - title: 'In Search of an Understandable Consensus Algorithm'
   url: 'https://raft.github.io/raft.pdf'
   tag: 'raft'

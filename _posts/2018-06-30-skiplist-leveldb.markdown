@@ -85,7 +85,7 @@ SkipList<Key,Comparator>::SkipList(Comparator cmp, Arena* arena)
 }
 ```
 
-`max_height_`初始化为1，`head_`申请了内存并且初始化，其中`enum { kMaxHeight = 12 };`。
+`max_height_`初始化为1，`head_`申请了内存并且初始化，其中`enum { kMaxHeight = 12 };`，也就是论文里的 MaxLevel.
 
 ## 2. Node && NewNode
 
@@ -234,7 +234,7 @@ typename SkipList<Key,Comparator>::Node* SkipList<Key,Comparator>::FindGreaterOr
       // Keep searching in this list
       x = next;
     } else {//如果next->key >= key
-      //notes:如果单纯为了判断是否相等，这里可以加一个判断直接返回了，没必>要level--到0再返回
+      //notes:如果单纯为了判断是否相等，这里可以加一个判断直接返回了，没必>要level--到0再返回，不过复杂度没有变化
       if (prev != nullptr) prev[level] = x;//prev记录该level最后一个<key的节点
       if (level == 0) {//到达最底层则返回next (next是第一个>=key的节点)
         return next;
@@ -378,7 +378,8 @@ Iterator 定义如下
 ## 6. notes
 
 1. 之前介绍抛硬币的方法概率为1/2，这里使用的是1/4，结合`kBranching = 4`和`kMaxHeight = 12`，不影响复杂度的情况下，可以最多支持`4**11 = 4194304`个节点，因此在百万节点左右，这么设置参数效果最优。
-2. `FindGreaterOrEqual`用于查找第一个`>= key`的Node，因此需要一直`level--`到最底层 list. 我觉得如果要查找`= key`的Node的话，可以修改为查找到`= key`的Node后，不用`level--`直接返回当前Node。
+2. ~~`FindGreaterOrEqual`用于查找第一个`>= key`的Node，因此需要一直`level--`到最底层 list. 我觉得如果要查找`= key`的Node的话，可以修改为查找到`= key`的 Node 后，不用`level--`直接返回当前 Node. 忽略这条，参考6的实现，也是没有判断 `= key`，因为时间复杂度不变，但实现更简洁？~~
 3. 对应的单测位于`skiplist_test.cc`，特别是`ConcurrentTest`的设计，比算法本身还要细致，我是只看懂了一部分😭，写单测一直有障碍的可以参考下。
 4. 读写并发：读操作不会修改内部数据，因此多个reader不存在竞争，并发没有问题；多个读单个写操作也没有问题，因为采用了原子变量以及`memory order`，以及`Insert`里执行语句的前后顺序；多个写操作之间存在竞争关系，需要锁控制。
 5. 重点说明下`Insert`里设置`max_height_`前的那段注释，读线程可能读到旧的或者新的值，无论是哪种值，写线程都可能在更新`SkipList`，因为后面更新是从低往高更新，而读是从高往低读，所以当读到新的节点的时候，继续往下层，一定是能读到正确值的。
+6. [这个地址](ftp://ftp.cs.umd.edu/pub/skipLists)下有完成的 C 实现及论文，leveldb里的实现几乎完整参考了这里，建议看下。
