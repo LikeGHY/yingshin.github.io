@@ -383,3 +383,6 @@ Iterator 定义如下
 4. 读写并发：读操作不会修改内部数据，因此多个reader不存在竞争，并发没有问题；多个读单个写操作也没有问题，因为采用了原子变量以及`memory order`，以及`Insert`里执行语句的前后顺序；多个写操作之间存在竞争关系，需要锁控制。
 5. 重点说明下`Insert`里设置`max_height_`前的那段注释，读线程可能读到旧的或者新的值，无论是哪种值，写线程都可能在更新`SkipList`，因为后面更新是从低往高更新，而读是从高往低读，所以当读到新的节点的时候，继续往下层，一定是能读到正确值的。
 6. [这个地址](ftp://ftp.cs.umd.edu/pub/skipLists)下有完成的 C 实现及论文，leveldb里的实现几乎完整参考了这里，建议看下。
+7. 实现上类似于这张图，from [Skip lists are fascinating!](http://igoro.com/archive/skip-lists-are-fascinating/)
+
+![skiplist](assets/images/multilist-search.png)
