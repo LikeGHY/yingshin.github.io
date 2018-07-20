@@ -29,7 +29,7 @@ tags: [travel]
 
 每到一个地方，都想去大学里感受下，再加上刚读了《腾讯传》，因此闲下来第一时间就去了深圳大学。
 
-![shenzhendaxue](https://wx2.sinaimg.cn/large/62de6081ly1ftf6quj7xsj20mi0u0ab9.jpg)
+![shenzhendaxue](https://wx1.sinaimg.cn/large/62de6081ly1ftgf97v1m8j20mi0u0ab9.jpg)
 ![shenzhendaxue](https://wx3.sinaimg.cn/large/62de6081ly1ftf6q6a827j21400u0jtf.jpg)
 
 校园里拿着书本的学生谈笑着经过，散发着青春、知识与活力，有那么一瞬间感觉自己回到了象牙塔，看着他们仿佛看着当年的自己。
@@ -50,8 +50,8 @@ tags: [travel]
 
 逛到夕阳西下，大学又是另外一个景象，不同于外面的霓虹闪烁，物欲横流，这里是昏暗的灯光，静谧安详。
 
-![ludeng](https://wx1.sinaimg.cn/large/62de6081ly1ftf6qugvsrj20mi0u0aao.jpg)
-![zhishipai](https://wx1.sinaimg.cn/large/62de6081ly1ftf6quj9tbj20mi0u0gmk.jpg)
+![ludeng](https://wx2.sinaimg.cn/large/62de6081ly1ftgf97we7vj20mi0u0aao.jpg)
+![zhishipai](https://wx3.sinaimg.cn/large/62de6081ly1ftgf9809ynj20mi0u0gmk.jpg)
 
 从大学各个角落都能看到北边灯火通明的腾讯大楼，让人想起来吴晓波在《腾讯传》里说的：
 
@@ -59,13 +59,13 @@ tags: [travel]
 
 而如今无数正直青春的学子，是否也这么仰望着我们的小马哥。
 
-![tengxun](https://wx2.sinaimg.cn/large/62de6081ly1ftf6qui1nqj20mi0u0dgf.jpg)
+![tengxun](https://wx4.sinaimg.cn/large/62de6081ly1ftgf97yvhij20mi0u0dgf.jpg)
 
 ## 3. 杂
 
 从公司高层往外望，风景很好。
-![gongsi](https://wx1.sinaimg.cn/large/62de6081ly1ftf6qulw0fj21400u0762.jpg)
+![gongsi](https://wx2.sinaimg.cn/large/62de6081ly1ftgf9820jzj21400u0762.jpg)
 
 世纪之窗对面的购物广场，这个城市一个安静的角落：西西弗书店。
 
-![shudian](https://wx1.sinaimg.cn/large/62de6081ly1ftf6quhj7qj20mi0u00u3.jpg)
+![shudian](https://wx2.sinaimg.cn/large/62de6081ly1ftgf97xhfqj20mi0u00u3.jpg)
