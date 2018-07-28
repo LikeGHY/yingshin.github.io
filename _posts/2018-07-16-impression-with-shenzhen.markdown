@@ -18,7 +18,7 @@ tags: [travel]
 
 ![SZ_dahai](https://wx3.sinaimg.cn/large/62de6081ly1ftf6q5zl1bj21hc0u0gmx.jpg)
 
-大概是南方多雨的原因，树木长得比北方要旺盛，特别是那些叶子硕大叫不上名字的植物，也正因此越来越喜欢南方城市。一条条小路，或者掩映在绿色的草坪和高低错落的树木间，或者拾级而上宛转通向海面。
+大概是南方多雨的原因，树木长得比北方要旺盛，郁郁葱葱。有些叫不上名字的植物，叶子硕大，翠绿欲滴，恣意纵横的伸展开来，充满了野蛮的生命力，我也正因此越来越喜欢南方城市。一条条小路，或者掩映在绿色的草坪和高低错落的树木间，或者拾级而上宛转通向海面。
 
 ![SZ_1](https://wx1.sinaimg.cn/large/62de6081ly1ftf6q5y65fj20mi0u0jsl.jpg)
 ![SZ_2](https://wx4.sinaimg.cn/mw690/62de6081ly1ftf6q5virwj20mi0u0dha.jpg)
@@ -63,9 +63,9 @@ tags: [travel]
 
 ## 3. 杂
 
-从公司高层往外望，风景很好。
+从公司高层往外望，风景很好，不知道为什么，有一种香港大片的感觉。
 ![gongsi](https://wx2.sinaimg.cn/large/62de6081ly1ftgf9820jzj21400u0762.jpg)
 
-世纪之窗对面的购物广场，这个城市一个安静的角落：西西弗书店。
+世纪之窗对面的购物广场，这个城市一个安静的角落：西西弗书店，照片的中间，是我最近最喜欢的一本书：《解忧杂货店》。
 
 ![shudian](https://wx2.sinaimg.cn/large/62de6081ly1ftgf97xhfqj20mi0u00u3.jpg)
