@@ -8,9 +8,9 @@ tags: [gflags,bash]
 
 在处理命令行参数的选择上，很多 C++ 项目里都可以见到 gflags 的使用，之前的[笔记](https://izualzhy.cn/gflags-introduction)也简单介绍过。
 
-实际的项目，执行下来经常是各个功能使用合适的语言才能落地，因此经常是多语言的场景。
+项目实际执行下来，各个功能使用合适的语言才是最佳选择，执行下来往往是多语言的场景。
 
-例如在 shell 脚本里调用 C++ 编译出的二进制( hadoop-job 使用 hadoop-streaming 时很常见）。就会出现这样的场景： shell 脚本使用`getopt`处理命令行参数，二进制使用 gflags 处理，如果两者参数有重复，代码往往会变成这样：
+例如在 shell 脚本里调用 C++ 编译出的二进制( hadoop-job 使用 hadoop-streaming 时很常见），就会出现这样的场景： shell 脚本使用`getopt`处理命令行参数，二进制使用 gflags 处理，如果两者参数有重复，代码往往会变成这样：
 
 ```
 # analyse param for C++_compile_bin
@@ -20,12 +20,13 @@ do
         "I")
         input_path=$OPTARG
         ;;
+do_sth_with_input_path ${input_path}
 ...
 
 ${C++_compile_bin} --input_path=${input_path}
 ```
 
-多了一层参数解析的环节，出于统一以及维护性的角度，我们会希望在 shell 里类似 gflags 的处理方式，也就是我们今天要介绍的 [shflags](https://github.com/kward/shflags)
+多了一层参数解析的环节，出于统一以及维护性的角度，我们会希望在 shell 里拥有类似 gflags 的处理方式，也就是我们今天要介绍的 [shflags](https://github.com/kward/shflags)
 
 <!--more-->
 
