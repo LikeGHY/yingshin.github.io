@@ -12,6 +12,9 @@ layout: page
 语言：
 C/C++/python/shell/goer
 
+技能：
+@tags: https://izualzhy.cn/tags.html
+
 目前感兴趣：
 大规模数据同步、存储、爬虫
 
