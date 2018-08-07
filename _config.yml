@@ -18,9 +18,9 @@ navigations:
   - title: Books
     class: fa fa-book
     href: /books.html
-  - title: Paper_Slides
+  - title: Pearls
     class: fa fa-newspaper-o
-    href: /paper_slides.html
+    href: /pearls.html
   - title: Subscribe
     class: fa fa-rss
     href: /atom.xml
