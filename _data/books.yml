@@ -1,3 +1,10 @@
+- name: 极简科学史
+  cover: https://img3.doubanio.com/view/subject/l/public/s29120320.jpg
+  start_date: 2018.8.8
+  finish_date:
+  douban_link: https://book.douban.com/subject/26891304/
+  note:
+
 - name: 企业IT架构转型之道：阿里巴巴中台战略思想与架构实战
   cover: https://img1.doubanio.com/lpic/s29445489.jpg
   start_date: 2018.6.8
