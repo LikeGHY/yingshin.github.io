@@ -643,6 +643,7 @@ matchIndex[] //for each server, index of highest log entry known to be replicate
 
 **broadcastTime ≪ electionTimeout ≪ MTBF**
 
+*MTBF: Mean tiem Between Failure*
 
 Raft里还讲了集群实例数变更和log compaction的方法，本文就不再赘述了。
 
