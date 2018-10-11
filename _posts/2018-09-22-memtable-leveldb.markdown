@@ -8,7 +8,7 @@ tags: [leveldb, memtable]
 
 前面介绍了[ skiplist ](https://izualzhy.cn/skiplist-leveldb)，skiplist 是 leveldb 里一个非常重要的数据结构，实现了高效的数据查找与插入(O(logn))。
 
-但是 skiplist 的最小元素是`Node`，而 leveldb 是一个单机的 {key, value} 数据库，那么 kv 数据如何作为`Node`存储到 skiplist？如何比较数据来实现查找的功能？leveldb 的各个接口及参数，是如何生效到 skiplist的？
+但是 skiplist 的最小元素是`Node`，存储单个元素。而 leveldb 是一个单机的 {key, value} 数据库，那么 kv 数据如何作为`Node`存储到 skiplist？如何比较数据来实现查找的功能？leveldb 的各个接口及参数，是如何生效到 skiplist的？
 
 这些问题，在`MemTable`中能够找到答案。
 
@@ -32,7 +32,10 @@ void Add(SequenceNumber seq, ValueType type,
 bool Get(const LookupKey& key, std::string* value, Status* s);
 ```
 
-其中`key` `value`即用户指定的值，`seq`是一个整数值，随着写入操作递增，因此`seq`越大，该操作越新。`type`表示写入还是删除。
+其中`key` `value`即用户指定的值，`seq`是一个整数值，随着写入操作递增，因此`seq`越大，该操作越新。`type`表示操作类型：
+
+1. 写入
+2. 删除。
 
 `Status`是 leveldb 的一个辅助类，在返回值的表示上更加丰富。类本身比较简单，不过设计还是挺巧妙的，之后会写篇笔记介绍下。
 
@@ -46,7 +49,7 @@ Iterator* MemTable::NewIterator() {
 
 因此`MemTableIterator`实现上也是操作 skiplist 的迭代器。
 
-`table_`就是底层的[ skiplist ](https://izualzhy.cn/skiplist-leveldb)，真正管理数据的结构。
+`table_`就是底层的[ skiplist ](https://izualzhy.cn/skiplist-leveldb)，负责管理数据。
 
 ```cpp
   struct KeyComparator {
@@ -78,7 +81,7 @@ Iterator* MemTable::NewIterator() {
 varint encode的操作在[protobuf varint](https://izualzhy.cn/protobuf-encode-varint-and-zigzag) 里也介绍过，主要的特点是：
 
 1. 整数由定长改为变长存储
-2. 小整数占用1个字节，随着数值变大占用的字节数也变大，最多占用5个字节。
+2. 小整数仅占用1个字节，随着数值变大占用的字节数也变大，最多占用5个字节。
 
 具体原理可以参考上面的笔记。
 
