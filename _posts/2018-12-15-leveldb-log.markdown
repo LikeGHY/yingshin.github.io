@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "leveldb笔记之写日志"
+title: "leveldb笔记之日志"
 date: 2018-12-15 16:05:31
-excerpt: "leveldb笔记之写日志"
+excerpt: "leveldb笔记之日志"
 tags: [leveldb]
 ---
 
@@ -66,7 +66,7 @@ leveldb 里的日志写操作主要由`leveldb::log::Writer`完成，因此我�
 static const int kBlockSize = 32768;//0x8000 = 32k
 ```
 
-因为日志的主要作用是恢复数据，[log reader](todo)可以在读取数据时每次固定读取`kBlockSize`，对内存管理及文件读取次数都更友好。
+因为日志的主要作用是恢复数据，[log reader](https://github.com/yingshin/leveldb_more_annotation/blob/master/db/log_reader.cc)可以在读取数据时每次固定读取`kBlockSize`，对内存管理及文件读取次数都更友好。
 
 一个 block 内的数据又由多个 {header, data} 组成，其中 data 是用户调用`AddRecord`接口写入的数据，header 占用7个字节，分别记录了: data 的数据签名、数据长度及 type.
 
@@ -112,6 +112,9 @@ enum RecordType {
 如果 block 剩余的空间不足7 bytes，写不下 header，那么就补`\0`填满。
 
 上述过程代码添加了注释，位置在 [log_writer.cc](https://github.com/yingshin/leveldb_more_annotation/blob/master/db/log_writer.cc).
+
+
+读日志由[log::Reader](https://github.com/yingshin/leveldb_more_annotation/blob/master/db/log_reader.cc)完成，与`Writer`过程正好相反。
 
 ## 4. 应用示例
 
