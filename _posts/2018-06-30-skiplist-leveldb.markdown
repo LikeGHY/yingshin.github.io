@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "leveldb之skiplist实现"
+title: "leveldb笔记之skiplist实现"
 date: 2018-06-30 19:27:49
 tags: [leveldb, skiplist]
 ---

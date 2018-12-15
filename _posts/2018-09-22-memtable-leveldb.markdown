@@ -1,9 +1,9 @@
 ---
 layout: post
-title: "leveldb之二：MemTable"
+title: "leveldb笔记之MemTable"
 date: 2018-09-22 17:22:24
-excerpt: "leveldb之二：MemTable"
-tags: [leveldb, memtable]
+excerpt: "leveldbMemTable"
+tags: [leveldb]
 ---
 
 前面介绍了[ skiplist ](https://izualzhy.cn/skiplist-leveldb)，skiplist 是 leveldb 里一个非常重要的数据结构，实现了高效的数据查找与插入(O(logn))。
