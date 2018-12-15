@@ -81,15 +81,17 @@ static const int kHeaderSize = 4 + 2 + 1;
 例如当前 block 只有10个字节，而用户调用了`AddRecord('HelloWorld')`，数据会分为两次写入，type 分别为 kFirstType kLastType:
 
 ```
----------------> block N
+**************  block N  **************
 ...
 |crc 3 kFirstType|hel|
----------------> block N+1
+************** block N+1 **************
 |crc 7 kLastType|loWorld|
 ...
 ```
 
-可以看到先尝试写入`hel`填满该 block，标记这次写入为`kFirstType`，总共占用 10 个字节。然后写入`loWorld`到下一个 block，标记为`kLastType`.如果这个 block 写不下，那么就标记为`kMiddleType`.
+可以看到先尝试写入`hel`填满该 block，标记这次写入为`kFirstType`，总共占用 10 个字节。然后写入`loWorld`到下一个 block，标记为`kLastType`.
+
+如果这个 block 写不下，那么就标记为`kMiddleType`.
 
 type 是一个枚举值：
 
@@ -234,7 +236,7 @@ $ xxd log_writer_blob.data | tail
 
 `WriteBatchInternal::Contents(updates)`数据格式图里的 data 部分，这些究竟包含了什么？在接下来的笔记 todo 会介绍清楚.
 
-## 5. 参考资料
+## 6. 参考资料
 
 1. [leveldb Log format](https://github.com/yingshin/leveldb_more_annotation/blob/master/doc/log_format.md)
 2. [leveldb 日志](https://leveldb-handbook.readthedocs.io/zh/latest/journal.html)
