@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "leveldb笔记之基本架构"
-date: 2018-12-09 18:51:10
+date: 2018-12-10 18:51:10
 excerpt: "leveldb笔记之基本架构"
 tags: [leveldb]
 ---
@@ -86,7 +86,7 @@ Get //读取
 
 ## 2. 架构
 
-![leveldb architecture](assets/images/leveldb_architecture.png)
+![leveldb architecture](assets/images/leveldb/architecture.png)
 
 leveldb 主要由以下组件组成：
 
