@@ -43,7 +43,7 @@ leveldb 里 sstable 文件里，有多个数据 block，其中 data block, index
 
 简单总结规则就是：**如果连续的 key 有相同的前缀，那么记录这个前缀的长度，后面的 key 只存储不同的部分。**
 
-而为了读取更加高效(读block的笔记 todo)，每 N 条 entry则不再应用该规则，直接存储完整的 key. leveldb 称之为 restart，这条 entry 在文件的偏移量称之为一个 restart point.
+而为了[读取更加高效](https://izualzhy.cn/leveldb-block-read)，每 N 条 entry则不再应用该规则，直接存储完整的 key. leveldb 称之为 restart，这条 entry 在文件的偏移量称之为一个 restart point.
 
 N 对应代码里的`block_restart_interval`。
 
