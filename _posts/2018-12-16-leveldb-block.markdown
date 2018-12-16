@@ -8,7 +8,7 @@ tags: [leveldb]
 
 ## 1. 简介
 
-leveldb 里 sstable 文件里，有多个数据 block，其中 data block, index block， meta index block 都采用相同的数据格式，由类 [BlockBuilder](https://github.com/yingshin/leveldb_more_annotation/blob/master/table/block_builder.h) 负责生成。
+leveldb 里 sstable 文件里，有多个数据 block，其中 data block, index block，meta index block 都采用相同的数据格式，由类 [BlockBuilder](https://github.com/yingshin/leveldb_more_annotation/blob/master/table/block_builder.h) 负责生成。
 
 本文主要分析 BlockBuilder 这个类的实现。
 
@@ -43,7 +43,9 @@ leveldb 里 sstable 文件里，有多个数据 block，其中 data block, index
 
 简单总结规则就是：**如果连续的 key 有相同的前缀，那么记录这个前缀的长度，后面的 key 只存储不同的部分。**
 
-而为了读取更加高效(读block的笔记 todo)，每 N 条 entry则不再应用该规则，直接存储完整的 key. leveldb 称之为 restart，这个 N 对应代码里的`block_restart_interval`，restart 的 entry 在文件的偏移量就是一个restart point.
+而为了读取更加高效(读block的笔记 todo)，每 N 条 entry则不再应用该规则，直接存储完整的 key. leveldb 称之为 restart，这条 entry 在文件的偏移量称之为一个 restart point.
+
+N 对应代码里的`block_restart_interval`。
 
 用一张图来总结 `BlockBuilder` 数据格式:
 
@@ -90,7 +92,7 @@ Slice Finish();
 
 在 buffer 后追加 restart_ 数组里的全部元素及数组大小。
 
-注意这里元素及数组大小都是使用的原始大小，即4个 bytes，没有用 varint 是为了读取更加方便。
+注意这里元素及数组大小都是使用的原始大小，即4个 bytes，没有用 varint 可以在读取时更加方便。
 
 ## 4. 例子
 
