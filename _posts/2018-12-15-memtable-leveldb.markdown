@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "leveldb笔记之MemTable"
-date: 2018-09-22 17:22:24
-excerpt: "leveldbMemTable"
+title: "leveldb笔记之4:MemTable"
+date: 2018-12-15 21:22:24
+excerpt: "leveldb笔记之4:MemTable"
 tags: [leveldb]
 ---
 
