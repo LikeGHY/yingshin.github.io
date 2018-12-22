@@ -52,7 +52,7 @@ void FilterBlockBuilder::AddKey(const Slice& key) {
 
 `keys_`记录了参数`key`，`start_`则记录了在`keys_`的偏移量，两者结合可以还原出`key`本来来。
 
-* 注： 不理解为什么不直接用一个`std::vector<std::string>`参数记录 *
+*注： 不理解为什么不直接用一个`std::vector<std::string>`参数记录*
 
 ### 4.2. StartBlock(uint64_t block_offset)
 
