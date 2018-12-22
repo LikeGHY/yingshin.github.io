@@ -15,7 +15,7 @@ leveldb 无论哪一层文件，都是 sstable 的格式，即 Sorted String Tab
 >If Protocol Buffers is the lingua franca of individual data record at Google, then the Sorted String Table (SSTable) is one of the most popular outputs for storing, processing, and exchanging datasets.
 
 
-前面的笔记里，[block](https://izualzhy.cn/leveldb-block)和[filter block](https://izualzhy.cn/filter-block)都是 sstable 的一个组件，本文介绍 sstable 的设计意图以及对应的数据格式实现，然后通过源码介绍数据格式的构造过程。
+前面的笔记里，[block](https://izualzhy.cn/leveldb-block)和[filter block](https://izualzhy.cn/filter-block)都是 sstable 的一个组件，负责构造部分数据格式。本文介绍 sstable 的设计意图以及完整的数据格式实现，然后通过源码介绍数据格式的构造过程。
 
 ## 2. sstable
 
@@ -90,7 +90,7 @@ footer 需要首先读取、解析出来，然后才能“按图索骥”找到�
 
 用一张图来直观的看下各个 block 的位置及作用：
 
-![table_builder](/assets/images/leveldb/table_buider.png)
+![table_builder](/assets/images/leveldb/table_builder.png)
 
 ```
     <beginning_of_file>
