@@ -36,7 +36,7 @@ tags: [read]
 
 **按照重要程度，把当前至多5项重要任务写到快捷清单上，然后基于当前时间设置下一个全景闹钟(至少间隔25分钟)，开启自己的单核时段，专注做清单上的一件事。**
 
-![monotasking](/assets/images/monotasking/monotasing.jpeg)
+![monotasking](/assets/images/monotasking/monotasking.jpeg)
 
 接下来，就是把这些概念，分开了揉碎了翻来覆去的讲，分为6个章节。
 
@@ -111,7 +111,7 @@ tags: [read]
 
 稀缺心态者以零和的思维模式对待生活。ta们相信，如果ta要赢，其他人必须输才行。跨组跨部门是这样，KPI会导致这样，防止工作时被忽悠了优先级，不知道OKR推广后会不会好一点。
 
-![corperation](/assets/images/monotasking/corperation.jpeg)
+![cooperation](/assets/images/monotasking/cooperation.jpeg)
 
 ## 7. 给创意充电
 
