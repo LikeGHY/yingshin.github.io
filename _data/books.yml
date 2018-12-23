@@ -1,9 +1,9 @@
 - name: 单核工作法图解
   cover: https://img3.doubanio.com/lpic/s29602754.jpg
   start_date: 2018.12.10
-  finish_date:
+  finish_date: 2018.12.19
   douban_link: https://book.douban.com/subject/27177909/
-  note:
+  note: https://izualzhy.cn/monotasking-reading
 
 - name: 离线和实时大数据开发实战
   cover: https://img1.doubanio.com/lpic/s29779297.jpg
