@@ -151,13 +151,13 @@ int main() {
 ```
 zhandle_t* init_zhandle()
 2016-10-02 23:03:40,844:5470(0x7f6957f39740):ZOO_INFO@log_env@674: Client environment:zookeeper.version=zookeeper C client 3.3.3.900
-2016-10-02 23:03:40,844:5470(0x7f6957f39740):ZOO_INFO@log_env@678: Client environment:host.name=cq01-rdqa-dev095.cq01.baidu.com
+2016-10-02 23:03:40,844:5470(0x7f6957f39740):ZOO_INFO@log_env@678: Client environment:host.name=******
 2016-10-02 23:03:40,844:5470(0x7f6957f39740):ZOO_INFO@log_env@685: Client environment:os.name=Linux
 2016-10-02 23:03:40,844:5470(0x7f6957f39740):ZOO_INFO@log_env@686: Client environment:os.arch=2.6.32_1-17-0-0
 2016-10-02 23:03:40,844:5470(0x7f6957f39740):ZOO_INFO@log_env@687: Client environment:os.version=#1 SMP Mon Aug 24 11:14:27 CST 2015
-2016-10-02 23:03:40,844:5470(0x7f6957f39740):ZOO_INFO@log_env@695: Client environment:user.name=zhangying21
-2016-10-02 23:03:40,844:5470(0x7f6957f39740):ZOO_INFO@log_env@703: Client environment:user.home=/home/users/zhangying21
-2016-10-02 23:03:40,844:5470(0x7f6957f39740):ZOO_INFO@log_env@715: Client environment:user.dir=/home/users/zhangying21/Training/bd_test/zk_test
+2016-10-02 23:03:40,844:5470(0x7f6957f39740):ZOO_INFO@log_env@695: Client environment:user.name=******
+2016-10-02 23:03:40,844:5470(0x7f6957f39740):ZOO_INFO@log_env@703: Client environment:user.home=******
+2016-10-02 23:03:40,844:5470(0x7f6957f39740):ZOO_INFO@log_env@715: Client environment:user.dir=******
 2016-10-02 23:03:40,844:5470(0x7f6957f39740):ZOO_INFO@zookeeper_init@743: Initiating client connection, host=127.0.0.1:2181/ sessionTimeout=15000 watcher=0x402dfd sessionId=0 sessionPasswd=<null> context=0x617080 flags=0
 2016-10-02 23:03:40,846:5470(0x7f695653a700):ZOO_INFO@check_events@1710: initiated connection to server [127.0.0.1:2181]
 2016-10-02 23:03:40,851:5470(0x7f695653a700):ZOO_INFO@check_events@1757: session establishment complete on server [127.0.0.1:2181], sessionId=0x1575ceca89a0025, negotiated timeout=15000
