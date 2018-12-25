@@ -1,3 +1,10 @@
+- name: 新参者
+  cover: https://img3.doubanio.com/lpic/s28363320.jpg
+  start_date: 2018.12.25
+  finish_date: 
+  douban_link: https://book.douban.com/subject/26639966/
+  note: 
+
 - name: 单核工作法图解
   cover: https://img3.doubanio.com/lpic/s29602754.jpg
   start_date: 2018.12.10
