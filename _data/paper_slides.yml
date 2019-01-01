@@ -1,3 +1,8 @@
+- title: '关于 BloomFilter 的几篇论文'
+  url: 'https://izualzhy.cn/bloom-filter-paper'
+  tag: 'bloom filter'
+  note: 'BloomFilter无论是学术还是工程领域，都已经得到了广泛的证明和实践，例如在Chromium, bigtable等，也不断进化出了很多新的类型：Counting Bloom Filter/Partial Bloom Filter/Compressed Bloom Filter...'
+
 - title: 'Skip Lists: A Probabilistic Alternative to
 Balanced Trees'
   url: 'https://epaperpress.com/sortsearch/download/skiplist.pdf'

@@ -13,11 +13,11 @@ leveldb 里 sstable 文件里，有多个 block 组成。其中 filter block 用
 
 ## 2. 如何提高查找性能
 
-在 leveldb 中，查找 data block(todo 地址)使用二分法，能够达到 lg(n) 的复杂度，如果想进一步提高，就需要用到 filter block 了。
+在 leveldb 中，查找 [data block](https://izualzhy.cn/leveldb-block-read)使用二分法，能够达到 lg(n) 的复杂度，如果想进一步提高，就需要用到 filter block 了。
 
 如果说 data block 的作用是查找 key 对应的 value，那么 filter block 则是查找 key 是否存在于该 data block，起到提前过滤的作用，这也是 filter block 名字的由来。
 
-filter block的想法其实很简单，就是拿空间换时间，例如我们可以构造 data block 内所有 key 的 hash table，将hash table对应的序列化数据存储到 fitler block.leveldb 并没有直接这么做，而是采用了 bloom filter(todo 地址)，在达到O(1)的前提下，用一个巧妙的办法使用了更少的空间。
+filter block的想法其实很简单，就是拿空间换时间，例如我们可以构造 data block 内所有 key 的 hash table，将hash table对应的序列化数据存储到 fitler block.leveldb 并没有直接这么做，而是采用了 [bloom filter](https://izualzhy.cn/leveldb-bloom-filter)，在达到O(1)的前提下，用一个巧妙的办法使用了更少的空间。
 
 ## 3. 数据格式
 
@@ -181,7 +181,7 @@ FilterBlockReader::FilterBlockReader(const FilterPolicy* policy,
 }
 ```
 
-`KeyMayMatch`查找指定的`key`是否存在，注意[filter](todo bloom filter)不要求完全准确，因此只是**可能存在**。
+`KeyMayMatch`查找指定的`key`是否存在，注意[filter](https://izualzhy.cn/leveldb-bloom-filter)不要求完全准确，因此只是**可能存在**。
 
 另外一个参数是`block_offset`，跟`FilterBlockBuilder::StartBlock`一样，这里也是 sstable 里 data block 的偏移量。
 
