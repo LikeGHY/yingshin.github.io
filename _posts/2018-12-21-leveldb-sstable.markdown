@@ -62,7 +62,7 @@ value = (offset + size)
 
 ### 3.2. filter block 及索引
 
-levedb 支持设置 filter policy，例如 [bloom filter](todo)。设置后，sstable 就会生成对应的 filter block，记录 filter policy 生成的数据。
+levedb 支持设置 filter policy，例如 [bloom filter](https://izualzhy.cn/leveldb-bloom-filter)。设置后，sstable 就会生成对应的 filter block，记录 filter policy 生成的数据。
 
 查找 key 时，先通过 filter block 判断是否存在，如果不存在则直接跳过对应的 data block。由于 filter block 的查找时间复杂度是O(1)级别的，因此读性能可以显著提高。filter block的数据是 [FilterBlockBuilder](https://izualzhy.cn/filter-block)生成的。
 

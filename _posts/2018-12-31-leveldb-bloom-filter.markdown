@@ -154,7 +154,13 @@ False positive rate 和 m/n、k 的组合关系表：
 
 ## 4. 代码实现
 
-bloom filter 代码实现并不复杂，在 leveldb 有一个完整的实现，注释版的源码位于[bloom.cc](https://github.com/yingshin/leveldb_more_annotation/blob/master/util/bloom.cc)，对应类`BloomFilterPolicy`
+bloom filter 代码实现并不复杂，在 leveldb 有一个完整的实现，注释版的源码位于[bloom.cc](https://github.com/yingshin/leveldb_more_annotation/blob/master/util/bloom.cc)，对应类`BloomFilterPolicy`，主要有三个接口
+
+1. 构造函数  
+2. `CreateFilter`：根据传入的 keys，计算对应的 hash area.  
+3. `KeyMayMatch`：查找传入的 key 是否存在  
+
+可以看到，bloom filter 仅支持插入和查找，不支持删除操作(导致误删除)。
 
 构造函数主要是根据 m/n 计算 k 的个数，公式如上面推导，不过最大不超过 30 个:
 
