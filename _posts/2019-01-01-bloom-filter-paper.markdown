@@ -53,14 +53,14 @@ N * (N - 1) * (1 - H) * R
 
 论文提出了两种异常情况：
 
-1. False positive: ProxyA 认为 ProxyB 缓存了 urlU，于是访问 ProxyB 获取对应的数据，实际上 ProxyB 没有，因此返回给 ProxyA 空。ProxyA 访问外网获取数据。这种情况即上篇笔记里的 false positive.  
-2. False negative: ProxyA 认为其他 Proxy 都没有缓存 urlU，于是直接访问外网获取数据。  
+1. False positive: ProxyA 认为 ProxyB 缓存了 urlU，于是访问 ProxyB 获取对应的数据，实际上 ProxyB 没有，因此返回给 ProxyA 空。ProxyA 访问外网获取数据。这种情况即上篇笔记里的 false positive，会导致多一次 Proxy 的交互。  
+2. False negative: ProxyA 认为其他 Proxy 都没有缓存 urlU，于是直接访问外网获取数据。这会导致多一次外网请求。  
 
-这两种异常情况，都会导致多一次外网请求，不过只要控制在较小的概率，是可以接受的。
+这两种异常情况只要控制在较小的概率，是可以接受的。
 
 普通的 BloomFilter 结构只支持添加和查找 key，因此适用于静态的数据。如果 keys 是动态变化的，那么就需要支持删除的功能，论文提出了 Counting Bloom Filter，主要思想是将 BloomFilter 的 bit 扩展为一个小的计数器(Counter)，作者证明了 Counter 最大值可以为4，超过最大值的几率已经非常小了.
 
-![counting bloom filter](assets/images/counting_bloom_filter.png)
+![counting bloom filter](/assets/images/counting_bloom_filter.png)
 
 ## 3. [Network Applications of Bloom Filters: A Survey](https://www.eecs.harvard.edu/~michaelm/postscripts/im2005b.pdf)
 
