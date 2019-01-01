@@ -5,16 +5,16 @@ date: 2018-12-31 17:55:21
 tags: [leveldb, bloom filter]
 ---
 
-leveldb
+leveldb 的[filter block](https://izualzhy.cn/filter-block)用到了 filter policy，其中默认提供的是`BloomFilterPolicy`，即布隆过滤器，这篇笔记聊聊布隆过滤器的理论和在 leveldb 里的实现。
 
 ## 1. 简介
 
-bloom filter是一种数据结构，作用类似于 hash table.不过相对于 hash table，空间利用率更高。
+bloom filter是一种数据结构，作用类似于 hash table，相对于后者，空间利用率更高。
 
-不过这种高利用率是有代价的，当我们在 bloom filter 查找 key 时，可能返回两种情况：
+不过这种高利用率是有代价的，当我们在 bloom filter 查找 key 时，有返回两种情况：
 
 1. key 不存在，那么 key 一定不存在。  
-2. key 存在，那么 key 可能存在。  
+2. key 存在，那么 key **可能**存在。  
 
 也就是说 bloom filter 具有一定的误判率。
 
@@ -26,39 +26,37 @@ bloom filter是一种数据结构，作用类似于 hash table.不过相对于 h
 2. m bits 的空间 v，全部初始化为0  
 3. k 个无关的 hash 函数：`h1, h2, ..., hk`，hash 结果为`{1, 2, ..., m} or {0, 1, ..., m-1})`  
 
-例如对于 `key=a`，经过 k 个 hash 函数后结果为
+具体的，对于 `key=a`，经过 k 个 hash 函数后结果为
 
 ```
 h1(a), h2(a), ..., hk(a)
 ```
 
-将 v 对应的 bit 置为 1.
+那么就将 v 对应的 bit 置为 1.
 
-假定 k 为 4，那么对应的 bloom filter 为：
+假定 k 为 4，对应的 bloom filter 为：
 
 ![bloom_filter_with_4_hash_functions](/assets/images/leveldb/bloom_filter/bloom_filter_with_4_hash_functions.gif)
 
-*[这里](https://llimllib.github.io/bloomfilter-tutorial/zh_CN/)有一个js写的一篇博客，支持互动的查看 bloom filter，更形象一些.*
-
-可以看到 bloom filter 的算法其实并不复杂。
+*注：[这里](https://llimllib.github.io/bloomfilter-tutorial/zh_CN/)有一个js写的一篇博客，支持互动的查看 bloom filter，更形象一些.*
 
 当 key 越来越多，v 里置为 1 的 bits 越来越多。对于某个不存在的 key'，k 个 hash 函数对应的 bit 可能正好为1，此时就概率发生误判，更专业的术语称为 **false positive**，或者 **false drop**.
 
-因此，我们称 bloom filter 是一种概率型的数据结构，当返回某个 key' 存在时，只能说明可能存在。
+因此，我们称 bloom filter 是一种概率型的数据结构，当返回某个 key' 存在时，只是说明可能存在。
 
 m 越大，k 越大， n 越小，那么 **false positive**越小。
 
-更进一步，bloom filter 是关于空间和 **false positive** 的 tradeoff.
+更进一步，bloom filter 是关于空间和 **false positive** 的 tradeoff，bloom filter 的算法其实并不复杂，其真正的艺术在于这种平衡。
 
-我们先看下结论:
+我们先看下 tradeoff 的结论:
 
 **hash 函数 k 的最优个数为 ln2 * (m/n).**
 
 ## 3. 数学推导
 
-这一节是数学推导上面的结论部分，主要是理论补充，也可以直接看下一节的实现部分。
+这一节是数学推导上面的结论部分，主要是理论补充，也可以跳过直接看下一节的实现部分。
 
-接着 bloom filter 的组成讲，对一个指定的 bit，其被设置为0 1的概率分别为
+接着 bloom filter 的组成讲，对一个指定的 bit，其被设置为0、1的概率分别为
 
 ```
 P(1) = 1/m
@@ -85,7 +83,7 @@ P''(0) = P'(0) ** n = (1 - 1/m) ** kn
 
 ![p0](/assets/images/leveldb/bloom_filter/p0.gif)
 
-对应的，该 bit 设置为 1 的概率为：
+对应的，`P''(1)`的概率为：
 
 ![p1](/assets/images/leveldb/bloom_filter/p1.gif)
 
@@ -105,14 +103,17 @@ P''(0) = P'(0) ** n = (1 - 1/m) ** kn
 |1048576  |2.718283  |
 |4194304  |2.718282  |
 
-对 false positive 的场景，恰好 k 个 bit 都设置为了1，其概率为
+当检测某个实际不存在的 key 时，满足条件：
+
+其对应的 k 个 bit 恰好都设置为了1，此时即 false positive 的场景。
+
+概率为：
 
 ![false_positive](/assets/images/leveldb/bloom_filter/false_positive.gif)
 
-给定 m n 的情况下，怎么取值 k 才能最小化 false_positive 呢？
+问题是，怎么最小化 false_positive 呢？
 
-为了简化一点，先设 p 值(即`P''(0)`，设置为0的概率)为：
-
+为了简化描述，先定义 p (即`P''(0)`：某个 bit 设置为0的概率)：
 
 ![p](/assets/images/leveldb/bloom_filter/p.gif)
 
@@ -122,7 +123,7 @@ P''(0) = P'(0) ** n = (1 - 1/m) ** kn
 
 底数是 e，为固定值，那么最小化 false_positive_rate 即为最小化指数`g = k * ln (1 − p)`
 
-考虑到 p 的定义，k 的值为
+结合 p 的定义，k 值推导为
 
 ![k](/assets/images/leveldb/bloom_filter/k.gif)
 
@@ -130,14 +131,14 @@ P''(0) = P'(0) ** n = (1 - 1/m) ** kn
 
 ![g](/assets/images/leveldb/bloom_filter/g.gif)
 
-根据对称性，当 `p = 1/2` 时，g/f 取得最小值。此时k f最小值为:
+根据对称性，当 `p = 1/2` 时，f 取得最小值。此时k、f最小值为:
 
 ![min_k](/assets/images/leveldb/bloom_filter/min_k.gif)
 ![min_f](/assets/images/leveldb/bloom_filter/min_f.gif)
 
 考虑到 p 为设置为0的概率，因此可以认为 m 有一半设置为1，一半设置为0时，误判率最低。
 
-False positive rate 和 m/n and k 的组合关系表：
+False positive rate 和 m/n、k 的组合关系表：
 
 |m/n  |k  |k=1  |k=2  |k=3  |k=4  |k=5  |k=6  |k=7  |k=8 |
 |--|
@@ -153,7 +154,7 @@ False positive rate 和 m/n and k 的组合关系表：
 
 ## 4. 代码实现
 
-代码上，选了最近在看的 leveldb 源码部分，源码地址位于[bloom.cc](https://github.com/yingshin/leveldb_more_annotation/blob/master/util/bloom.cc)，对应类`BloomFilterPolicy`
+bloom filter 代码实现并不复杂，在 leveldb 有一个完整的实现，注释版的源码位于[bloom.cc](https://github.com/yingshin/leveldb_more_annotation/blob/master/util/bloom.cc)，对应类`BloomFilterPolicy`
 
 构造函数主要是根据 m/n 计算 k 的个数，公式如上面推导，不过最大不超过 30 个:
 
@@ -179,7 +180,7 @@ static uint32_t BloomHash(const Slice& key) {
 }
 ```
 
-*注：虽然多次调用，函数间仍然保持independent。*
+*注：虽然多次调用，函数间仍然保持independent，因此仍然满足前面的公式*
 
 `CreateFilter`计算传入的 n 个 key，最终结果存储到`dst`(对应到理论介绍里的 m)
 
@@ -269,7 +270,7 @@ static uint32_t BloomHash(const Slice& key) {
     }
 ```
 
-接下来的测试代码用于看下误判率
+看下误判率，leveldb 自带的单测代码有更完善的版本。
 
 ```
     {
