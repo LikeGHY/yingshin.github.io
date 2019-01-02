@@ -11,7 +11,7 @@ tags: [scrapy]
 
 另外一个是很久不爬东西了手痒，厂长经常说不忘初心，我的初心有一部分大概也是 spider.
 
-断断续续爬了130w+的文章，用的 scrapy，代码就不介绍了，放到了[TinyTools]()这里，这里贴下一些结论。
+断断续续爬了130w+的文章，用的 scrapy，代码就不介绍了，放到了[TinyTools](https://github.com/yingshin/Tiny-Tools/tree/master/scrapy/doubannote)这里，这里贴下一些结论。
 
 ## 1. 200 vs 404
 
@@ -76,6 +76,8 @@ comment_num: 0
 数据的分布很不均匀，有35807个作者只写了1篇文章。
 
 ![author](assets/images/author.png)
+
+值得一提的是爬了 800w+ 豆瓣er的主页，其中大部分人都不产生内容。
 
 ## 4. tags
 
