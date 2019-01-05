@@ -95,7 +95,7 @@ OLAP数据库本身就能够处理和统计大量的数据，而且不像OLTP数
 
 Hadoop是一个蓬勃发展的生态，从底层调度和资源管理的YARN/ZooKeeper到SQL on Hadoop的Hive，从分布式的NoSQL数据库HBase到流计算Storm框架，从海量日志采集处理框架Flume到海量消息分布式订阅-消费系统Kafka，所有这些技术共同组成了一个完善的、彼此良性互动和补充的Hadoop大数据生态系统。
 
-### 3.1.1 HDFS
+#### 3.1.1 HDFS
 
 优势：
 
@@ -112,7 +112,7 @@ Hadoop是一个蓬勃发展的生态，从底层调度和资源管理的YARN/Zoo
 
 ![hdfs_arch](/assets/images/dataflow/hdfs_arch.png)
 
-### 3.1.2 MapReduce
+#### 3.1.2 MapReduce
 
 优势：
 + 易于编程  
