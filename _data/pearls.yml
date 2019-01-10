@@ -1,7 +1,7 @@
 - title: 'C++ Seasoing:3 Goals for Better Code'
   url: 'https://izualzhy.cn/cpp-seasoning'
   tag: 'Cpp-Seasoning'
-  note: '作者在演讲里提出了3 Goals for Better Code，分别关于No Raw Loop、No Raw Synchronization Primitives、No Raw Pointers，在场的听众以及视频的评论里，很多希望作者出一本书，因为作者用真实代码(Chromium)展示了如何把一段代码变的更好，虽然没有完全理解也不完全认同作者的观点，但这篇演讲的确能够带给人很多思考和共鸣，有些你习以为常的代码习惯，可能也需要不断思考是否是正确的。'
+  note: '作者在演讲里提出了3 Goals for Better Code，分别关于No Raw Loop、No Raw Synchronization Primitives、No Raw Pointers，在场的听众以及视频的评论里，很多希望作者出一本书，因为作者用真实代码(Chromium)展示了如何把一段代码变的更好，虽然没有完全理解也不完全认同作者的观点，但这篇演讲的确能够带给人很多思考和共鸣，有些你习以为常的代码习惯，例如智能指针，可能也需要不断思考是否是正确的，比如提出这样的问题：Why-Should-I-Not-Use-Smart-Pointers(https://stackoverflow.com/questions/18813679/why-should-i-not-use-smart-pointers), 保持自我思考的能力。'
 
 - title: '关于 BloomFilter 的几篇论文'
   url: 'https://izualzhy.cn/bloom-filter-paper'

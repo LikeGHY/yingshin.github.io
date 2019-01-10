@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "3 Goals for Better Code"
-date: 2019-01-05 08:20:52
+date: 2019-01-05 18:20:52
 tags: [Cpp-Seasoning]
 ---
 
@@ -56,7 +56,7 @@ void PanelBar::RepositionExpandedPanels(Panel* fixed_panel) {
 
 如何通过一系列的办法简化了这个100多行的代码，思路就是**No Raw Loops**，工具使用 STL。
 
-然而，重点来了，这段代码还一直在代码库里，并且被 CI 了上去！隔着屏幕我都能感觉到视频里 Sean Parent 深深的怨念。他大概断断续续花了3天时间，才跟代码开发者解释清楚为什么修改后能够生效。但是被另外一个 reviewer 给拦住了💔
+然而，重点来了，这段代码还一直在[代码库](https://chromium.googlesource.com/chromiumos/platform/window_manager/+/636fb791f3c8e4079c99c36178d5e41d250655b2/panel_bar.cc)里，并且被 CI 了上去！隔着屏幕我都能感觉到视频里 Sean Parent 深深的怨念。他大概断断续续花了3天时间，才跟代码开发者解释清楚为什么修改后能够生效。但是被另外一个 reviewer 给拦住了💔
 
 >you can't replace that loop with find_if followed by rotate.it's too tricky nobody knows what rotate does.
 
@@ -66,7 +66,7 @@ void PanelBar::RepositionExpandedPanels(Panel* fixed_panel) {
 
 ### 1.1. rotate
 
-抽象的一个操作是 rotate 的操作，例如把 0 1 这两个元素与2 3 4 5 6 7 8 9互换。如图所示:
+抽象的一个操作是 rotate，例如把 0 1 这两个元素与2 3 4 5 6 7 8 9互换。如图所示:
 
 ![rotate_v1](assets/images/cpp-seasoning/rotate_v1.png)
 
@@ -119,11 +119,14 @@ int main() {
 }
 ```
 
+这些函数的功能看似简单，然后就是借助这几个函数(`find_if` `lower_bound` `range`等)，代码变得非常简洁，对于熟悉这些函数作用的 rd 来讲，上手成本要低很多，代码读起来也有幸福感。
+
 此外还有很多其他建议，例如
+
 
 >1. Use const auto& for for-each and auto& for transforms
 >2. Use lambdas for predicates, comparisons, and projections, but keep them short
->...
+>3. ...
 
 If you want to improve the code quality in your organization, replace all of your coding guidelines with one goal:
 
@@ -131,7 +134,7 @@ If you want to improve the code quality in your organization, replace all of you
 
 ## 2. No Raw Synchronization primitives
 
-不要在直接使用诸如 `Mutex`、`Atomic`、`Semaphore`、`Memory Fence`.
+不要在直接使用诸如 `Mutex`、`Atomic`、`Semaphore`、`Memory Fence` 的同步原语.
 
 直接操作的缺点就是你很有可能导致各种 race condition，例如这样的代码:
 
@@ -181,7 +184,7 @@ int main() {
 }
 ```
 
-此外还有 PPL(Parallel Patterns Library)、TBB、std 里的 packaged_task等。
+多尝试已有的封装，例如 PPL(Parallel Patterns Library)、TBB、std 里的 packaged_task等。
 
 ## 3. No Raw Pointers
 
@@ -194,11 +197,11 @@ unique_ptr<T>
 shared_ptr<T>
 ```
 
-作者认为，A shared pointer is as good as a global variable.
+作者认为，A shared pointer is as good as a global variable，但同样属于 Raw Pointer，同样有着全局变量有的问题。
 
-智能指针只是解决了 mem leak 的问题，但是存储的对象随时可能被其他线程改变，这个是很危险的事情。(同意，所以实践中我们使用线程池，同一个对象只有一个线程处理，使用智能指针的好处不用 care 不同分支 return 时的资源释放问题)。
+智能指针只是解决了 mem leak 的问题，但是存储的对象随时可能被其他线程改变，这个是很危险的事情。(同意，所以实践中我使用线程池的习惯:同一个对象只有一个线程处理，使用智能指针的好处不用 care 不同分支 return 时的资源释放问题)。
 
-作者给了一个类似这样的实现，保存了 const 的对象，使用智能指针也只是为了资源释放更方便。
+分析过程参考 keynote 原文，最后作者给了一个类似这样的实现，保存了 const 的对象，使用智能指针也只是为了资源释放更方便。
 
 ```
 class object_t {
@@ -236,10 +239,9 @@ void draw(const document_t& x, ostream& out, size_t position)
 }
 ```
 
-封装用到的技巧，类似于之前写过的[boost::any的实现](https://izualzhy.cn/boost-any-sample-implemention).
+封装用到的模板技巧，类似于之前写过的[boost::any](https://izualzhy.cn/boost-any-sample-implemention).
 
-完整的演讲视频及文档地址：
-https://sean-parent.stlab.cc/papers-and-presentations/#c-seasoning
+完整的[演讲视频及文档地址](https://sean-parent.stlab.cc/papers-and-presentations/#c-seasoning)
 
 ## 4. 后记
 
