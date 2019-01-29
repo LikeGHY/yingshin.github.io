@@ -39,7 +39,7 @@ sstable 支持存储的 {key:value} 数目比较多，原始数据可能会比�
 
 1. offset：即 data block 的偏移量  
 2. size：即 data block 的大小  
-3. data_block_key：满足条件`> block 内所有的 key`  
+3. data_block_key：满足条件`>= block 内所有的 key`  
 
 这样当查找某个 key 时，先跟 data_block_key 比较，判断可能存在于哪个 data block，如果存在，然后用 offset + size 快速定位这个 data block。
 
@@ -283,11 +283,11 @@ r->filter_block->StartBlock(r->offset);
 
 `r->options.comparator->FindShortestSeparator(&r->last_key, key);`更新后的`r->last_key`满足条件：
 
-**刚好大于 data block 所有 key**.
+**刚好大于等于 data block 所有 key**.
 
 即 block 3要素的第3点：data_block_key.
 
-这么构造 data_block_key 的好处是，当查找某个 target-key 时，如果 `target-key >= r->last_key`，那么 target-key 一定大于该 data block 所有的key，因此不需要在 data block 查找了，也就是 index 的意义。
+这么构造 data_block_key 的好处是，当查找某个 target-key 时，如果 `target-key > r->last_key`，那么 target-key 一定大于该 data block 所有的key，因此不需要在 data block 查找了，也就是 index 的意义。
 
 value 是该 data block 的 `BlockHandle` 序列化后的值。
 
@@ -361,7 +361,63 @@ value 是该 data block 的 `BlockHandle` 序列化后的值。
 
 一个完整的 sst 至此构造完成。
 
-## 6. 参考资料
+## 6. 例子
+
+写了一个手动调用`TableBuilder`上述接口构造 sstable 的例子，能够更直观的看到各个接口调用后的效果。
+
+首先`Add`几组数据调用`Flush`生成数据：
+
+```
+    leveldb::TableBuilder table_builder(options, file);
+    table_builder.Add("confuse", "value");
+    table_builder.Add("contend", "value");
+    table_builder.Add("cope", "value");
+    table_builder.Add("copy", "value");
+    table_builder.Add("corn", "value");
+
+    //flush后的文件
+    //00000000: 0007 0563 6f6e 6675 7365 7661 6c75 6503  ...confusevalue.
+    //00000010: 0405 7465 6e64 7661 6c75 6502 0205 7065  ..tendvalue...pe
+    //00000020: 7661 6c75 6503 0105 7976 616c 7565 0004  value...yvalue..
+    //00000030: 0563 6f72 6e76 616c 7565 0000 0000 2e00  .cornvalue......
+    //00000040: 0000 0200 0000 00a7 ddaf 02              ...........
+    //文件70 bytes，为block_contents
+    //00 为CompressionType
+    //a7dd af02为crc
+    leveldb::Status status = table_builder.Finish();
+    std::cout << status.ToString() << std::endl;
+```
+
+`block_contents`可以参考[leveldb block](https://izualzhy.cn/leveldb-block)最后的例子，详细介绍了这70个 bytes 的数据生成过程。
+
+调用`close`后，首先追加 meta index block:
+
+```
+meta_index_block(offset=75, size=8)未Add数据
+因此block_contents: 00 0000 0001 0000 00
+type && crc: 00 c0f2 a1b0
+```
+
+其次追加 index block:
+
+```
+index_block(offset=88, size=14)Add的数据为:key=d value=|varint64(0) |varint64(70)  | ->0046
+因此block_contents: 0001 0264 0046 0000 0000 0100 0000
+type && crc: 0032 6ceb 60
+```
+
+最后追加 footer:
+
+```
+metaindex_handle: |varint64(75)  |varint64(8)  | -> 4b08
+index_handle: |varint64(88)  |varint64(14)  | -> 580e
+36个00用于补全
+magic: 57 fb80 8b24 7547 db
+```
+
+这就是每一个字节的来源解释了，完整代码参见[table_builder_test](https://github.com/yingshin/leveldb_more_annotation/blob/master/my_test/table_builder_test.cpp).
+
+## 7. 参考资料
 
 1. [SSTable and Log Structured Storage: LevelDB
 ](https://www.igvita.com/2012/02/06/sstable-and-log-structured-storage-leveldb/)  
