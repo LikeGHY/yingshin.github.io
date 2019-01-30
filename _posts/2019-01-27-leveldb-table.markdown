@@ -7,7 +7,7 @@ tags: [leveldb]
 
 ## 1. 简介
 
-前面介绍了 [sstable](https://izualzhy.cn/leveldb-sstable)，主要是 sstable 的结构组成及写入的源码分析，本文主要介绍下对应的读取过程，能够帮助读者更深入的理解一个 sstable 的数据格式。
+前面介绍了 [sstable](https://izualzhy.cn/leveldb-sstable)，包括 sstable 的结构组成及写入的源码分析，本文主要介绍下对应的读取过程，能够帮助读者更深入的理解一个 sstable 的数据格式。
 
 ## 2. 基本过程
 
@@ -15,7 +15,7 @@ sstable 的读取过程，简单总结就是四个字：**按图索骥**。
 
 各个索引在这个过程发挥了很大的作用。
 
-首先是 seek 到文件末尾读取 footer，这也是为什么[footer是定长的原因](https://izualzhy.cn/leveldb-sstable#33-footer).
+首先是 seek 到文件末尾读取固定48个字节大小的 footer，这也是为什么[footer是定长的原因](https://izualzhy.cn/leveldb-sstable#33-footer).
 
 然后解析出 meta_index_block 以及 index_block。
 
@@ -34,9 +34,9 @@ sstable 的读取过程，简单总结就是四个字：**按图索骥**。
 可见，`Table`对外接口比较简单:
 
 `Open`是一个 static 函数，用于打开 sstable 文件并且初始化一个`Table*`对象。  
-`NewIterator`返回读取该 sstable 的 Iterator.
+`NewIterator`返回读取该 sstable 的 Iterator，用于读取 sstable.
 
-实现部分都交给了`Table::Rep`这个结构体。
+实现部分都交给了`Table::Rep`这个结构体(`Rep`在 leveldb 源码里多次见到，类似于 pimpl 的设计，不过一直没想到是什么缩写)。
 
 ### 3.1. Open
 
@@ -49,12 +49,12 @@ sstable 的读取过程，简单总结就是四个字：**按图索骥**。
                      Table** table);
 ```
 
-`options`用于后续的文件 checksums，filter policy名字查找等。  
-`file`提供了 sstable 文件读取的接口。  
+`options`用于后续的文件 checksums，filter policy名字查找等判断时使用。  
+`file`提供了文件读取的接口。  
 `file_size`对应`file`的文件大小。  
-`table`是一个输出参数，提供了 sstable 文件更进一步的抽象接口。  
+`table`是一个输出参数，通过调用该对象就可以实现查找/遍历 sstable 了。  
 
-首先读取文件末尾，读取固定长度的48个字节，反序列化到`Footer footer`
+首先读取文件末尾固定长度的48个字节，反序列化到`Footer footer`
 
 ```
   char footer_space[Footer::kEncodedLength];
@@ -86,11 +86,11 @@ sstable 的读取过程，简单总结就是四个字：**按图索骥**。
   }
 ```
 
-数据解析到 index block，记录到`rep->index_block`。然后读取 filter block，记录到`rep_->filter`，之后主要通过这两个类的接口定位 sstable 内的数据。
+数据解析到`rep->index_block`。然后读取 filter block，记录到`rep_->filter`，之后就主要通过这两个类的接口定位 sstable 内的数据了。
 
 ### 3.2. NewIterator
 
-如前面介绍的 sstable 数据格式，不考虑 filter 的话，查找是一个二层递进的过程：
+考虑下 sstable 的数据格式，不考虑 filter 的话，查找是一个二层递进的过程：
 
 先查找 index block，查看可能处于哪个 data block，然后查找 data block，找到对应的 value，因此需要两层的 iterator，分别用于 index block && data block。
 
@@ -103,7 +103,7 @@ Iterator* Table::NewIterator(const ReadOptions& options) const {
 }
 ```
 
-第一个参数传入 index block 的 iterator，用于第一层查找。查找到的 value 会传递给第二个参数(函数指针)用于解析指向的 data block，第三、四个参数都在参数二函数调用时使用。
+第一个参数传入 index block 的 iterator，用于第一层查找。查找到的 value 会传递给第二个参数(函数指针)，该函数支持解析 value 的 data block，第三、四个参数都在函数调用时使用。
 
 `NewTwoLevelIterator`实际上是返回`TwoLevelIterator`
 
@@ -117,15 +117,13 @@ Iterator* NewTwoLevelIterator(
 }
 ```
 
-`TwoLevelIterator`继承自`Iterator`，实现了全部的虚接口。
+`TwoLevelIterator`继承自`Iterator`，实现了`Seek/Prev/Next/key/value`等一系列接口。
 
 接下来分别介绍下`TwoLevelIterator`以及`Table::BlockReader`
 
 #### 3.2.1 TwoLevelIterator
 
-正如其名，由两个 iter 组成，分别指向 index block，以及某个 data block.
-
-注：`IteratorWrapper`封装了`Iterator`，可以先简单认为是相同的。
+正如其名，由两个 iter 组成，分别指向 index block，以及某个 data block.（注：`IteratorWrapper`封装了`Iterator`，可以先简单认为是等价的。）
 
 ```
   IteratorWrapper index_iter_;
@@ -153,7 +151,9 @@ void TwoLevelIterator::Seek(const Slice& target) {
 
 其次，`index_iter_.key() >= target`，而`index_iter_`对应的 data block<sup>2</sup> 内所有的 key 都满足` <= index_iter_->key()`。
 
-同理，`index_iter + 1`对应的 data block 内所有的 key 都满足 ` > (index_iter_ + 1)->key()`。
+同理，`index_iter + 1`对应的 data block<sup>3</sup> 内所有的 key 都满足 ` > (index_iter_ + 1)->key()`.
+
+而 data block<sup>1</sup><sup>2</sup><sup>3</sup>是连续的。
 
 因此，如果 target 存在于该 sstable，那么一定存在于`index_iter_`当前指向的 data block.
 
