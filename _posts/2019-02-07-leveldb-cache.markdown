@@ -9,7 +9,7 @@ tags: [leveldb]
 
 ## 1. 原理
 
-Cache 用于提供对数据更高速的访问，通常使用更昂贵的存储，例如 mem ssd 等，其容量通常都是有限的，因此就需要一定的缓存淘汰策略。LRU(Least recently used)就是其中一种，一句话介绍的话，就是：
+Cache 用于提供对数据更高速的访问，因此存储上也更昂贵，例如 mem ssd 等，其容量通常都是有限的，因此就需要一定的缓存淘汰策略。LRU(Least recently used)就是其中一种，一句话介绍的话，就是：
 
 **淘汰最不常用的数据**
 
@@ -19,13 +19,14 @@ Cache 用于提供对数据更高速的访问，通常使用更昂贵的存储�
 
 读取的顺序为 A B C D E D F，缓存大小为4，括号内的数字表示排序，数字越小，表示 Least recently.
 
+按照箭头的方向，  
 读取 E 时，缓存已满，因此淘汰最开始的 A.  
 读取 D 时，更新 D 的排序为最大.  
 读取 F 时，缓存已满，因此淘汰最开始的 B.  
 
 ## 2. 定义
 
-从前面已经可以了解到，LRU 的实现需要两个数据结构：  
+从前面的文章已经可以了解到，LRU 的实现需要两个数据结构：  
 
 1. HashTable: 用于实现O(1)的查找  
 2. List: 存储 Least recently 排序，用于旧数据的淘汰  
@@ -34,18 +35,17 @@ Cache 用于提供对数据更高速的访问，通常使用更昂贵的存储�
 
 ![leveldb LRUCache](/assets/images/leveldb/leveldb-cache.png)
 
-我们可以只关注到`LRUCache`这个类，实现了 LRU 的所有功能。  
-`HandleTable`即 HashTable，实现了`Lookup/Insert/Remove`的数据的查询、更新、删除。  
-`lru_`即用于缓存淘汰的链表首部。  
+我们暂时可以只关注到`LRUCache`这个类，实现了 LRU 的所有功能。  
+`HandleTable`即 HashTable，提供了`Lookup/Insert/Remove`接口，实现数据的查询、更新、删除。  
+`LRUCache.lru_`用于节点淘汰。  
 
-底层的节点数据类型为`LRUHandle`，更习惯的名称是 LRUNode 这种，HashTable 的冲突链表解决、 lru 链表都依赖于该数据结构的定义。
+底层的节点数据类型为`LRUHandle`，我更习惯的名称是 LRUNode 这种，HashTable 的冲突链表解决、 lru 链表都依赖于该数据结构的内部定义，因此源码解析我们先从这个类切入。
 
 ## 3. 源码解析
 
 ### 3.1. LRUHandle
 
-`LRUHandle`这个类承载了很多功能，这大概是没有命名为`LRUNode`的原因：
-
+`LRUHandle`这个类承载了很多功能，这大概是没有命名为`LRUNode`的原因：  
 1. 存储 key:value 数据对  
 2. lru 链表，按照顺序标记 least recently used.  
 3. HashTable bucket 的链表  
@@ -92,49 +92,49 @@ struct LRUHandle {
 
 ![HandleTable](/assets/images/leveldb/cache-HandleTable.png)
 
-桶的个数初始化大小为4，随着元素增加动态修改，使用数组实现，同一个 bucket 里，使用链表存储全部的 LRUHandle*，最新的数据排在链表尾部。  
-比较绕而且核心的函数是`FindPointer`
+桶的个数初始化大小为4，随着元素增加动态修改，使用数组实现，同一个 bucket 里，使用链表存储全部的 LRUHandle*，最新插入的数据排在链表尾部。  
+核心函数是`FindPointer`，重点介绍下：
 
 ```cpp
-  // Return a pointer to slot that points to a cache entry that
-  // matches key/hash.  If there is no such cache entry, return a
-  // pointer to the trailing slot in the corresponding linked list.
-  // 如果某个LRUHandle*存在相同的hash&&key值，则返回该LRUHandle*的二级指针，即指向上一个LRUHandle*的next_hash的二级
+// Return a pointer to slot that points to a cache entry that
+// matches key/hash.  If there is no such cache entry, return a
+// pointer to the trailing slot in the corresponding linked list.
+// 如果某个LRUHandle*存在相同的hash&&key值，则返回该LRUHandle*的二级指针，即指向上一个LRUHandle*的next_hash的二级
 指针.
-  // 如果不存在这样的LRUHandle*，则返回指向该bucket的最后一个LRUHandle*的next_hash的二级指针，其值为nullptr.
-  // 返回next_hash地址的作用是可以直接修改该值，因此起到修改链表的作用
-  LRUHandle** FindPointer(const Slice& key, uint32_t hash) {
-    //先查找处于哪个桶
-    LRUHandle** ptr = &list_[hash & (length_ - 1)];
-    //next_hash 查找该桶，直到满足以下条件之一：
-    //*ptr == nullptr
-    //某个LRUHandle* hash和key的值都与目标值相同
-    while (*ptr != nullptr &&
-           ((*ptr)->hash != hash || key != (*ptr)->key())) {
-      ptr = &(*ptr)->next_hash;
-    }
-    //返回符合条件的LRUHandle**
-    return ptr;
-  }
+// 如果不存在这样的LRUHandle*，则返回指向该bucket的最后一个LRUHandle*的next_hash的二级指针，其值为nullptr.
+// 返回next_hash地址的作用是可以直接修改该值，因此起到修改链表的作用
+LRUHandle** FindPointer(const Slice& key, uint32_t hash) {
+//先查找处于哪个桶
+LRUHandle** ptr = &list_[hash & (length_ - 1)];
+//next_hash 查找该桶，直到满足以下条件之一：
+//*ptr == nullptr
+//某个LRUHandle* hash和key的值都与目标值相同
+while (*ptr != nullptr &&
+       ((*ptr)->hash != hash || key != (*ptr)->key())) {
+  ptr = &(*ptr)->next_hash;
+}
+//返回符合条件的LRUHandle**
+return ptr;
+}
 ```
 
 `FindPointer`的作用有两个：  
 1. 返回适合 key&&hash 插入的合适位置，从前面的介绍可知，需要修改上一个LRUHandle*->next_hash的值  
 2. 如果 key&&hash 存在，返回之前的LRUHandle*  
-因此，定义了返回值类型为`LRUHandle**`，能够实现这两点。
+因此，返回值类型定义为`LRUHandle**`，巧妙的同时支持了这两点。
 
 ### 3.3. LRUCache
 
 介绍了`LRUHandle`和`HandleTable`，我们就可以介绍清楚`LRUCache`了。
 
-通常，关于 Cache 的操作，定义的返回值为
+通常，关于 Cache 的操作，返回值定义为
 
 ```
 bool Insert(key, value);//缓存是否更新成功
 void* Lookup(key);//返回key对应的value指针
 ```
 
-但是，leveldb 为了更丰富的结果以及自动化的 value 清理，返回值统一定义为`Cache::Handle*`类型，需要手动调用`Cache::Release(Cache::Handle*)`清理函数。
+但是，leveldb 为了更丰富的结果以及自动化的 value 清理，返回值统一定义为`Cache::Handle*`类型(实际类型为`leveldb::(anonymous namespace)::LRUHandle*`)，需要手动调用`Cache::Release(Cache::Handle*)`清理函数。
 
 全部变量如下：
 
@@ -159,7 +159,7 @@ void* Lookup(key);//返回key对应的value指针
 ```
 
 缓存里的一个`LRUHandle`对象可能经历这么几种状态：  
-1. 被手动从缓存删除；相同 key 新的 value 替换后原有的`LRUHandle*`；容量满时淘汰，此时缓存不应该持有该对象，随着外部也没有持有后应当彻底删除该对象。  
+1. 被手动从缓存删除/相同 key 新的 value 替换后原有的`LRUHandle*`/容量满时淘汰，此时缓存不应该持有该对象，随着外部也不再持有后应当彻底删除该对象。  
 2. 不满足1的条件，因此对象正常存在于缓存，同时被外部持有，此时即使容量满时，也不会淘汰。  
 3. 不满足1的条件，因此对象正常存在于缓存，当时已经没有外部持有，此时当容量满，会被淘汰。  
 
@@ -168,7 +168,8 @@ void* Lookup(key);//返回key对应的value指针
 2. `in_cache = true && refs >= 2`  
 3. `in_cache = true && refs = 1`
 
-其中满足条件3的节点存在于`lru_`，按照 least recently used 顺序存储，`lru_.next`是最老的节点，当容量满时会被淘汰。满足条件2的节点存在于`in_use_`，表示该 LRUHandle 节点还有外部调用方在使用。
+其中满足条件3的节点存在于`lru_`，按照 least recently used 顺序存储，`lru_.next`是最老的节点，当容量满时会被淘汰。满足条件2的节点存在于`in_use_`，表示该 LRUHandle 节点还有外部调用方在使用。  
+*注：关于状态2，可以理解为只要当外部不再使用该缓存后，才可能被执行缓存淘汰策略*
 
 成员变量`table_`则用于实现O(1)的查找，例如`Lookup`先查找`table_`，然后更新`lru_ in_use`链表:
 
