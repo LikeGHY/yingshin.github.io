@@ -187,7 +187,9 @@ void TwoLevelIterator::InitDataBlock() {
 
 #### 3.2.2 Table::BlockReader
 
-`block_function`即`Table::BlockReader`，搞清楚传入的参数之后就比较直观了，就是解析 data block ，返回对应的 Iterator.
+`block_function`即`Table::BlockReader`，搞清楚传入的参数之后就比较直观了，就是解析 data block ，返回对应的 Iterator.实现里缓存相关操作可以参考[leveldb笔记之12:LRUCache的使用
+](https://izualzhy.cn/leveldb-using-cache).
+
 
 ### 3.3. InternalGet
 

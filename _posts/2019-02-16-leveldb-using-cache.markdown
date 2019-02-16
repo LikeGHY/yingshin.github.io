@@ -18,7 +18,7 @@ tags: [leveldb]
 
 ### 1.1. 初始化
 
-在`SanitizeOptions`函数里初始化 Block 的 LRUCache
+在`SanitizeOptions`函数里初始化
 
 ```
   if (result.block_cache == nullptr) {
@@ -31,9 +31,9 @@ tags: [leveldb]
 
 ### 1.2. 使用
 
-一个[block](https://izualzhy.cn/leveldb-block)的读取，通过[class Block](https://izualzhy.cn/leveldb-block-read)实现。而[BlockReader](https://izualzhy.cn/leveldb-table#322-tableblockreader)完成了`new Block`的过程。
+一个[block](https://izualzhy.cn/leveldb-block)的读取，通过[class Block](https://izualzhy.cn/leveldb-block-read)实现，而[BlockReader](https://izualzhy.cn/leveldb-table#322-tableblockreader)则会构造初始化具体的`Block`对象。
 
-当需要读取一个 block 时，查看是否在 cache 中，如果在，则直接返回`Block*`，否则构造一个`Block*`插入到 cache 并返回。
+当需要读取一个 block 时，查看是否在 cache 中，如果在，则直接从 cache 中返回`Block*`，否则构造一个`Block*`插入到 cache 并返回。
 
 当我们初始化`Table`时，会从`LRUCache`获取一个全局唯一的 ID (自增int):
 
@@ -87,7 +87,7 @@ static void DeleteCachedBlock(const Slice& key, void* value) {
 
 ## 2. Table
 
-通过内存缓存高频打开的文件句柄及部分内容，避免从磁盘读取，从而间接提高数据的访问速率，同时控制打开的文件句柄数目。
+通过内存缓存高频打开的文件句柄及部分内容，避免从磁盘读取，从而提高 sstable 文件的访问速率，同时控制打开的文件句柄数目。
 
 ### 2.1. 初始化
 
@@ -129,7 +129,7 @@ struct TableAndFile {
 };
 ```
 
-当需要读取一个 sstable 时，查看是否在 cache 中，如果在，则直接返回`TableAndFile*`，否则构造一个`TableAndFile*`插入到 cache 并返回。
+当需要读取一个 sstable 时，查看是否在 cache 中，如果在，则直接从 cache 中返回`TableAndFile*`，否则构造一个`TableAndFile*`插入到 cache 并返回。
 
 ```
       TableAndFile* tf = new TableAndFile;
@@ -149,9 +149,9 @@ static void DeleteEntry(const Slice& key, void* value) {
 }
 ```
 
-`Insert`时`charge`为1，代表一个文件，总的数目大小在初始化时通过`TableCacheSize(options_)`指定，因此就可以起到控制文件句柄数目的作用。
+`Insert`时`charge`为1，代表一个文件，总的数目大小在初始化时通过`TableCacheSize(options_)`指定，因此就可以起到控制整个进程打开的文件句柄数目的作用。
 
-注意`TableCache`有手动逐出`Evict`的操作，例如删除文件后删除对应的缓存。
+注意`TableCache`有手动逐出`Evict`的操作，对应删除文件后删除对应缓存的场景。
 
 ```
 void TableCache::Evict(uint64_t file_number) {
