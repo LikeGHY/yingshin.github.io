@@ -32,7 +32,7 @@ extend Link {
 }
 ```
 
-使用上主要是3个接口：
+使用上主要是4个接口：
 
 ```
 base::Link link;
@@ -68,7 +68,7 @@ link.SetExtension(thirdparty1::weight, 100);
     }
 ```
 
-可以参考 brpc 源码里[PBToJson](https://github.com/brpc/brpc/blob/master/src/json2pb/pb_to_json.cpp)部分，主要是`PbToJsonConverter::Convert`部分，无论是否设置了该字段的值，只要 proto 文件有定义，就能获取到。
+可以参考 brpc 源码里[PBToJson](https://github.com/brpc/brpc/blob/master/src/json2pb/pb_to_json.cpp)部分，主要是`PbToJsonConverter::Convert`函数，无论是否设置了该字段的值，只要 proto 文件有定义，就能获取到。
 
 不过这里有个比较大的性能隐患，就是`FindKnownExtensionByNumber`，举个例子，如果定义了
 ```
@@ -91,9 +91,9 @@ extend test.BaseData {
 
 无论是否设置了`base_extension::layer`，尝试调用`ProtoMessageToJson` 1000 次，需要 68ms 左右，而如果普通的`message BaseData`，只需要 1ms。
 
-最近刚好踩过这个坑，花了一个晚上才定位，猜测`FindKnownExtensionByNumber`是个O(n)接口，整体实现是O(n2)。因此定义 proto 时，extension range 需要斟酌下，特别是`extension xxx to max`这种写法。
+最近刚好踩过这个坑，花了一个晚上才定位，猜测`FindKnownExtensionByNumber`是个O(n)接口，导致反射的整体实现是O(n2)。因此定义 proto 时，extension range 需要斟酌下，特别是`extension xxx to max`这种写法。
 
-另外一个推荐做法是在`ProtoMessageToJson`的场景下，使用`Reflection::ListFields`接口，不过功能上有 diff，就是只返回了设置了值的字段(`HasField`).
+`ProtoMessageToJson`的场景下，另外一个推荐做法是使用`Reflection::ListFields`接口，不过功能上有 diff，就是只返回了设置了值的字段(`HasField`).
 
 ## 3. Tips
 
