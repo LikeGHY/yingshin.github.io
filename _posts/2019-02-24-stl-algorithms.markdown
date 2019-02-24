@@ -30,15 +30,54 @@ your browser does not support the video tag
 + sort  
 + partial_sort  
 + nth_element  
+```
+// Quick Sort
+template<class FwdIt, class Compare = std::less<>>
+void quickSort(FwdIt first, FwdIt last, Compare cmp = Compare{})
+{
+    auto const N = std::distance(first, last);
+    if (N <= 1) return; 
+    auto const pivot = std::next(first, N / 2);
+    std::nth_element(first, pivot, last, cmp);
+    quickSort(first, pivot, cmp); 
+    quickSort(pivot, last, cmp); 
+}
+```
 + sort_heap  
 + inplace_merge  
 
 + partition  
+```
+// Gather
+template <typename BiIt, typename UnPred> 
+auto gather(BiIt f, BiIt l, BiIt p, UnPred s) -> std::pair <BiIt, BiIt>
+{
+    return { stable_partition(f, p, not1(s)), 
+             stable_partition(p, l, s) };
+}
+```
 + partition_point  
 
 + rotate  
+```
+// Insertion Sort
+for (auto i = start; i != end; ++i)
+    std::rotate(std::upper_bound(start, i, *i), i, std::next(i));
+
+// Slide
+template <typename It> 
+auto slide(It first, It last, It pos) -> std::pair<It, It>
+{
+    if (pos < first) return { pos, std::rotate(pos, frist, last) };
+    if (last < pos) return { std::rotate(first, last, pos), pos };
+    return { first, llast };
+}
+```
 + shuffle  
 + next_permutation  
+```
+while (std::next_permutation(start, end));
+```
 + prev_permutation  
 + reverse  
 
@@ -144,6 +183,28 @@ with runes:
                partial_sort_copy
 
 *_if        -> find_if
+// Trim
+std::string trim(const std::string &s) {
+    return trimLeft(trimRight(s));
+}
+
+std::string trimLeft(const std::string &s) {
+    auto temp = s;
+    temp.erase(std::begin(temp), 
+                std::find_if(std::begin(temp), std::end(temp), 
+                    [](char c){return !std::isspace(c, std::locale()); 
+                }));
+    return temp;
+}
+
+std::string trimRight(const std::string &s) {
+    auto temp = s;
+    temp.erase(std::find_if(std::rbegin(temp), std::rend(temp), 
+                [](char c){return !std::isspace(c, std::locale()); }).base(), 
+                   std::end(temp));
+    return temp;
+}
+
                find_if_not
                count_if
                remove_if
