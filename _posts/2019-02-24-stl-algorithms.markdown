@@ -21,26 +21,26 @@ your browser does not support the video tag
 
 #### 2.1.1. PROVINCE OF HEAPS
 
-+ make_heap
-+ push_heap
-+ pop_heap
++ make_heap  
++ push_heap  
++ pop_heap  
 
 #### 2.1.2. SHORE OF SORTING
 
-+ sort
-+ partial_sort
-+ nth_element
-+ sort_heap
-+ inplace_merge
++ sort  
++ partial_sort  
++ nth_element  
++ sort_heap  
++ inplace_merge  
 
-+ partition
-+ partition_piont
++ partition  
++ partition_point  
 
-+ rotate
-+ shuffle
-+ next_permutation
-+ prev_permutation
-+ reverse
++ rotate  
++ shuffle  
++ next_permutation  
++ prev_permutation  
++ reverse  
 
 #### 2.1.3. SECRET RUNES
 
@@ -59,77 +59,77 @@ is_*_until->  is_sorted_until
 
 #### 2.2.1. PROVINCE OF VALUE QUERIES
 
-+ count
-+ accumulate/(transform_)reduce
-+ partial_sum
-+ (transform_)inclusive_scan
-+ (transform_)exclusive_scan
-+ inner_product
-+ adjacent_difference
-+ sample
++ count  
++ accumulate/(transform_)reduce  
++ partial_sum  
++ (transform_)inclusive_scan  
++ (transform_)exclusive_scan  
++ inner_product  
++ adjacent_difference  
++ sample  
 
 #### 2.2.2. PROVINCE OF PROPERTY QUERIES
 
-+ all_of
-+ any_of
-+ none_of
++ all_of  
++ any_of  
++ none_of  
 
 #### 2.2.3. PROVINCE OF 2-RANGES PROPERTIES
 
-+ equal
-+ lexicographical_compare
-+ mismatch
++ equal  
++ lexicographical_compare  
++ mismatch  
 
 #### 2.2.4. PROVINCE OF RESEARCH
 
 search a value:  
 not sorted:  
-+ find
-+ adjacent_find
++ find  
++ adjacent_find  
 
 sorted:  
-+ equal_range
-+ lower_bound
-+ upper_bound
-+ binary_search
++ equal_range  
++ lower_bound  
++ upper_bound  
++ binary_search  
 
 search a range:  
-+ search
-+ find_first_of
++ search  
++ find_first_of  
 
 search a relative value:  
-+ min_element
-+ max_element
-+ minmax_element
++ min_element  
++ max_element  
++ minmax_element  
 
 ### 2.3. GLORIOUS COUNTRY OF ALGOS ON SETS
 
-+ set_difference
-+ set_union
-+ includes
-+ set_intersection
-+ set_symmetric_difference
-+ merge
++ set_difference  
++ set_union  
++ includes  
++ set_intersection  
++ set_symmetric_difference  
++ merge  
 
 ### 2.4. TERRITORY OF MOVERS
 
-+ copy
-+ move
-+ swap_ranges
-+ copy_backward
-+ move_backward
++ copy  
++ move  
++ swap_ranges  
++ copy_backward  
++ move_backward  
 
 ### 2.5. LANFS OF MODIFIERS
 
-+ fill
-+ generate
-+ iota
-+ replace
++ fill  
++ generate  
++ iota  
++ replace  
 
 ### 2.6. ISLAND OF STRUCTURE CHANGERS
 
-+ remove
-+ unique
++ remove  
++ unique  
 
 
 with runes:
@@ -155,17 +155,17 @@ with runes:
 
 ## 2.7. LONELY ISLAND
 
-+ transform
-+ for_each
++ transform  
++ for_each  
 
 ### 2.8. PENINSULA OF RAW MEMORY
 
-+ uninitialized_fill
-+ uninitialized_copy
-+ uninitialized_move
-+ uninitialized_default_construct
-+ uninitialized_value_construct
-+ destory
++ uninitialized_fill  
++ uninitialized_copy  
++ uninitialized_move  
++ uninitialized_default_construct  
++ uninitialized_value_construct  
++ destory  
 
 with runes
 
