@@ -264,7 +264,24 @@ public:
 
 我觉得这种应用在不关心应用数据类型的lib里比较有用，例如异步线程里的上下文默认为`shared_ptr<void>`，具体的转化为各种不同类型，则在应用层决定。
 
-### 10. 其他
+### 11. 统一内存的不同offset
+
+对同一块内存，不同的`shared-ptr`可以管理不同 offset，例如一段字符串，传入不同接口时，提供不同的 substr.
+
+```
+    std::shared_ptr<char> p(new char[1024]);
+    strncpy(p.get(), "hello world.", 1024);
+    //p:hello world. use_count:1
+    printf("p:%s use_count:%ld\n", p.get(), p.use_count());
+
+    std::shared_ptr<char> p2(p, p.get() + 5);
+    //p:hello world. use_count:2
+    printf("p:%s use_count:%ld\n", p.get(), p.use_count());
+    //p2: world. use_count:2
+    printf("p2:%s use_count:%ld\n", p2.get(), p2.use_count());
+```
+
+### 12. 其他
 
 `boost::shared_ptr`还提供了其他一系列方便的接口。
 

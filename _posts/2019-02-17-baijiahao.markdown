@@ -5,16 +5,36 @@ date: 2019-02-17 21:12:26
 tags: [others]
 ---
 
+2019-02-25 udpate：
+
+连着每天试了几次，每天都是不同的文章，一直返回成功，但是平台上就是看不到，建议还是手动发布图文，感兴趣的可以看下各个坑。
+
+-----
+
 之前通过搜索资源平台提交数据到手百，还是很方便的。最近眼看着手百客户端逐渐下掉了熊掌号之前推送的文章，只留下了个人博客唯一一个入口。因此研究了下如何把网站文章自动同步到百家号。
 
 具体可以参考[开发者文档](https://baijiahao.baidu.com/builder/author/openauth/openauthProtection)，提供了一个将富文本推送到百家号平台的机制。
 
 文档本身还是很简单的，甚至有些简陋，可以参考这个[例子](https://github.com/yingshin/Tiny-Tools/tree/master/baijiahao).
 
-这里主要介绍下踩过的坑：
+这里主要介绍下几次留言咨询了解到的坑：
 
 1. content 必须是富文本格式  
-2. cover_imags 必须经过 json_encode，例如 python 代码:`json.dumps(cover_images).replace('/', '\/')`
+2. cover_imags 必须经过 json_encode，例如 python 代码:`json.dumps(cover_images).replace('/', '\/')`  
+3. 返回成功`{"data":{"article_id":1626069585315301665},"errno":0,"errmsg":"success"}`，但是在百家号平台看不到，而且"今日可发文数"没有受到影响，说明没有发布成功。咨询百家号客服，说是需要专业的开发人员😶，之后到反馈页面提交 bug，回复肯定发布成功了。算了，放弃咨询了。
+
+```
+没有加cover_images
+{"data":{"article_id":1625503342330909300},"errno":0,"errmsg":"success"}
+发文数限制
+{"data":[],"errno":60001009,"errmsg":"empty publish num"}
+字数超限，返回成功，但是一直没有查到
+{"data":{"article_id":1625585662479024390},"errno":0,"errmsg":"success"}
+再发一篇还是返回成功：
+{"data":{"article_id":1625586322314290633},"errno":0,"errmsg":"success"}
+```
+
+
 
 效果上，[网站文章](https://izualzhy.cn/leveldb-using-cache)推送后，在百家号上的展示效果：
 
