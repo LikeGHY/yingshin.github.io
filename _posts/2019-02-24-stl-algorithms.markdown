@@ -5,7 +5,7 @@ date: 2019-02-24 12:02:56
 tags: [STL]
 ---
 
-<video src="/assets/images/world map of C++ STL.mp4" controls="controls">
+<video src="/assets/images/world map of C++ STL.mp4" width="80%" controls="controls">
 your browser does not support the video tag
 </video>
 
