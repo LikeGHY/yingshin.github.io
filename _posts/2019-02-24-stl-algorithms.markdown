@@ -30,6 +30,7 @@ your browser does not support the video tag
 + sort  
 + partial_sort  
 + nth_element  
+
 ```
 // Quick Sort
 template<class FwdIt, class Compare = std::less<>>
@@ -43,10 +44,11 @@ void quickSort(FwdIt first, FwdIt last, Compare cmp = Compare{})
     quickSort(pivot, last, cmp); 
 }
 ```
-+ sort_heap  
-+ inplace_merge  
 
++ sort_heap   
++ inplace_merge   
 + partition  
+
 ```
 // Gather
 template <typename BiIt, typename UnPred> 
@@ -57,8 +59,8 @@ auto gather(BiIt f, BiIt l, BiIt p, UnPred s) -> std::pair <BiIt, BiIt>
 }
 ```
 + partition_point  
-
 + rotate  
+
 ```
 // Insertion Sort
 for (auto i = start; i != end; ++i)
@@ -75,6 +77,7 @@ auto slide(It first, It last, It pos) -> std::pair<It, It>
 ```
 + shuffle  
 + next_permutation  
+
 ```
 while (std::next_permutation(start, end));
 ```
@@ -214,7 +217,7 @@ std::string trimRight(const std::string &s) {
                copy_if
 ```
 
-## 2.7. LONELY ISLAND
+### 2.7. LONELY ISLAND
 
 + transform  
 + for_each  
