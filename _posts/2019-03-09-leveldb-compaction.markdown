@@ -7,7 +7,7 @@ tags: [leveldb]
 
 在[level笔记开篇](https://izualzhy.cn/leveldb-architecture)里，提到过**Compaction**这个过程，这是 leveldb 中最为复杂的一部分，从这篇笔记开始，介绍下 Compaction.
 
-compaction 分为两种，minor compaction 和 major compaction.minor compaction 相对简单一些，对应了[MemTable](https://izualzhy.cn/memtable-leveldb)持久化为[sstable](https://izualzhy.cn/leveldb-sstable)的过程。
+compaction 分为两种:minor compaction 和 major compaction. minor compaction 相对简单一些，对应了[MemTable](https://izualzhy.cn/memtable-leveldb)持久化为[sstable](https://izualzhy.cn/leveldb-sstable)的过程。
 
 ## 1. 简介
 
@@ -31,7 +31,7 @@ compaction 分为两种，minor compaction 和 major compaction.minor compaction
 
 整个过程完成后，就可以重新设置`imm_ = nullptr;`，当`mem_`大小达到阈值，循环这个过程。
 
-如果 minor compaction 耗时较长，会直接导致`mem_`无法写入但是又无法转化为`imm_`，因此对 minor compaction 最重要的原则是：
+如果 minor compaction 耗时较长，会直接导致`mem_`过大无法写入但是又无法转化为`imm_`，因此对 minor compaction 最重要的原则是：
 
 **高性能的持久化**
 
@@ -72,7 +72,7 @@ void DBImpl::BackgroundCompaction() {
 meta.number = versions_->NewFileNumber()
 ```
 
-`iter`用过遍历 MemTable，通过`BuildTable`将数据写入到 sstable
+`iter`用过遍历 MemTable，通过`BuildTable`将数据写入到 sstable，该函数实际上就是调用了[TableBuilder](https://izualzhy.cn/leveldb-sstable#4-class-leveldbtablebuilder).
 
 ```
     mutex_.Unlock();
@@ -81,7 +81,7 @@ meta.number = versions_->NewFileNumber()
     s = BuildTable(dbname_, env_, options_, table_cache_, iter, &meta);
 ```
 
-通过`meta`选取合适的 level，注意虽然函数名字是`WriteLevel0Table`，但是新生成 sstable，并不一定总是会放到 level 0，例如如果key range 与 level 1的所有文件都没有 overlap，那就会直接放到 level 1。`PickLevelForMemTableOutput`是`Version`的接口，后续笔记专门介绍 leveldb 的版本，这里的作用就是返回一个合适的 level，加上`meta`里的文件信息，统一记录到`edit`.
+接下来通过`meta`选取合适的 level，注意虽然函数名字是`WriteLevel0Table`，但是新生成 sstable，并不一定总是会放到 level 0，例如如果 key range 与 level 1层的所有文件都没有 overlap，那就会直接放到 level 1。`PickLevelForMemTableOutput`是`Version`的接口，后续笔记专门介绍 leveldb 的版本，这里的作用就是返回一个合适的 level，加上`meta`里的文件信息，统一记录到`edit`.
 
 ```
   int level = 0;
