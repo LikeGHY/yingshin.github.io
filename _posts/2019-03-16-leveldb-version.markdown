@@ -392,3 +392,46 @@ void VersionSet::AppendVersion(Version* v) {
 
 这样，就完成了将`edit`生效的全部过程。
 
+## 4. 例子
+
+### 4.1. 读取 MANIFEST 文件
+
+MANIFEST 文件是跟日志格式一样，因此，我们按照读取日志的方式读取该文件。查看打开一个 db 下的文件
+
+```
+int main() {
+    leveldb::SequentialFile* file;
+    //MANIFEST files
+    leveldb::Status status = leveldb::Env::Default()->NewSequentialFile("./data/test_table.db/MANIFEST-000004", &file);
+    std::cout << status.ToString() << std::endl;
+
+    leveldb::log::Reader reader(file, NULL, true/*checksum*/, 0/*initial_offset*/);
+    // Read all the records and add to a memtable
+    std::string scratch;
+    leveldb::Slice record;
+    while (reader.ReadRecord(&record, &scratch) && status.ok()) {
+        leveldb::VersionEdit edit;
+        edit.DecodeFrom(record);
+        std::cout << edit.DebugString() << std::endl;
+    }
+}
+```
+
+输出会类似这个样子，也就是对应写入多个`VersionEdit`的过程：
+
+```
+OK
+28
+VersionEdit {
+  Comparator: leveldb.BytewiseComparator
+}
+
+42
+VersionEdit {
+  LogNumber: 6
+  PrevLogNumber: 0
+  NextFile: 7
+  LastSeq: 3
+  AddFile: 0 5 172 'company' @ 2 : 1 .. 'name' @ 1 : 1
+}
+```
