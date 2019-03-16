@@ -368,7 +368,7 @@ int Version::PickLevelForMemTableOutput(
 
 这两个文件在 leveldb 数据库文件里都能找到，形如`MANIFEST-000004 CURRENT`.
 
-最后就是调用`AppendVersion(v);`将新版本更新到链表：
+最后就是调用`AppendVersion(v);`将新版本更新到链表，修改`current_`：
 
 ```
 // v加到链表里
@@ -391,6 +391,10 @@ void VersionSet::AppendVersion(Version* v) {
 ```
 
 这样，就完成了将`edit`生效的全部过程。
+
+对应磁盘上的文件就是这个样子：
+
+![manifest](/assets/images/leveldb/manifest.png)
 
 ## 4. 例子
 
