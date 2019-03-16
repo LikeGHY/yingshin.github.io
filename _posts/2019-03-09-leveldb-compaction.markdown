@@ -29,7 +29,7 @@ compaction 分为两种:minor compaction 和 major compaction. minor compaction 
 
 `imm_`全称是 immutable memtable，只读状态，leveldb 会有一个后台线程负责将`imm_`持久化到磁盘，成为 level 0 的 sst 文件，同时更新一些版本信息（版本的概念会在另外的笔记介绍）、文件清理等。
 
-整个过程完成后，就可以重新设置`imm_ = nullptr;`，当`mem_`大小达到阈值，循环这个过程。
+整个过程完成后，就可以重新设置`imm_ = nullptr;`，当`mem_`大小再次达到阈值，循环这个过程。
 
 如果 minor compaction 耗时较长，会直接导致`mem_`过大无法写入但是又无法转化为`imm_`，因此对 minor compaction 最重要的原则是：
 
@@ -58,15 +58,15 @@ void DBImpl::BackgroundCompaction() {
 
 ### 2.1. 整体流程
 
-`CompactMemTable`主要的流程：
+`CompactMemTable`主要流程分为三部分：
 
-1. `WriteLevel0Table(imm_, &edit, base)`：`imm_`落盘称为新的 sst 文件，文件信息记录到 edit  
+1. `WriteLevel0Table(imm_, &edit, base)`：`imm_`落盘成为新的 sst 文件，文件信息记录到 `edit`  
 2. `versions_->LogAndApply(&edit, &mutex_)`：将本次文件更新信息`versions_`，当前的文件（包含新的 sst 文件）作为数据库的一个最新状态，后续读写都会基于该状态  
 3. `DeleteObsoleeteFiles`：删除一些无用文件  
 
 ### 2.2. `WriteLevel0Table`
 
-首先顺序生成 sstable 的编号  
+首先顺序生成 sstable 的编号，用于文件名  
 
 ```
 meta.number = versions_->NewFileNumber()
@@ -81,7 +81,7 @@ meta.number = versions_->NewFileNumber()
     s = BuildTable(dbname_, env_, options_, table_cache_, iter, &meta);
 ```
 
-接下来通过`meta`选取合适的 level，注意虽然函数名字是`WriteLevel0Table`，但是新生成 sstable，并不一定总是会放到 level 0，例如如果 key range 与 level 1层的所有文件都没有 overlap，那就会直接放到 level 1。`PickLevelForMemTableOutput`是`Version`的接口，后续笔记专门介绍 leveldb 的版本，这里的作用就是返回一个合适的 level，加上`meta`里的文件信息，统一记录到`edit`.
+接下来通过`meta`选取合适的 level，注意虽然函数名字是`WriteLevel0Table`，但是新生成 sstable，并不一定总是会放到 level 0，例如如果 key range 与 level 1层的所有文件都没有 overlap，那就会直接放到 level 1。`PickLevelForMemTableOutput`是`Version`的接口，后续笔记专门介绍 leveldb 的版本，这里的作用就是返回一个该 sstable 即将放入的 level，加上`meta`里的文件信息，统一记录到`edit`.
 
 ```
   int level = 0;
