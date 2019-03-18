@@ -44,7 +44,7 @@ major compaction 一个首要问题，就是要 compact 哪个文件。这个计
       if (f->allowed_seeks < 100) f->allowed_seeks = 100;
 ```
 
-当查找文件而没有查找到时，`allowed_seeks`减一：
+当查找文件而没有查找到时，`allowed_seeks--`，降为0时该文件标记到`file_to_compact_`：
 
 ```
 bool Version::UpdateStats(const GetStats& stats) {
@@ -134,7 +134,9 @@ void VersionSet::Finalize(Version* v) {
 
 可以看到 level 0 与其他层不同，看的是文件个数，因为 level 0 的文件是重叠的，每次读取都需要遍历所有文件，所以文件个数更加影响性能。
 
-每层的基准大小为`10M ^ ${level}`.
+每层的基准大小为`10M << ${level - 1}`.
+
+逐层比较后，得到最大的得分以及对应层数：`compaction_score_ compaction_level_`
 
 major compact 选择文件时就会用到上述两个条件。
 
