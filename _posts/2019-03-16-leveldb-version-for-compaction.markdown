@@ -9,7 +9,7 @@ major compaction 一个首要问题，就是要 compact 哪个文件。这个计
 
 ## 1. seek_compaction
 
-一个直观的想法是如果文件多次 seek 但是没有查找到数据，那么就应该被 compact 了。本质上，还是如何平衡读写的思想。
+一个直观的想法是如果文件多次 seek 但是没有查找到数据，那么就应该被 compact 了，否则否则会浪费更多的 seek。用一次 compact 来解决长久空 seek 的问题，本质上，还是如何平衡读写的思想。
 
 具体的，当一个新文件更新进入版本管理，计算该文件允许 seek 但是没有查到数据的最大次数，当超过该次数后，就应该 compact 该文件了。
 
@@ -134,7 +134,7 @@ void VersionSet::Finalize(Version* v) {
 
 可以看到 level 0 与其他层不同，看的是文件个数，因为 level 0 的文件是重叠的，每次读取都需要遍历所有文件，所以文件个数更加影响性能。
 
-每层的基准大小为`10M << ${level - 1}`.
+每层的基准大小为`10M << ${level - 1}`，level = 1 则`MaxBytes = 10M`, level = 2 则`MaxBytes=100M`，依次类推.
 
 逐层比较后，得到最大的得分以及对应层数：`compaction_score_ compaction_level_`
 
