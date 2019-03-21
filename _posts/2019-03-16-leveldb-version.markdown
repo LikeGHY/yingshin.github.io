@@ -206,7 +206,7 @@ int Version::PickLevelForMemTableOutput(
     }
 ```
 
-注：这里有一个`allowed_seeks`的计算，用于 major compact 时选择文件，我们等 major compact 时系统讲下。
+注：这里有一个`allowed_seeks`的计算，用于 major compact 时选择文件，参考[seek_compaction](https://izualzhy.cn/leveldb-version-for-compaction#1-seek_compaction)
 
 经过`Apply`后，`levels_`更新完成。
 
@@ -304,7 +304,7 @@ int Version::PickLevelForMemTableOutput(
   }
 ```
 
-接着调用`Finalize`计算下次最应当 major compact 的文件.
+接着调用`Finalize`计算下次 major compact 时要处理的层，参考[size_compaction](https://izualzhy.cn/leveldb-version-for-compaction#2-size_compaction)
 
 ```
   Finalize(v);
@@ -395,6 +395,9 @@ void VersionSet::AppendVersion(Version* v) {
 对应磁盘上的文件就是这个样子：
 
 ![manifest](/assets/images/leveldb/manifest.png)
+
+#### 3.4.2. PickCompaction
+
 
 ## 4. 例子
 
