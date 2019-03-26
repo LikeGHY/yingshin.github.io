@@ -320,17 +320,9 @@ typename SkipList<Key,Comparator>::Node* SkipList<Key,Comparator>::FindLast()
 
 ## 5. Iterator
 
-leveldb 实际查找时都是使用`Iterator`完成的，例如
+[MemTable](https://izualzhy.cn/memtable-leveldb#4-addget%E6%93%8D%E4%BD%9C)在读取时使用的是`SkipList::Iterator`
 
-```
-bool MemTable::Get(const LookupKey& key, std::string* value, Status* s) {
-  Slice memkey = key.memtable_key();
-  Table::Iterator iter(&table_);
-  iter.Seek(memkey.data());
-  if (iter.Valid()) {
-```
-
-Iterator 定义如下
+定义如下:
 
 ```
   // Iteration over the contents of a skip list
