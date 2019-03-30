@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "leveldb笔记之17: major compaction之筛选文件"
+title: "leveldb笔记之17:major compaction之筛选文件"
 date: 2019-03-23 12:25:51
 tags: [leveldb]
 ---
