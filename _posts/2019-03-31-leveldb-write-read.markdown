@@ -5,13 +5,13 @@ date: 2019-03-31 12:23:09
 tags: [leveldb]
 ---
 
-这篇笔记介绍下写入过程，前面已经铺垫了很多基础组件，写入介绍起来相对简单一些了。
+这篇笔记介绍下写入和读取过程，前面已经铺垫了很多基础组件，写入介绍起来相对简单一些了。
+
+## 1. Put
 
 先用一张图片介绍下：
 
 ![Write](assets/images/leveldb/Write.png)
-
-## 1. Put
 
 写入的`key value`首先被封装到`WriteBatch`
 
@@ -158,3 +158,46 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
 `rep_`数据组织如下：
 
 ![Write](assets/images/leveldb/WriteBatch.png)
+
+## 4. Get
+
+读取分为 snapshot 读和普通读取，两者的区别只是前面介绍的 sequence 不同。
+
+按照`mem -> imm -> sstable files`的顺序读取，读不到则从下一个介质读取。因此 leveldb 更适合读取最近写入的数据。
+
+```
+  // Unlock while reading from files and memtables
+  {
+    mutex_.Unlock();
+    // First look in the memtable, then in the immutable memtable (if any).
+    // 查找时需要指定SequenceNumber
+    LookupKey lkey(key, snapshot);
+    //先查找memtable
+    if (mem->Get(lkey, value, &s)) {
+      // Done
+    //再查找immutable memtable
+    } else if (imm != nullptr && imm->Get(lkey, value, &s)) {
+      // Done
+    } else {
+      //查找sstable
+      s = current->Get(options, lkey, value, &stats);
+      have_stat_update = true;
+    }
+    mutex_.Lock();
+  }
+```
+
+`GetStats`则记录了第一个 seek 但是没有查找到 key 的文件，之后[major compaction之筛选文件](https://izualzhy.cn/leveldb-PickCompaction)会用到。
+
+```
+  struct GetStats {
+    FileMetaData* seek_file;
+    int seek_file_level;
+  };
+```
+
+```
+  if (have_stat_update && current->UpdateStats(stats)) {
+    MaybeScheduleCompaction();
+  }
+```
