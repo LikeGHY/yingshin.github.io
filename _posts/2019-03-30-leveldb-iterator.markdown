@@ -16,7 +16,7 @@ Iterator 的思想在 [stl 很常见](https://izualzhy.cn/stl-iterator-introduct
 
 ## 1. `Iterator`
 
-`Iterator`是最原始的积累，定义在[iterator.h](https://github.com/yingshin/leveldb_more_annotation/blob/master/include/leveldb/iterator.h)
+`Iterator`是最原始的基类，定义在[iterator.h](https://github.com/yingshin/leveldb_more_annotation/blob/master/include/leveldb/iterator.h)
 
 文档里的注释很全面，接口就不一一介绍了。
 
