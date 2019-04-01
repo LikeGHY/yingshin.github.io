@@ -237,7 +237,7 @@ $ xxd log_writer_blob.data | tail
       }
 ```
 
-`WriteBatchInternal::Contents(updates)`数据格式图里的 data 部分，这些究竟包含了什么？在接下来的笔记 todo 会介绍清楚.
+`WriteBatchInternal::Contents(updates)`数据格式图里的 data 部分，这些究竟包含了什么？可以参考[写入与读取流程](https://izualzhy.cn/leveldb-write-read#3-writebatch)这篇笔记。
 
 ## 6. 参考资料
 

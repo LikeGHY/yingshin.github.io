@@ -125,7 +125,7 @@ static inline const char* DecodeEntry(const char* p, const char* limit,
     }
 ```
 
-注：二分有疑问的话，可以参考[leveldb 二分法](笔记 todo)
+注：二分有疑问的话，可以参考[leveldb 二分法](https://izualzhy.cn/leveldb-binary-search)
 
 此时`left`满足条件：
 

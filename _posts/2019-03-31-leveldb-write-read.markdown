@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "leveldb笔记之20:写入与读取"
+title: "leveldb笔记之20:写入与读取流程"
 date: 2019-03-31 12:23:09
 tags: [leveldb]
 ---
