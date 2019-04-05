@@ -21,6 +21,6 @@ Skills：
 @tags: https://izualzhy.cn/tags.html
 
 Recent Interest：
-存储
+scala
 
 ```
