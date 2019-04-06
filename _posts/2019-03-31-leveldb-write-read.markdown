@@ -134,6 +134,25 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
 
 ## 2. Sequence
 
+批量写入接口`DB::Write(const WriteOptions& options, WriteBatch* updates)`调用也是`DBImpl::Write`。
+
+批量写入一个典型问题就是一致性，例如这么调用：
+
+```
+leveldb::WriteBatch batch;
+batch.Put("company", "Google");
+batch.Put(...);
+batch.Delete("company");
+
+db->Write(write_option, &batch);
+```
+
+此时是否可能读到`company -> Google`这个中间结果？
+
+答案是否定的。
+
+这个效果的产生在于`sequence`的操作。
+
 `VersionSet`记录了单调递增的`sequence`，对于相同 key，判断先后顺序就是依赖该数值。
 
 ```
@@ -144,6 +163,13 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
     ...
     versions_->SetLastSequence(last_sequence);
 ```
+
+对于`Get`操作(参考本文 Get 一节)，看到的 sequence 只有两种可能：
+
+1. `<= last_sequence`  
+2. `>= last_sequence + Count(updates)`  
+
+因此读取时不会观察到中间状态。
 
 ## 3. WriteBatch
 
