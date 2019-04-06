@@ -147,13 +147,9 @@ batch.Delete("company");
 db->Write(write_option, &batch);
 ```
 
-此时是否可能读到`company -> Google`这个中间结果？
+我们肯定不希望读到`company -> Google`这个中间结果，而效果的产生就在于`sequence`：`versions_`记录了单调递增的`sequence`，对于相同 key，判断先后顺序依赖该数值。
 
-答案是否定的。
-
-这个效果的产生在于`sequence`的操作。
-
-`VersionSet`记录了单调递增的`sequence`，对于相同 key，判断先后顺序就是依赖该数值。
+写入时，`sequence`递增的更新到 memtable，但是一次性的记录到`versions_`:
 
 ```
   uint64_t last_sequence = versions_->LastSequence();//本次写入的SequenceNumber
