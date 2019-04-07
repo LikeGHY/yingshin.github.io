@@ -223,3 +223,7 @@ db->Write(write_option, &batch);
     MaybeScheduleCompaction();
   }
 ```
+
+用一张图来表示流程的话：
+
+![Get](assets/images/leveldb/Get.png)
