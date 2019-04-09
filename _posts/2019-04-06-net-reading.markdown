@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "《网络是怎样连接的》"
+title: "《网络是怎样连接的》读书笔记"
 date: 2019-04-06 23:28:00
 tags: [reading]
 ---
