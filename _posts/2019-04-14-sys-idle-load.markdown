@@ -120,3 +120,11 @@ int main() {
 [这里](https://yq.aliyun.com/articles/99312?t=t1)记录了一个 load average 和 cpu 都很高的场景，跟我们理解的常识确实是相反的。
 
 发现原因是所有进程都调度到了单独一个 cpu 上。
+
+此时可以用 vmstat 确认下:
+
+![vmstat](http://ata2-img.cn-hangzhou.img-pub.aliyun-inc.com/9a0c040b24699d4128bbecae1af08b1d.png)
+
+例如我当时看到的情况，比较明确是队列太多了
+
+![vmstat-my](assets/images/vmstat-my.png)
