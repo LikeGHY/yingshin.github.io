@@ -87,3 +87,35 @@ static int TableCacheSize(const Options& sanitized_options) {
 其中`const int kNumNonTableCacheFiles = 10;`
 
 这 10 个对应了 log manifest current LOCK 等.
+
+## 7. 日志
+
+log 跟 memtable 周期相同，因此也可以近似的认为 ~ 4M
+
+```
+     // Attempt to switch to a new memtable and trigger compaction of old
+      assert(versions_->PrevLogNumber() == 0);
+      uint64_t new_log_number = versions_->NewFileNumber();
+      WritableFile* lfile = nullptr;
+      s = env_->NewWritableFile(LogFileName(dbname_, new_log_number), &lfile);
+      if (!s.ok()) {
+        // Avoid chewing through file number space in a tight loop.
+        versions_->ReuseFileNumber(new_log_number);
+        break;
+      }
+      delete log_;
+      delete logfile_;
+      logfile_ = lfile;
+      logfile_number_ = new_log_number;
+      log_ = new log::Writer(lfile);
+      imm_ = mem_;//mem_大小超过4M，因此转化为imm_
+      has_imm_.Release_Store(imm_);
+      mem_ = new MemTable(internal_comparator_);//重新new一个新的mem_供更新
+      mem_->Ref();
+```
+
+log 结构由多个 block 组成，每个大小为 32k，这样的好处是，读取时可以固定使用 32k 来不断读取：
+
+```
+static const int kBlockSize = 32768;//32k
+```
