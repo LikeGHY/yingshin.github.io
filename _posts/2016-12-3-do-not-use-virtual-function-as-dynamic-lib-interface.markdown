@@ -166,13 +166,13 @@ Breakpoint 1, main () at test_vptr.cpp:13
 0x400950 <_ZTV4Base+16>:        0x00000000004007ca      0x00000000004007f8
 0x400960 <_ZTV4Base+32>:        0x000000000040081e      0x0000000000400828
 (gdb) info symbol 0x00000000004007ca
-Base::~Base() in section .text of /home/users/zhangying21/Training/test/test_vptr
+Base::~Base() in section .text of /home/users/yingshin/Training/test/test_vptr
 (gdb) info symbol 0x00000000004007f8
-Base::~Base() in section .text of /home/users/zhangying21/Training/test/test_vptr
+Base::~Base() in section .text of /home/users/yingshin/Training/test/test_vptr
 (gdb) info symbol 0x000000000040081e
-Base::foo() in section .text of /home/users/zhangying21/Training/test/test_vptr
+Base::foo() in section .text of /home/users/yingshin/Training/test/test_vptr
 (gdb) info symbol 0x0000000000400828
-Base::bar() in section .text of /home/users/zhangying21/Training/test/test_vptr
+Base::bar() in section .text of /home/users/yingshin/Training/test/test_vptr
 ```
 
 跟上面提到的那篇非常著名的文章一样，我们取到对象的首地址内容作为数组指针，取到后面的函数入口地址，通过`info symbol`得到对应的函数名（可能你看到有两个`Base::~Base`很奇怪，本文暂时不解释原因，我们重点关注下两点：
@@ -183,7 +183,7 @@ Base::bar() in section .text of /home/users/zhangying21/Training/test/test_vptr
 这里有一个与本文主题无关但是很有意思的一个现象，我们继续看下符号表里`Base`的vtable地址
 
 ```
-[zhangying21@cq01-rdqa-dev095 test]$ nm test_vptr | c++filt  | grep vtable | grep Base
+$ nm test_vptr | c++filt  | grep vtable | grep Base
 0000000000400940 V vtable for Base
 ```
 
@@ -268,7 +268,7 @@ $2 = (Base *) 0x601010
 0x400970 <_ZTV4Base+16>:        0x00000000004007d6      0x0000000000400804
 0x400980 <_ZTV4Base+32>:        0x000000000040082a      0x0000000000400834
 (gdb) info symbol 0x0000000000400834
-Base::bar() in section .text of /home/users/zhangying21/Training/test/test_vptr
+Base::bar() in section .text of /home/users/yingshin/Training/test/test_vptr
 ```
 
 #### 2.3. 虚函数为什么要用偏移量的方式来寻址

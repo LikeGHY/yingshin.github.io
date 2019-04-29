@@ -408,7 +408,7 @@ No symbol matches 0x6367726120726162.
 0x7fff1d185170: 0x0000000000000000      0x00007fff1d185248
 0x7fff1d185180: 0x0000000200000000      0x0000000000400778
 (gdb) info symbol 0x0000000000400776
-bar(int, char const*) + 47 in section .text of /home/users/zhangying21/Training/test/test_test
+bar(int, char const*) + 47 in section .text of /home/users/yingshin/Training/test/test_test
 ```
 
 这里另一个有用的信息，是最近的函数调用指令为`0x400776`，`bar`在调用`foo`后的下一条指令。

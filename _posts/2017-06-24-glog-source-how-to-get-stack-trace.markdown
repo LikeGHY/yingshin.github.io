@@ -141,7 +141,7 @@ void get_backtrace_by_unwind() {
 编译命令如下：
 
 ```
-g++  -g -Wall -Werror -std=c++11 -o test_backtrace test_backtrace.cpp -I/home/users/zhangying21/local/include /home/users/zhangying21/local/lib/libunwind-x86_64.a /home/users/zhangying21/local/lib/libunwind.a
+g++  -g -Wall -Werror -std=c++11 -o test_backtrace test_backtrace.cpp -I/home/users/yingshin/local/include /home/users/yingshin/local/lib/libunwind-x86_64.a /home/users/yingshin/local/lib/libunwind.a
 ```
 
 输出：
