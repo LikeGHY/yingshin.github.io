@@ -1,7 +1,14 @@
+- name: 长安古意
+  cover: https://img3.doubanio.com/lpic/s6338264.jpg
+  start_date: 2019.5.8
+  finish_date: 
+  douban_link: https://book.douban.com/subject/6312491/
+  note: 
+
 - name: 追风筝的人
   cover: https://img3.doubanio.com/lpic/s1727290.jpg
   start_date: 2019.4.19
-  finish_date: 
+  finish_date: 2019.4.28
   douban_link: https://book.douban.com/subject/1770782/
   note: 
 

@@ -215,6 +215,26 @@ void LRUCache::Unref(LRUHandle* e) {
       ...
 ```
 
+## 7. mutable
+
+如果类的成员函数没有修改内部变量，标记为 const 函数，对外/内使用时都会更放心一些。
+
+```
+// A single shard of sharded cache.
+class LRUCache {
+ ...
+  size_t TotalCharge() const {
+    MutexLock l(&mutex_);
+    return usage_;
+  }
+```
+
+而这里常见的问题是 const 函数内可能有加锁操作，加锁本身是非 const 的行为，因此可以设置为 mutable 以支持编译通过：
+
+```
+mutable port::Mutex mutex_;
+```
+
 ## 单测
 
 留个坑，慢慢补充

@@ -385,6 +385,16 @@ void advance( InputIt& it, Distance n );
 
 >The behavior is undefined if the specified sequence of increments or decrements would require that a non-incrementable iterator (such as the past-the-end iterator) is incremented, or that a non-decrementable iterator (such as the front iterator or the singular iterator) is decremented.
 
+类似的还有类似于我们要构造一个 string 的倒置：
+
+```
+    std::string A = "abc";
+    std::string B;
+
+    // std::reverse_copy(A.begin(), A.end(), B.begin());//undefined behavior
+    std::reverse_copy(A.begin(), A.end(), std::back_inserter(B));//right
+```
+
 时间复杂度上是O(n)，如果是`RandomAccessIterator`，则是O(1)。
 
 `advance`经常用来跳过`std::cin`的输入，例如这样忽略前两个输入的`int`值：
