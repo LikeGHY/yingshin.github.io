@@ -56,7 +56,7 @@ object Hi {
 }
 ```
 
-不过更推荐的方式还是直接在 Eclipse 里新建工程和 scala 文件的方式，效率更高。
+在 Eclipse 里新建工程和 scala 文件的方式，效率更高。
 
 因此，环境上推荐 Eclipse 的 IDE 来学习 scala。
 
@@ -74,7 +74,7 @@ Byte Short Int Long Float Double Char String Boolean
 println(1, " I am a String", true, 2.3)         //> (1, I am a String,true,2.3)
 ```
 
-另外，特殊一点的
+另外，特殊一点的:
 
 `Unit`类似于 void，在函数返回值时使用。
 
