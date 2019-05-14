@@ -9,7 +9,7 @@ tags: [scala]
 
 ## 1. Why?
 
-我的初衷就是想深入学习函数式编程的思想、写 Spark.
+我的初衷就是想深入学习函数式编程的思想、可以写 Spark.
 
 跟最开始拿 go 写[raft](https://github.com/yingshin/Distributed-Systems/tree/master/6.824/src)一样，还是抱着了解基础，随用随学的原则，因此这篇笔记会不断的更新。但是仍然保持极简的风格，希望整体能控制在 30 分钟以内。
 
@@ -19,7 +19,7 @@ tags: [scala]
 
 ### 2.1 REPL
 
-执行`scala`或者`sbt console`都可以到 scala 的交互界面:
+执行`scala`或者`sbt console`都可以到 scala 的交互界面(Read-Eval-Print Loop):
 
 ```scala
 scala> println("Hello World" substring(0, 3) toUpperCase() indexOf "E")
@@ -110,7 +110,7 @@ scala> i = 2
 <console>:12: error: reassignment to val
 ```
 
-定义可变变量使用 var.
+定义可变变量使用 var，支持修改。
 
 ## 5. if else
 
@@ -151,21 +151,21 @@ if (expr) s1 else s2
 
 ```scala
 for( var x <- Range ) {
-   statement(s);
+    statement(s);
 }
 
 while(condition) {
-   statement(s);
+    statement(s);
 }
 ```
 
 例如，我们定义一个列表，然后通过 for 遍历：
 
 ```
-  val l = List("Baidu", "Google", "Facebook")     //> l  : List[String] = List(Baidu, Google, Facebook)
-  for (
-        s <- l
-  ) println(s)                                    //> Baidu
+val l = List("Baidu", "Google", "Facebook")     //> l  : List[String] = List(Baidu, Google, Facebook)
+for (
+    s <- l
+) println(s)                                    //> Baidu
                                                   //| Google
                                                   //| Facebook
 ```
@@ -173,25 +173,25 @@ while(condition) {
 也可以在 for 里加入 if 判断
 
 ```
-  for (
-  s <- l
-  if (s.length > 5)
-  ) println(s)                                    //> Google
+for (
+    s <- l
+    if (s.length > 5)
+) println(s)                                    //> Google
                                                   //| Facebook
 ```
 
 如果要打印[1, 10]所有的偶数:
 
 ```
-    for (s <- 1 to 10 if (s % 2 ==0)) println(s)
-                                                  //> 2
-                                                  //| 4
-                                                  //| 6
-                                                  //| 8
-                                                  //| 10
+for (s <- 1 to 10 if (s % 2 ==0)) println(s)
+                                                //> 2
+                                                //| 4
+                                                //| 6
+                                                //| 8
+                                                //| 10
 ```
 
-也可以返回一个新的 List:
+也可以使用`yield`返回一个新的 List:
 
 ```
     val l = List("Baidu", "Google", "Facebook")     //> l  : List[String] = List(Baidu, Google, Facebook)
@@ -214,7 +214,7 @@ while(condition) {
 3. 把函数赋值给变量  
 4. 把函数存储在数据结构里  
 
-其实 C++ 大部分也可以支持，但是使用的方便上跟函数式编程语言还是差了很多。
+其实 C++ 大部分也可以支持，但是使用的方便性上，跟函数式编程语言原生支持还是差了很多。
 
 函数的定义方式:
 
@@ -227,32 +227,32 @@ def functionName(param: ParamType): ReturnType = {
 例如：
 
 ```scala
-  def Hello(name: String): String = {
-        s"My name is ${name}"
-  }                        //> Hello: (name: String)String
-  Hello("izualzhy")        //> res0: String = My name is izualzhy
+def Hello(name: String): String = {
+    s"My name is ${name}"
+}                        //> Hello: (name: String)String
+Hello("izualzhy")        //> res0: String = My name is izualzhy
 ```
 
 当然，也可以直接省略大括号
 
 ```scala
-  def newHello(name: String): String = s"My name is ${name}"
-                            //> newHello: (name: String)String
-  newHello("izualzhy")      //> res1: String = My name is izualzhy
+def newHello(name: String): String = s"My name is ${name}"
+                        //> newHello: (name: String)String
+newHello("izualzhy")    //> res1: String = My name is izualzhy
 ```
 
 ### 7.2. 匿名函数
 
-`Hello`这个函数，也可以使用更简洁的方式定义在一行:
+`Hello`这个函数，也可以使用更简洁的方式定义在一行，这种形式称为匿名函数:
 
 ```scala
 // Anonymous Function:(形参列表) => {函数体}
-  def simpleHello = (name: String) => s"My name is ${name}"
-                           //> simpleHello: => String => String
-  simpleHello("izualzhy")  //> res1: String = My name is izualzhy
+def simpleHello = (name: String) => s"My name is ${name}"
+                         //> simpleHello: => String => String
+simpleHello("izualzhy")  //> res1: String = My name is izualzhy
 ```
 
-匿名函数可以赋值给其他变量：
+匿名函数除了定义更加简洁，还可以赋值给其他变量：
 
 ```scala
 val func = simpleHello
@@ -262,36 +262,36 @@ val func = simpleHello
 
 ### 7.3. Evaluation Strategy
 
-解析函数参数时有两种方式：
+scala 解析函数参数时有两种方式：
 
 1. Call By Value：形如`def foo(x: Int) = x`，x 只在函数入口时计算一次。  
 2. Call By Name：形如`def foo(x: => Int) = x`，x 在函数每次具体使用时计算。  
 
 其中 1 符合我们平时的理解，因此介绍下 2:
 
-```
-    def now_time() = System.nanoTime          //> now_time: ()Long
-    now_time()                                //> res5: Long = 289060277656521
+```scala
+def now_time() = System.nanoTime          //> now_time: ()Long
+now_time()                                //> res5: Long = 289060277656521
 
-    def foo(t: => Long) = {
-        println("first:", t)
-        println("second:", t)
-    }                                         //> foo: (t: => Long)Unit
-    foo(now_time())                           //> (first:,289060278984412)
-                                              //| (second:,289060279131130)
+def foo(t: => Long) = {
+    println("first:", t)
+    println("second:", t)
+}                                         //> foo: (t: => Long)Unit
+foo(now_time())                           //> (first:,289060278984412)
+                                          //| (second:,289060279131130)
 ```
 
-可以看到在同一个函数内部，t 的结果发生了变化。
+可以看到在同一个函数内部，t 的结果发生了变化，这就是` => `产生的神奇效果。
 
 ### 7.4. 柯里化函数(Curried Function)
 
 柯里化的作用就是将一个多参数的函数转为单参数的多个函数定义，例如：
 
-```
-    def curried_add(x:Int)(y:Int) = x + y     //> curried_add: (x: Int)(y: Int)Int
-    curried_add(100)(11)                      //> res11: Int = 111
-    val add_100 = curried_add(100)_           //> add_100  : Int => Int = test$$$Lambda$30/559670971@4439f31e
-    add_100(11)                               //> res12: Int = 111
+```scala
+def curried_add(x:Int)(y:Int) = x + y     //> curried_add: (x: Int)(y: Int)Int
+curried_add(100)(11)                      //> res11: Int = 111
+val add_100 = curried_add(100)_           //> add_100  : Int => Int = test$$$Lambda$30/559670971@4439f31e
+add_100(11)                               //> res12: Int = 111
 ```
 
 类似于 C++ 的偏特化？
@@ -300,21 +300,21 @@ val func = simpleHello
 
 用函数作为形参或者返回值的函数，称为高阶函数
 
-```
-    def two_elements(f: (Int, Int) => Int) {
-        println(f(4, 4))
-        }                                 //> two_elements: (f: (Int, Int) => Int)Unit
-    two_elements(add)                     //> 8
+```scala
+def two_elements(f: (Int, Int) => Int) {
+    println(f(4, 4))
+}                                 //> two_elements: (f: (Int, Int) => Int)Unit
+two_elements(add)                 //> 8
 ```
 
 ### 7.6. 递归函数
 
-```
-    def factorial(n: Int): Int = {
-        if (n <= 0) 1
-        else n * factorial(n - 1)
-        }                                 //> factorial: (n: Int)Int
-    println(factorial(10))                //> 3628800
+```scala
+def factorial(n: Int): Int = {
+    if (n <= 0) 1
+    else n * factorial(n - 1)
+}                                 //> factorial: (n: Int)Int
+println(factorial(10))            //> 3628800
 ```
 
 ## 8. 集合
@@ -327,7 +327,7 @@ val func = simpleHello
 
 定义或者修改一个链表
 
-```
+```scala
 //自动推导为T=Int
 scala> val a = List(1, 2, 3, 4)
 a: List[Int] = List(1, 2, 3, 4)
@@ -460,21 +460,21 @@ res6: scala.collection.immutable.Stream[Int] = Stream(2, ?)
 
 Tuple 就是多个元素的集合
 
-```
+```scala
 scala> (1, "Alice", "Math", 147)
 res10: (Int, String, String, Int) = (1,Alice,Math,147)
 ```
 
 `_下标值`用于取值：
 
-```
+```scala
 scala> res10._3
 res13: String = Math
 ```
 
 两个元素又称为 pair，可以用于`Map`（接下来介绍）
 
-```
+```scala
 scala> (1, 2)
 res8: (Int, Int) = (1,2)
 // 可以使用 -> 简写
@@ -498,7 +498,7 @@ res9: (Int, Int) = (1,2)
 
 Map[K, V]由多个 pair 组成
 
-```
+```scala
 // 构造
 scala> val p = Map(1 -> "David", 9 -> "Elwood")
 p: scala.collection.immutable.Map[Int,String] = Map(1 -> David, 9 -> Elwood)
@@ -550,12 +550,12 @@ res26: scala.collection.immutable.Map[Int,String] = Map(5 -> Bob)
 快排：
 
 ```scala
-    def qSort(in: List[Int]): List[Int] =
-        if (in.length < 2) in
-        else
-            qSort(in.filter(_ < in.head)) ++ in.filter(_ == in.head) ++ qSort(in.filter(_ > in.head))
+def qSort(in: List[Int]): List[Int] =
+    if (in.length < 2) in
+    else
+        qSort(in.filter(_ < in.head)) ++ in.filter(_ == in.head) ++ qSort(in.filter(_ > in.head))
     //> qSort: (in: List[Int])List[Int]
-    qSort(List(5, 2, 9, 8, 0, 1, 3, 6, 7, 4))
+qSort(List(5, 2, 9, 8, 0, 1, 3, 6, 7, 4))
     //> res16: List[Int] = List(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
 ```
 

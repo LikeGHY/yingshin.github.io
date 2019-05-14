@@ -262,5 +262,21 @@ CHECK系列的宏跟assert很像，都是检测某个表达式是否为真，不
 
 字符串的比较需要使用 CHECK\_STREQ,CHECK\_STRNE,CHECK\_STRCASEEQ,CHECK\_STRCASENE，注意这种情况下可以传入NULL，例如CHECK\_STREQ(NULL, NULL)可以正常运行。  
 
+### 8. TIPS
+
+#### 8.1. 低级别日志的内容仍然会执行
+
+例如：
+
+```cpp
+    FLAGS_minloglevel = 1;
+
+    LOG(INFO) << "info log";
+    LOG(INFO) << PackageToString(1);
+    LOG(WARNING) << "warning log";
+```
+
+虽然`LOG(INFO)`所在的行不会打印，但是`PackageToString`还是会执行，需要注意是否带来状态的变化或者性能损耗。
+
 ### 参考文档：  
 1. [glog官方文档](https://github.com/google/glog/blob/master/doc/glog.html)  

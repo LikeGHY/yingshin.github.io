@@ -64,6 +64,8 @@ DEFINE_string: C++string
 
 注意DEFINE_xxx函数的3个参数都是必须的。
 
+可以定义到某个 namespace 下，使用时也需要带着 namespace 前缀.
+
 ### 2. 查看程序支持了哪些flags
 
 例如对上述flags的定义，-help输出如下：  
