@@ -345,17 +345,17 @@ scala> a:::c
 res1: List[Any] = List(1, 2, 3, 4, x, y, z)
 ```
 
-`List`基础接口有`head tail isEmpty`，注意`tail`返回的不是最后一个元素，而是除了`head`外所有的元素，这个设计有利于递归的实现。
+`List`基础接口有`head tail isEmpty`，`head last`分别返回第一个和最后一个元素，`tail`返回除了`head`外所有的元素，这个设计有利于递归的实现。
 
 例如：
 
 ```scala
-    def walk_through(l: List[Int]): String = {
-        if (l.isEmpty) ""
-        else l.head.toString + " " + walk_through(l.tail)
-        }                        //> walk_through: (l: List[Int])String
-    val a = List(1, 2, 3)        //> a  : List[Int] = List(1, 2, 3)
-    walk_through(a)              //> res14: String = "1 2 3 "
+def walk_through(l: List[Int]): String = {
+    if (l.isEmpty) ""
+    else l.head.toString + " " + walk_through(l.tail)
+    }                        //> walk_through: (l: List[Int])String
+val a = List(1, 2, 3)        //> a  : List[Int] = List(1, 2, 3)
+walk_through(a)              //> res14: String = "1 2 3 "
 ```
 
 此外还有各类修改的接口：
