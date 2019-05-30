@@ -7,15 +7,15 @@ tags: [op,supervisor]
 
 ## 1. 简介
 
-平时在开发机上，有一些进程比较稳定，基本不用考虑退出的场景，例如`python -m SimpleHTTPServer`，我习惯直接使用 nohup 放到后台执行。nohup 使用简单，但是如果对进程的稳定性要求较高，使用 nohup 无法自动拉起。或者从 stdin 等待输入的进程，例如常用来监控磁盘使用情况的[agedu -w](https://www.chiark.greenend.org.uk/~sgtatham/agedu/)，nohup 也无法正确执行。
+平时在开发机上，有一些进程比较稳定，基本不用考虑退出的场景，例如`python -m SimpleHTTPServer`，我习惯直接使用 nohup 放到后台执行。nohup 使用简单，但是如果进程需要从 stdin 读取输入，例如[agedu -w](https://www.chiark.greenend.org.uk/~sgtatham/agedu/)(显示磁盘使用容量)，无法使用 nohup 放到后台执行。
 
-部署在服务器的后台 server，需要保证 7*24 小时提供服务，往往需要一个自动拉起的机制。进程无论是主动还是意外退出，都需要能够被再次拉起保证服务可用。supervisor 就是这样一个工具。
+后台服务进程需要保证 7*24，因此对稳定性要求较高。进程无论是主动还是意外退出时，都需要一个自动拉起的机制，保证服务可用。supervisor 就是这样一个工具。
 
-更进一步，supervisor 提供了非常方便的管理进程的能力，使得我们可以专注于实现服务的功能本身，而不用关心如何管理服务进程。
+更进一步，supervisor 提供了非常方便的管理进程的能力，使得我们可以专注于实现后台服务功能本身，而不用关心如何管理服务进程。
 
 ## 2. 安装及配置
 
-supervisor 是用 python 写的，因此可以直接`pip install supervisor`安装
+supervisor 是用 python 写的，可以直接`pip install supervisor`安装
 
 安装完成后会生成3个工具：
 
@@ -108,7 +108,9 @@ stdout_logfile_maxbytes=1MB
 stdout_logfile_backups=10
 ```
 
-这里主要是通知 supervisor 启动的命令行(最好是绝对路径)，例子里没有使用单独的日志输出，因此这里把标准标出都重定向到了`run.log`。标准错误输出也是相同，`redirect_stderr=true`类似于`2 &> 1`的效果。
+这里主要是配置 supervisor 启动的命令行(最好是绝对路径)，例子里没有打印日志而是使用标准输出，这里都重定向到了`run.log`。
+
+`redirect_stderr=true`类似于`2 &> 1`的效果，因此标准错误输出也是相同路径，
 
 准备就绪后使用`supervisord -c /etc/supervisord.conf`启动，可以观察到`test_test`作为`supervisord`的子进程存在。
 
@@ -155,7 +157,9 @@ Web Server 提供了一个可视化简版的 supervisorctl，对应`inet_http_se
 
 ## 6. superlance
 
-supervisor 提供了进程管理的功能，当一个进程退出而又被重新拉起，我们会希望能够通知到出来，例如邮件或者短信的形式，或者端口、内存的监控等，superlance 通过一系列的工具集提供了这些功能。本节介绍下邮件的功能。
+supervisor 提供了进程管理的功能，当一个进程退出时能够被重新拉起。
+
+而当一个进程非预期退出时，最好也能够同时邮件或者短信出来。或者当端口异常、内存过高时，也能够通知出来。superlance 通过一系列的工具集提供了这些功能。
 
 superlance 同样可以使用`pip install superlance`安装。
 
@@ -167,7 +171,7 @@ command=crashmail -a -s "sendEmail -f xxx@xxx.com -t xxx@xxx.com -u warning-subj
 events=PROCESS_STATE_EXITED
 ```
 
-重新 reload
+重新 reload，新增了 crashmail 进程
 
 ```
 $ supervisorctl
