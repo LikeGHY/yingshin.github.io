@@ -9,7 +9,9 @@ tags: [protobuf]
 
 protobuf 默认支持的数据类型有 double float int32 int64 string bytes bool [等几种类型](https://developers.google.com/protocol-buffers/docs/proto#scalar)。在有的生产场景中，我们可能需要更多的类型，比如把 protobuf 转换为 mcpack(厂内某个很古老的数据格式)，对于一段字符串，protobuf 统一认为是 string/bytes，而 mcpack 则把字符串区分为 raw/string 两种类型，此时就需要我们在 proto 能够标记以区分这两种类型。在 [brpc 的 mcpack2pb](https://github.com/apache/incubator-brpc/tree/master/src/mcpack2pb)里也是类似的问题。
 
-解决方案就是 [protobuf 的 Custom Options](https://developers.google.com/protocol-buffers/docs/proto#customoptions).
+或者是数据存储/分发的场景，对于接收的 message，我们希望有的字段能够覆盖写、有的删除、有的建索引，如果在定义 message 的时候就能够提前约定，策略同学在新增字段的时候就可以直接实现对存储的预期。
+
+protobuf 的 [Custom Options](https://developers.google.com/protocol-buffers/docs/proto#customoptions)特性可以实现这点。
 
 ## 2. descriptor
 
