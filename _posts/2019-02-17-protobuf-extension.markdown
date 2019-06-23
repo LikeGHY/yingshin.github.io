@@ -89,15 +89,17 @@ extend test.BaseData {
 }
 ```
 
-无论是否设置了`base_extension::layer`，尝试调用`ProtoMessageToJson` 1000 次，需要 68ms 左右，而如果普通的`message BaseData`，只需要 1ms。
+无论是否设置了`base_extension::layer`，尝试调用`ProtoMessageToJson` 1000 次，需要 68ms 左右，而如果普通的`message BaseData`，只需要 1ms。对于一个普通的 message，反射遍历在 us 级别，如果定义了 extensions，例如`extensions 1000 to max`，反射遍历则需要几百秒，性能差别很大。
 
-最近刚好踩过这个坑，花了一个晚上才定位，猜测`FindKnownExtensionByNumber`是个O(n)接口，导致反射的整体实现是O(n2)。因此定义 proto 时，extension range 需要斟酌下，特别是`extension xxx to max`这种写法。
+最近刚好踩过这个坑，花了一个晚上才定位，猜测`FindKnownExtensionByNumber`是个O(n)接口，导致反射的整体实现是O(n2)。定义 proto 时，extension range 需要斟酌下，特别是`extension xxx to max`这种写法。
 
 `ProtoMessageToJson`的场景下，另外一个推荐做法是使用`Reflection::ListFields`接口，不过功能上有 diff，就是只返回了设置了值的字段(`HasField`).
 
 ## 3. Tips
 
-如果不同的 proto 文件 extend 了同一个字段，那么同时编译会有冲突，这种场景下，建议使用 protobuf 的自动编译:
+### 3.1. 不同 proto 文件 extend 了同一个 tag
+
+如果不同的 proto 文件 extend 了同一个 tag，那么同时编译会有冲突，这种场景下，建议使用 protobuf 的自动编译，运行时加载不同的  proto 文件：
 
 ```
 #include "google/protobuf/message.h"
@@ -189,3 +191,22 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 ```
+
+2. extend 只是扩展了类
+
+extend 一个原有的类并不会创建一个新的类出来，只是相当于新增字段。例如最开始的例子：
+
+```
+extend Link {
+  optional int32 weight = 1001;
+}
+```
+
+```
+message AnotherLink {
+  optional string url = 1;
+  optional weight = 1001;
+}
+```
+
+`Link` 和 `AnotherLink` 字段设置的值相同的话，序列化的结果就是一样的。
