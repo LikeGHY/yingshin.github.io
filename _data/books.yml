@@ -1,9 +1,16 @@
+- name: 全球科技通史
+  cover: https://img3.doubanio.com/lpic/s32271437.jpg
+  start_date: 2019.6.23
+  finish_date: 
+  douban_link: https://book.douban.com/subject/33385217/
+  note:
+
 - name: 长安古意
   cover: https://img3.doubanio.com/lpic/s6338264.jpg
   start_date: 2019.5.8
   finish_date: 2019.5.13
   douban_link: https://book.douban.com/subject/6312491/
-  note: 
+  note: 读这本书的时候，我一直在听花粥的《盗将行》，有人说这歌歌词狗屁不通，且不管歌词如何。我看着《长安古意》，耳边响着《盗将行》的曲儿，觉得挺贴切的。以至于书看完了，再听到这个这首歌，也还是想起书里的故事。故事很简单，一代清官故去，留下一母一子带着《肝胆录》，决定朝廷未来是否落于奸佞之手的小册子。带着这本小册子，一路躲避东密的追杀，找到天下可托付肝胆之人。这一路，有人无惧艰险挺身而出，也有人骑墙观望明哲保身，形形色色。最后虽无可托之人，可在一帮热血男儿的帮助下，登高一呼。正是，“天下无肝胆，何妨裙钗与登坛”！
 
 - name: 追风筝的人
   cover: https://img3.doubanio.com/lpic/s1727290.jpg
