@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "《Scala实用指南》读书笔记三：函数值和闭包与特质"
+title: "《Scala实用指南》读书笔记三：集合"
 date: 2019-06-29 23:47:57
 tags: [scala]
 ---
