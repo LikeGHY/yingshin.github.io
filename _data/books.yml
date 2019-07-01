@@ -1,3 +1,10 @@
+- name: 图解HTTP
+  cover: https://img3.doubanio.com/lpic/s27283822.jpg
+  start_date: 2019.6.23
+  finish_date: 2019.6.29
+  douban_link: https://book.douban.com/subject/25863515/
+  note: 名词介绍居多，看的比较快。工作值周时经常遇到百度抓取失败但是Google能搜到的站点，原本想从这本书入手研究下怎么样才能不要总是让站点修改，不过收获一般。
+
 - name: 全球科技通史
   cover: https://img3.doubanio.com/lpic/s32271437.jpg
   start_date: 2019.6.23
@@ -38,7 +45,7 @@
   start_date: 2019.3.15
   finish_date: 2019.6.23
   douban_link: https://book.douban.com/subject/30249691/
-  note:
+  note: 看了三个多月才看完，技术的书看的确实是慢啊。读书笔记记录到了这里：https://izualzhy.cn/tags.html#scala
 
 - name: 四时之诗：蒙曼品最美唐诗
   cover: https://img3.doubanio.com/lpic/s29715045.jpg

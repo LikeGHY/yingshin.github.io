@@ -15,12 +15,12 @@ Work Experience:
 3. 百度Spider架构
 
 Langs：
-C/C++/python/shell/goer
+C/C++/python/shell/go/scala
 
 Skills：
 @tags: https://izualzhy.cn/tags.html
 
 Recent Interest：
-scala
+spark
 
 ```
