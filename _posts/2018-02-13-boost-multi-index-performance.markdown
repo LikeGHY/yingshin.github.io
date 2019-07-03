@@ -22,7 +22,7 @@ tags: [boost, multi_index]
 
 例如对于`std::set`
 
-```
+```cpp
 std::set<Key,Compare,Allocator>
 ->
 multi_index_container<
@@ -34,7 +34,7 @@ multi_index_container<
 
 默认情况(Compare=std::less<Key> and Allocator=std::allocator<Key>)，我们可以得到简化后的这个对应关系：
 
-```
+```cpp
 std::set<Key> -> multi_index_container<Key>
 ```
 
@@ -42,7 +42,7 @@ std::set<Key> -> multi_index_container<Key>
 
 `std::multi_set`也可以类似的推导关系：
 
-```
+```cpp
 std::multiset<Key>
 ->
 multi_index_container<
@@ -60,7 +60,7 @@ multi_index_container<
 
 性能文档首先给了一个多索引的例子(当然这个例子感觉很不恰当，这是啥😱)
 
-```
+```cpp
 typedef multi_index_container<
   int,
   indexed_by<
@@ -73,7 +73,7 @@ typedef multi_index_container<
 
 对标多个stl container的实现方式，估计要这么搞
 
-```
+```cpp
 template<typename Iterator, typename Compare>
 struct it_compare {
     bool operator()(const Iterator& x, const Iterator& y) const {
@@ -97,7 +97,7 @@ typedef std::multiset<
 
 数据的操作需要同时更新两个容器
 
-```
+```cpp
 manual_t1 c1;
 manual_t2 c2;
 
@@ -117,7 +117,7 @@ c2.erase(it2);
 
 测试的操作也很简单,n分别取1000,10000,100000
 
-```
+```cpp
 multi_index_container<...> c;
 for(int i=0;i<n;++i)c.insert(i);
 for(iterator it=c.begin();it!=c.end();)c.erase(it++);

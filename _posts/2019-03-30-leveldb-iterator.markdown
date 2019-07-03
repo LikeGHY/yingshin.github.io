@@ -40,7 +40,7 @@ Iterator 的思想在 [stl 很常见](https://izualzhy.cn/stl-iterator-introduct
 
 初始化时，传入多个`Iterator*`
 
-```
+```cpp
   MergingIterator(const Comparator* comparator, Iterator** children, int n)
       : comparator_(comparator),
         children_(new IteratorWrapper[n]),
@@ -57,7 +57,7 @@ Iterator 的思想在 [stl 很常见](https://izualzhy.cn/stl-iterator-introduct
 
 以`Seek`为例:
 
-```
+```cpp
   virtual void Seek(const Slice& target) {
     for (int i = 0; i < n_; i++) {
       children_[i].Seek(target);
@@ -69,7 +69,7 @@ Iterator 的思想在 [stl 很常见](https://izualzhy.cn/stl-iterator-introduct
 
 首先是所有`Iterator*`都查找`target`，然后通过`FindSmallest`找到最小的那个，记录到`current_`
 
-```
+```cpp
 void MergingIterator::FindSmallest() {
   IteratorWrapper* smallest = nullptr;
   for (int i = 0; i < n_; i++) {
@@ -96,7 +96,7 @@ void MergingIterator::FindSmallest() {
 
 `LevelFileNumIterator`接收一个有序的文件列表，支持查找 target 可能存在于哪个文件，以及遍历文件列表。
 
-```
+```cpp
 // 接收一个有序的文件列表，支持遍历
 // key: 文件的largest key encode 后的值
 // value: 文件的number && size encode 后的值
@@ -112,7 +112,7 @@ class Version::LevelFileNumIterator : public Iterator {
 
 还是以`Seek`为例:
 
-```
+```cpp
   //index_指向可能存在 target 的文件
   virtual void Seek(const Slice& target) {
     index_ = FindFile(icmp_, *flist_, target);
@@ -123,7 +123,7 @@ class Version::LevelFileNumIterator : public Iterator {
 
 `key`存储文件的 largest，`value`存储文件的`number + file_size`，通过这两个值，我们就可以进一步使用[Table::Open](https://izualzhy.cn/leveldb-table#31-open)打开文件了。
 
-```
+```cpp
   Slice key() const {
     assert(Valid());
     return (*flist_)[index_]->largest.Encode();
@@ -140,7 +140,7 @@ class Version::LevelFileNumIterator : public Iterator {
 
 `leveldb::TwoLevelIterator`顾名思义，是由两层的 iterator 实现的。
 
-```
+```cpp
 class TwoLevelIterator : public Iterator {
   ...
 private:
@@ -164,7 +164,7 @@ private:
 
 ### 5.1. Table读取
 
-```
+```cpp
 Iterator* Table::NewIterator(const ReadOptions& options) const {
   return NewTwoLevelIterator(
       //传入index_block的iterator
@@ -175,7 +175,7 @@ Iterator* Table::NewIterator(const ReadOptions& options) const {
 
 [table的读取](https://izualzhy.cn/leveldb-table#321-twoleveliterator)为例，说明下`Seek`接口下两层 iterator 移动的方式。
 
-```
+```cpp
   // 先在 index block 找到第一个>= target 的k:v, v是某个data_block的size&offset
   index_iter_.Seek(target);
   // 根据v读取data_block，data_iter_指向该data_block内的k:v
@@ -188,7 +188,7 @@ Iterator* Table::NewIterator(const ReadOptions& options) const {
 
 `InitDataBlock`通过`index_iter_.value()`定位到数据块，使用注册的`block_function_`解析该数据块，并且返回一个`Iterator`，赋值到`data_iter_`。
 
-```
+```cpp
 void TwoLevelIterator::InitDataBlock() {
   if (!index_iter_.Valid()) {
     SetDataIterator(nullptr);
@@ -217,7 +217,7 @@ void TwoLevelIterator::SetDataIterator(Iterator* data_iter) {
 
 此时，就可以调用`key``value`接口来判断了(返回`data_iter_.key()/value()`)：
 
-```
+```cpp
   virtual Slice key() const {
     assert(Valid());
     return data_iter_.key();
@@ -240,7 +240,7 @@ void TwoLevelIterator::SetDataIterator(Iterator* data_iter) {
 
 而对于 > 0 的 level，我们可以继续优化一些，因为 sstable files 之间数据是完全有序的，我们实际上可以用一个 iterator 来实现遍历。同时，先定位到文件，再定位到具体 key，也是一个二层 iterator 的模型。
 
-```
+```cpp
         // Create concatenating iterator for the files from this level
         list[num++] = NewTwoLevelIterator(
             // 遍历文件列表的iterator

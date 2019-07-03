@@ -24,7 +24,7 @@ protobuf 实现了序列化部分，并且预留了 RPC 接口，但是没有实
 
 我们定义了`EchoService`, method 为`Echo`.
 
-```
+```cpp
 package echo;
 
 option cc_generic_services = true;
@@ -47,7 +47,7 @@ protoc 自动生成`echo.pb.h echo.pb.cc`两部分代码.
 
 对 server 端，通过`EchoService::Echo`来处理请求，代码未实现，需要子类来 override.
 
-```
+```cpp
 class EchoService : public ::google::protobuf::Service {
   ...
   virtual void Echo(::google::protobuf::RpcController* controller,
@@ -69,7 +69,7 @@ void EchoService::Echo(::google::protobuf::RpcController* controller,
 
 对 client 端，通过`EchoService_Stub`来发送数据，`EchoService_Stub::Echo`调用了`::google::protobuf::Channel::CallMethod`，但是`Channel`是一个纯虚类，需要 RPC 框架在子类里实现需要的功能。
 
-```
+```cpp
 class EchoService_Stub : public EchoService {
   ...
   void Echo(::google::protobuf::RpcController* controller,
@@ -93,7 +93,7 @@ void EchoService_Stub::Echo(::google::protobuf::RpcController* controller,
 
 有过 RPC 使用经验的话，都了解 server 端代码类似于这样(参考[brpc echo_c++ server.cpp](https://github.com/brpc/brpc/blob/master/example/echo_c%2B%2B/server.cpp))
 
-```
+```cpp
 //override Echo method
 class MyEchoService : public echo::EchoService {
 public:
@@ -121,7 +121,7 @@ int main() {
 
 而 client 基本这么实现(参考[brpc echo_c++ client.cpp](https://github.com/brpc/brpc/blob/master/example/echo_c%2B%2B/client.cpp))
 
-```
+```cpp
 int main() {
     MyChannel channel;
     channel.init("127.0.0.1", 6688);
@@ -162,7 +162,7 @@ int main() {
 
 `google/protobuf/service.h`里`::google::protobuf::Service`的源码如下：
 
-```
+```cpp
 class LIBPROTOBUF_EXPORT Service {
       virtual void CallMethod(const MethodDescriptor* method,
                           RpcController* controller,
@@ -174,7 +174,7 @@ class LIBPROTOBUF_EXPORT Service {
 
 Service 是一个纯虚类，`CallMethod = 0`，`EchoService`实现如下
 
-```
+```cpp
 void EchoService::CallMethod(const ::google::protobuf::MethodDescriptor* method,
                              ::google::protobuf::RpcController* controller,
                              const ::google::protobuf::Message* request,
@@ -201,14 +201,14 @@ void EchoService::CallMethod(const ::google::protobuf::MethodDescriptor* method,
 
 `EchoService_Stub::Echo`的实现里:
 
-```
+```cpp
   channel_->CallMethod(descriptor()->method(0),
                        controller, request, response, done);
 ```
 
 因此先看下`::google::protobuf::RpcChannel`的实现:
 
-```
+```cpp
 // Abstract interface for an RPC channel.  An RpcChannel represents a
 // communication line to a Service which can be used to call that Service's
 // methods.  The Service may be running on another machine.  Normally, you
@@ -257,7 +257,7 @@ pb 的注释非常清晰，channel 可以理解为一个通道，连接了 rpc �
 
 但是 pb 里明显不用这样，因为 server/client 使用相同（或者兼容）的 proto，只要标识下数据类型名就可以了。不过遇到相同类型的 method 也会有问题，例如
 
-```
+```cpp
 service EchoService {
     rpc Echo(EchoRequest) returns (EchoResponse);
     rpc AnotherEcho(EchoRequest) returns (EchoResponse)
@@ -270,7 +270,7 @@ service EchoService {
 
 pb 里有很多 xxxDescriptor 的类，`service method`也不例外。例如`GetDescriptor`可以获取`ServiceDescriptor`.
 
-```
+```cpp
 class LIBPROTOBUF_EXPORT Service {
   ...
 
@@ -281,7 +281,7 @@ class LIBPROTOBUF_EXPORT Service {
 
 通过`ServiceDescriptor`就可以获取对应的`name`及`MethodDescriptor`.
 
-```
+```cpp
 class LIBPROTOBUF_EXPORT ServiceDescriptor {
  public:
   // The name of the service, not including its containing scope.
@@ -297,7 +297,7 @@ class LIBPROTOBUF_EXPORT ServiceDescriptor {
 
 而`MethodDecriptor`可以获取对应的`name`及从属的`ServiceDescriptor`
 
-```
+```cpp
 class LIBPROTOBUF_EXPORT MethodDescriptor {
  public:
   // Name of this method, not including containing scope.
@@ -318,7 +318,7 @@ class LIBPROTOBUF_EXPORT MethodDescriptor {
 
 前面还提到的一个问题，是如何构造具体参数的问题。实现 RPC 框架时，肯定是不知道`EchoRequest EchoResponse`类名的，但是通过`::google::protobuf::Service`的接口可以构造出对应的对象来
 
-```
+```cpp
   //   const MethodDescriptor* method =
   //     service->GetDescriptor()->FindMethodByName("Foo");
   //   Message* request  = stub->GetRequestPrototype (method)->New();
@@ -333,7 +333,7 @@ class LIBPROTOBUF_EXPORT MethodDescriptor {
 
 而`Message`通过`New`可以构造出对应的对象
 
-```
+```cpp
 class LIBPROTOBUF_EXPORT Message : public MessageLite {
  public:
   inline Message() {}
@@ -358,7 +358,7 @@ class LIBPROTOBUF_EXPORT Message : public MessageLite {
 
 `RpcMeta`用于解决传递 service-name method-name 的问题，定义如下
 
-```
+```cpp
 package myrpc;
 
 message RpcMeta {
@@ -374,7 +374,7 @@ message RpcMeta {
 
 ### 6.2. Channel
 
-```
+```cpp
 //继承自RpcChannel，实现数据发送和接收
 class MyChannel : public ::google::protobuf::RpcChannel {
 public:
@@ -443,7 +443,7 @@ private:
 
 因此，我们先看下`add`方法的实现：
 
-```
+```cpp
 class MyServer {
 public:
     void add(::google::protobuf::Service* service) {
@@ -472,7 +472,7 @@ private:
 
 注册 service 后，就可以启动 server 监听端口和接收数据了
 
-```
+```cpp
 //监听ip:port，接收数据
 void MyServer::start(const std::string& ip, const int port) {
     boost::asio::io_service io;
@@ -519,7 +519,7 @@ void MyServer::start(const std::string& ip, const int port) {
 
 `start`启动一个循环，解析`RpcMeta`数据并接收 request 数据，之后交给 dispatch_msg 处理。
 
-```
+```cpp
 void MyServer::dispatch_msg(
         const std::string& service_name,
         const std::string& method_name,
@@ -554,7 +554,7 @@ void MyServer::dispatch_msg(
 
 在用户填充数据后，`on_resp_msg_filled`用于完成序列化及发送的工作。
 
-```
+```cpp
 void MyServer::on_resp_msg_filled(
         ::google::protobuf::Message* recv_msg,
         ::google::protobuf::Message* resp_msg,
@@ -572,7 +572,7 @@ void MyServer::on_resp_msg_filled(
 
 `pack_message`用于打包数据，其实就是在序列化数据前插入4字节长度数据
 
-```
+```cpp
     void pack_message(
             const ::google::protobuf::Message* msg,
             std::string* serialized_data) {

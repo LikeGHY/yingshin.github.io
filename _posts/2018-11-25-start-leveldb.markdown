@@ -10,7 +10,7 @@ leveldb是个高性能、可靠的单机Key-Value数据库，其软件架构设�
 
 数据库的实现可以很简单，例如
 
-```
+```cpp
 std::map<std::string, std::string> KV;
 ```
 
@@ -25,7 +25,7 @@ std::map<std::string, std::string> KV;
 
 因此我们的数据库实现可以进一步优化为：
 
-```
+```cpp
 class KV {
     std::map<std::string, std::string> KV;
     int fd;

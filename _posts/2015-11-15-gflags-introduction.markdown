@@ -14,7 +14,7 @@ gflags里参数的定义可以分散在各个源文件处，而不是只能在ma
 
 看个简单的例子:   
 
-```
+```cpp
 #include <iostream>
 #include <gflags/gflags.h>
 
@@ -70,7 +70,7 @@ DEFINE_string: C++string
 
 例如对上述flags的定义，-help输出如下：  
 
-```
+```cpp
   Flags from flags_help.cpp:
     -big_menu (Include 'advanced' options in the menu listing) type: bool
       default: true
@@ -87,7 +87,7 @@ DEFINE_string: C++string
 在flags1.cpp flags2.cpp里分别定义各自的flag，然后在flag.h声明，需要使用的文件直接`include flags.h`就可以了。  
 声明的函数如下：  
 
-```
+```cpp
    DECLARE_bool(big_menu);
 ```
 
@@ -104,14 +104,16 @@ __remove\_flags__: 若设置为true，表示解析后将flag以及flag对应的�
 我觉得是返回处理后的argv第一个非flag值的下标  
 
 也可以在命令行传入`--flagfile`或者在程序里设置`flagfile`以解析文件中的flags。
-```
+
+```cpp
 google::SetCommandLineOption("flagfile", "gflags_sample.flags");
 ```
 
 `FLAGS_flagfile`更新后，会自动重新读取该文件并更新文件里的gflags。
 
 另外看过厂里很多代码使用`ReadFromFlagsFile`接口，不过该接口已经标明`DEPRECATED`，不建议使用。  
-```
+
+```cpp
 // These let you manually implement --flagfile functionality.
 // DEPRECATED.
 extern bool AppendFlagsIntoFile(const std::string& filename, const char* prog_name);
@@ -127,7 +129,7 @@ extern bool ReadFromFlagsFile(const std::string& filename,
 gflags提供了一个检查传入flag值是否有效的功能，只要定义检测函数，并且注册就可以了。  
 检测函数以及注册方式的例子：  
 
-```
+```cpp
 static bool ValidatePort(const char* flagname, int32 value) {
    if (value > 0 && value < 32768)   // value is ok
      return true;
@@ -149,7 +151,7 @@ static const bool port_dummy = RegisterFlagValidator(&FLAGS_port, &ValidatePort)
 使用`GetCommandLineFlagInfo`即可  
 例如判断`portno`是否设置：  
 
-```
+```cpp
     google::CommandLineFlagInfo info;
     if (GetCommandLineFlagInfo("portno", &info) && info.is_default) {
         std::cout << "port is not set." << std::endl;
@@ -165,12 +167,13 @@ static const bool port_dummy = RegisterFlagValidator(&FLAGS_port, &ValidatePort)
 实际项目里，我们使用gflag替代了传统conf配置，其中有一个需求是配置可以动态reload的。简单点通过手动修改的方式： `FLAGS_protno = 9999`。  
 比较合理的是使用`SetCommandLineOption`，函数原型为  
 
-```
+```cpp
 extern std::string SetCommandLineOption(const char* name, const char* value);
 ```
 
 注意bool int类型都使用字符串的方式修改，例如：
-```
+
+```cpp
 google::SetCommandLineOption("bvar_dump", "true")
 google::SetCommandLineOption("portno", "9999")
 ```
@@ -178,7 +181,8 @@ google::SetCommandLineOption("portno", "9999")
 成功返回"portno set to 9999"，失败则返回空字符串。
 
 与此类似的是读取flag的接口：
-```
+
+```cpp
 extern bool GetCommandLineOption(const char* name, std::string* OUTPUT)
 ```
 OUTPUT填充了对应的设置的值，如果一个flag未设置，那么OUTPUT将填充默认值。无论flag是否设置均认为获取成功返回true，
@@ -201,7 +205,7 @@ OUTPUT填充了对应的设置的值，如果一个flag未设置，那么OUTPUT�
 
 gflags源码里有些保留的flag，不要重复定义
 
-```
+```cpp
 // Special flags, type 1: the 'recursive' flags.  They set another flag's val.
 DEFINE_string(flagfile,   "", "load flags from file");
 DEFINE_string(fromenv,    "", "set flags from the environment"
@@ -226,7 +230,8 @@ multiple definition of 'fLS::FLAGS_flagfile'
 这个问题跟上面类似，不要定义相同的flag名，即使放在不同的namespace。
 
 例如我们定义了
-```
+
+```cpp
 namespace foo {
 DEFINE_bool(multi_thread_enabled, true, "");
 }
@@ -236,17 +241,20 @@ DEFINE_bool(multi_thread_enabled, true, "");
 ```
 
 编译没有问题，但是运行会报错：
-```
+
+```cpp
 ERROR: flag 'multi_thread_enabled' was defined more than once
 ```
 
 或者
-```
+
+```cpp
 ERROR: something wrong with flag ...
 ```
 
 具体可以参考gflags源码：
-```
+
+```cpp
   if (ins.second == false) {   // means the name was already in the map
     if (strcmp(ins.first->second->filename(), flag->filename()) != 0) {
       ReportError(DIE, "ERROR: flag '%s' was defined more than once "

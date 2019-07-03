@@ -214,7 +214,7 @@ non key-based不需要指定key，索引方式类似于`std::list std::vector`�
 
 具体参考代码注释
 
-```
+```cpp
 #include <iostream>
 #include <string>
 #include <vector>
@@ -296,7 +296,7 @@ int main() {
 
 当然，对于`ordered`的索引，我们也可以指定排序方式，例如第1个索引可以修改为
 
-```
+```cpp
             boost::multi_index::ordered_non_unique<
                 boost::multi_index::identity<WordCnt> >,
 ->
@@ -335,14 +335,14 @@ member指定元素某个成员变量作为key，例如`boost::multi_index::membe
 
 另外一种指定方式为使用宏
 
-```
+```cpp
             boost::multi_index::hashed_unique<
                 BOOST_MULTI_INDEX_MEMBER(WordCnt, std::string, word) >
 ```
 
 实际上`BOOST_MULTI_INDEX_MEMBER`的定义是这样子的
 
-```
+```cpp
 #define BOOST_MULTI_INDEX_MEMBER(Class,Type,MemberName) \
 ::boost::multi_index::member_offset< Class,Type,offsetof(Class,MemberName) >
 ```
@@ -351,7 +351,7 @@ member指定元素某个成员变量作为key，例如`boost::multi_index::membe
 
 `const_mem_fun/mem_fun`支持传入成员函数，结合前面提到的`random_access`看个例子
 
-```
+```cpp
 #include <string>
 #include <iostream>
 
@@ -474,7 +474,7 @@ employees.get<1>().modify(employees.get<1>().begin(), [](Employee& employee){ em
 
 或者
 
-```
+```cpp
 void foo(Animal& a) {
     a.name = "ufo";
 }
@@ -486,7 +486,7 @@ x.modify(x.find('cat'), foo)
 
 不同索引间的迭代器可以通过`project`接口转换
 
-```
+```cpp
 typedef boost::multi_index::multi_index_container<
     Employee,
     boost::multi_index::indexed_by<

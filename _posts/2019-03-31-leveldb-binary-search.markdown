@@ -29,7 +29,7 @@ restart points 将 entry 分为多组：
 
 代码也就容易理解了：
 
-```
+```cpp
     // Binary search in restart array to find the last restart point
     // with a key < target
     uint32_t left = 0;
@@ -65,7 +65,7 @@ restart points 将 entry 分为多组：
 
 除了 level 0，其他 level 的文件都是有序的，每个文件有一个 key range: [smallest, largest].
 
-```
+```cpp
 struct FileMetaData {
   int refs;
   int allowed_seeks;          // Seeks allowed until compaction
@@ -87,7 +87,7 @@ struct FileMetaData {
 
 具体的代码：
 
-```
+```cpp
 //二分查找第一个满足条件的file:file->largest>=key，如果key存在于files，那么一定存在于该file
 //如果不存在则返回files.size()
 //关于二分查找最重要的是loop invariant，可以参考之前写的笔记：https://izualzhy.cn/binary-search-analysis

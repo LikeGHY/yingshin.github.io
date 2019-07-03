@@ -12,7 +12,7 @@ tags: [protobuf, varint, zigzag]
 
 比如我们定义了proto
 
-```
+```cpp
 message Test1 {
   required int32 a = 1;
 }
@@ -20,7 +20,7 @@ message Test1 {
 
 构造Test1对象，赋值a并且序列化到data
 
-```
+```cpp
     Test1 test;
     test.set_a(150);
 
@@ -64,15 +64,16 @@ Varint就是一种对数字进行编码的方法，编码后二进制数据是�
 
 根据上面的规则，摘抄了pb里对应的代码如下（`coded_stream.cc`）：
 
-```
+
+```cpp
     static const int kMaxVarint32Bytes = 5;
-    
+
     uint8 bytes[kMaxVarint32Bytes];
     int size = 0;
     while (value > 0x7F) {
       bytes[size++] = (static_cast<uint8>(value) & 0x7F) | 0x80;
       value >>= 7;
-    }   
+    }
     bytes[size++] = static_cast<uint8>(value) & 0x7F;
 ```
 
@@ -97,7 +98,7 @@ wire type的取值有很多
 
 key的计算方式为`(field_number << 3) | wire_type`，即低位记录`wire_type`，高位记录`field_number`。
 
-```
+```cpp
 // Number of bits in a tag which identify the wire type.
 static const int kTagTypeBits = 3;
 
@@ -116,7 +117,7 @@ static const int kTagTypeBits = 3;
 
 注意到varint编码也应用在了key的计算上，使用非常频繁，或许是基于这个原因，pb里实现了一种性能更高的方案（`coded_stream.cc`）。
 
-```
+```cpp
 inline uint8* CodedOutputStream::WriteVarint32FallbackToArrayInline(
     uint32 value, uint8* target) {
   target[0] = static_cast<uint8>(value | 0x80);
@@ -162,7 +163,8 @@ varint编码希望以标志位能够节省掉高字节的0，但是负数的最�
 
 对应的代码（`coded_stream.h`）。
 
-```
+
+```cpp
 inline void CodedOutputStream::WriteVarint32SignExtended(int32 value) {
   if (value < 0) {
     WriteVarint64(static_cast<uint64>(value));
@@ -194,7 +196,7 @@ ZigZag是将有符号数统一映射到无符号数的一种编码方案，对�
 
 对应的编码及解码方案(`wire_format_lite.h`)：
 
-```
+```cpp
 inline uint32 WireFormatLite::ZigZagEncode32(int32 n) {
   // Note:  the right-shift must be arithmetic
   return (n << 1) ^ (n >> 31);
@@ -228,7 +230,7 @@ protobuf里提供了一种sint32/sint64来使用ZigZag编码。
 
 由于序列化后的数据跟字段名无关，因此不同格式的 message 只要类型/tag相同，是可以互转的，例如：
 
-```
+```cpp
 message A {
   optional int32 id = 1;
   optional string url = 2;
