@@ -10,7 +10,7 @@ tags: [closure]
 
 function对不同类型的函数指针进行统一的封装。例如：  
 
-```
+```cpp
 int foo() {...}
 std::tr1::function<int ()> bar = f;
 bar();
@@ -20,7 +20,7 @@ bar();
 
 如果函数带参数或者是成员函数，使用bind可以实现一个闭包的作用，将对象本身、参数都封装进来，返回一个function对象。例如：  
 
-```
+```cpp
 struct X {
     int foo(int data) {
         std::cout << "X::foo " << data << std::endl;
@@ -52,7 +52,7 @@ f(1);
 最近正好在看protobuf的源码，在google/protobuf/stubs/common.h中有一个类似的实现。  
 试着实现了一个简化的版本，先看下使用方法：  
 
-```
+```cpp
 void foo() {
     std::cout << "foo" << std::endl;
 }
@@ -103,7 +103,7 @@ NewCallback函数返回一个new之后的closure,closure不需要手动delete。
 
 #### 3.1 首先定义一个Closure基类:  
 
-```
+```cpp
 class Closure {
 public:
     Closure() {}
@@ -118,7 +118,7 @@ public:
 
 #### 3.2 先看下无参数情况下的普通函数对应的闭包：  
 
-```
+```cpp
 class FunctionClosure0 : public Closure {
 public:
     typedef void (*FunctionType)();
@@ -143,7 +143,7 @@ private:
 
 该Closure对应的NewCallback为：  
 
-```
+```cpp
 Closure* NewCallback(void (*function)()) {
     return new FunctionClosure0(function);
 }
@@ -152,7 +152,7 @@ Closure* NewCallback(void (*function)()) {
 
 #### 3.3 接着看下无参数成员函数对应的闭包：  
 
-```
+```cpp
 template <typename Class>
 class MethodClosure0 : public Closure {
 public:
@@ -184,7 +184,7 @@ private:
 
 对应的`NewCallback`:  
 
-```
+```cpp
 template <typename Class>
 Closure* NewCallback(Class* object, void (Class::*method)()) {
     return new MethodClosure0<Class>(object, method);
@@ -195,7 +195,7 @@ Closure* NewCallback(Class* object, void (Class::*method)()) {
 
 #### 3.4 例如对于单参数：  
 
-```
+```cpp
 template <typename Arg1>
 class FunctionClosure1 : public Closure {
 public:
