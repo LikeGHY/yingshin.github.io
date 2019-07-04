@@ -384,7 +384,7 @@ prevLogTerm = 6
 
 论文里还提到一种优化方法，follower返回冲突的index及对应的term，我认为还是值得尝试的:
 
-```
+```go
     ConflictIndex int
     ConflictTerm int
 ```
@@ -441,13 +441,13 @@ entries[] // log entries to store (empty for heartbeat; may send more than one f
 
 假设a b两个实例在`index = j`处有相同的index和term，而存在某个最大的`i`，满足
 
-```
+```go
 index = i and i < j and a.Log[i].term != b.Log[i].term
 ```
 
 说明a.Log[i]与b.Log[i]来自不同的leader(可能是a b自身)，而在`index = i + 1`的时候被某个leader x统一了，那么这里就产生了矛盾：
 
-```
+```go
 x.Log[i].term == a.Log[i].term and x.Log[i].term == b.Log[i].term
 ```
 
