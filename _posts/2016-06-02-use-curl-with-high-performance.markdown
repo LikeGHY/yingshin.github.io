@@ -56,7 +56,7 @@ curl自带的[例子](https://curl.haxx.se/libcurl/c/multi-app.html)还是介绍
 
 通过一个示例来看下multi的工作方式（注意出于简短的目的，有的函数没有判断返回值）
 
-```
+```cpp
 #include "curl/curl.h"
 #include <string>
 
@@ -119,7 +119,7 @@ int main() {
 可以看到异步处理的方式是通过`curl_multi_add_handle`接口不断的把待抓的easy handle放到multi handle里。然后通过`curl_multi_wait/curl_multi_perform`等待所有easy handle处理完毕。  
 因为是同时在等待所有easy handle处理完毕，耗时比easy方式里逐个同步等待大大减少。其中产生hold作用的是在这段代码里：
 
-```
+```cpp
 //等待所有easy handle处理完毕
 do {
     ...
@@ -137,7 +137,7 @@ do {
 
 模型类似于：
 
-```
+```cpp
 CURLM* curlm = curl_multi_init()
 
 //Thread-Consumer

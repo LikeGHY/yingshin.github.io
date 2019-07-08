@@ -24,7 +24,7 @@ tags: [zookeeper]
 
 在使用ZooKeeper进行任何操作之前，需要一个`zhandle_t`句柄，用于管理客户端与服务器之间的连接，所有的zookeeper接口函数都需要传入该参数。通过`zookeeper.h`的两个接口进行创建和销毁:
 
-```
+```cpp
 ZOOAPI zhandle_t *zookeeper_init(const char *host, watcher_fn fn,
   int recv_timeout, const clientid_t *clientid, void *context, int flags);
 
@@ -43,7 +43,7 @@ ZOOAPI int zookeeper_close(zhandle_t *zh);
 
 回调函数声明如下：
 
-```
+```cpp
 typedef void (*watcher_fn)(zhandle_t *zh, int type, 
         int state, const char *path,void *watcherCtx);
 ```
@@ -62,7 +62,7 @@ typedef void (*watcher_fn)(zhandle_t *zh, int type,
 
 看一个简单的例子，在这个例子里我们连接zk服务集群，并在连接成功后断开。
 
-```
+```cpp
 #include <assert.h>
 #include <pthread.h>
 #include <string>
@@ -183,7 +183,7 @@ zookeeper客户端会输出部分日志，这里重点看下程序自身的输�
 
 监视点函数的定义如下：
 
-```
+```cpp
 typedef void (*watcher_fn)(zhandle_t *zh, int type, 
         int state, const char *path,void *watcherCtx);
 ```
@@ -223,7 +223,7 @@ ZOO_CONNECTED_STATE:3
 
 接下来我们介绍znode操作的同步接口，同步接口又可以分为两类，分别是zoo_xxx和zoo_wxxx的形式，例如:
 
-```
+```cpp
 ZOOAPI int zoo_exists(zhandle_t *zh, const char *path, int watch, struct Stat *stat);
 ZOOAPI int zoo_wexists(zhandle_t *zh, const char *path,
         watcher_fn watcher, void* watcherCtx, struct Stat *stat);
@@ -239,7 +239,7 @@ ZOOAPI int zoo_wexists(zhandle_t *zh, const char *path,
 
 ### 3. 监视点回调的例子
 
-```
+```cpp
 ...
 
 void zk_event_callback(
@@ -386,7 +386,7 @@ void close_zhandle(zhandle_t*&)
 
 上面的例子里，我们使用`zoo_create`创建了一个临时znode，函数原型如下：
 
-```
+```cpp
 ZOOAPI int zoo_create(zhandle_t *zh, const char *path, const char *value,
         int valuelen, const struct ACL_vector *acl, int flags,
         char *path_buffer, int path_buffer_len);
@@ -398,7 +398,7 @@ ACL与权限管理有关，上个例子里不设置权限，因此取值为`ZOO_
 
 创建后我们可以使用`zoo_set/zoo_set2`接口进行数据的更新
 
-```
+```cpp
 ZOOAPI int zoo_set(zhandle_t *zh, const char *path, const char *buffer,
                    int buflen, int version);
 ZOOAPI int zoo_set2(zhandle_t *zh, const char *path, const char *buffer,
@@ -420,7 +420,7 @@ ZOOAPI int zoo_set2(zhandle_t *zh, const char *path, const char *buffer,
 
 异步接口跟同步类似，只是函数立刻返回，对znode的操作结果在异步函数里完成。例如`zoo_acreate`定义如下：
 
-```
+```cpp
 ZOOAPI int zoo_acreate(zhandle_t *zh, const char *path, const char *value, 
         int valuelen, const struct ACL_vector *acl, int flags,
         string_completion_t completion, const void *data);
@@ -430,7 +430,7 @@ ZOOAPI int zoo_acreate(zhandle_t *zh, const char *path, const char *value,
 
 其中`string_completion_t`的定义如下
 
-```
+```cpp
 typedef void
         (*string_completion_t)(int rc, const char *value, const void *data);
 ```
@@ -439,7 +439,7 @@ typedef void
 
 其他几个异步结果处理函数有：
 
-```
+```cpp
 typedef void (*void_completion_t)(int rc, const void *data);
 typedef void (*stat_completion_t)(int rc, const struct Stat *stat,
         const void *data);

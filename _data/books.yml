@@ -1,3 +1,10 @@
+- name: 蛤蟆的油
+  cover: https://img3.doubanio.com/lpic/s27325332.jpg
+  start_date: 2019.7.5
+  finish_date: 
+  douban_link: https://book.douban.com/subject/25903505/
+  note: 
+
 - name: 图解HTTP
   cover: https://img3.doubanio.com/lpic/s27283822.jpg
   start_date: 2019.6.23
