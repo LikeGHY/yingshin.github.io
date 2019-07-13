@@ -12,7 +12,7 @@ tags: [leveldb]
 
 leveldb 的接口使用十分简单，看一个读和写的例子：
 
-```
+```cpp
 #include <assert.h>
 #include <iostream>
 #include "leveldb/db.h"
@@ -44,7 +44,7 @@ int main() {
 
 根据`WRITE_MODE`宏分别生成 read/write
 
-```
+```cpp
 $ g++ -o write_test test.cpp ../build/libleveldb.a -I ../build/include -I ../include -I .. -std=c++11 -g -DLEVELDB_PLATFORM_POSIX -DLEVELDB_HAS_PORT_CONFIG_H -lpthread -DWRITE_MODE
 $ g++ -o read_test test.cpp ../build/libleveldb.a -I ../build/include -I ../include -I .. -std=c++11 -g -DLEVELDB_PLATFORM_POSIX -DLEVELDB_HAS_PORT_CONFIG_H -lpthread
 ```

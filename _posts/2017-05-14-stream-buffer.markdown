@@ -27,7 +27,7 @@ tags: [streambuf]
 
 `streambuf`实际上是一个模板类
 
-```
+```cpp
 typedef basic_streambuf<char> streambuf;
 typedef basic_streambuf<wchar_t> wstreambuf;
 ```
@@ -44,7 +44,7 @@ STL标准库实现了两个子类，分别是`filebuf` 和 `stringbuf`。
 
 例如我们可以修改`std::cout`和`std::stringstream`使用同一块缓冲区
 
-```
+```cpp
 #include <stdio.h>
 #include <iostream>
 #include <sstream>
@@ -89,7 +89,7 @@ int main() {
 
 `setp`可以指定`pbase pptr epptr`这三个指针的位置，函数原型为：
 
-```
+```cpp
 void setp (char* new_pbase, char* new_epptr);
 ```
 
@@ -97,7 +97,7 @@ void setp (char* new_pbase, char* new_epptr);
 
 先上一个例子，该例子将所有输入都大写后输出
 
-```
+```cpp
 //从std::streambuf继承，将输入字符全部大小输出
 class UpperCaseStreamBuf : public std::streambuf {
 protected:
@@ -135,7 +135,7 @@ int main() {
 
 举个《The C++ Standard Library 》的例子：
 
-```
+```cpp
 #include <stdio.h>
 #include <unistd.h>
 
@@ -191,7 +191,7 @@ int main() {
 
 上面的例子介绍了`streambuf`的基本用法，但都没有真正的buffer，接下来再看一个`overflow`使用的例子，定义了自己的接收buffer，并在buffer满后调用`overflow`输出。
 
-```
+```cpp
 #include <stdio.h>
 #include <unistd.h>
 #include <iostream>
@@ -279,7 +279,7 @@ int main() {
 
 原因在于输入流缓冲区有一个`putback`
 
-```
+```cpp
 #include <stdio.h>
 #include <string>
 #include <iostream>
@@ -318,7 +318,7 @@ int main() {
 
 摘抄下相关代码：
 
-```
+```cpp
 class LogStreamBuf : public std::streambuf {
  public:
   // REQUIREMENTS: "len" must be >= 2 to account for the '\n' and '\n'.

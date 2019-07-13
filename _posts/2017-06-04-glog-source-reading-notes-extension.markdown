@@ -21,7 +21,7 @@ tags: [glog]
 
 `LogDestination`调用`LogFileObject::write`接口，看下`write`里的这几行代码：
 
-```
+```cpp
   //超过大小或者进程id改变
   if (static_cast<int>(file_length_ >> 20) >= MaxLogSize() ||
       PidHasChanged()) {
@@ -77,7 +77,7 @@ inline void LogDestination::LogToAllLogfiles(LogSeverity severity,
 
 首先实现一个继承自`google::LogSink`的子类：
 
-```
+```cpp
 class MyNewLogSink : public google::LogSink {
     virtual void send(google::LogSeverity severity, const char* full_filename,
             const char* base_filename, int line,
@@ -102,7 +102,7 @@ class MyNewLogSink : public google::LogSink {
 
 接下来就是add到sink里：
 
-```
+```cpp
 int main(int argc, char* argv[]) {
     FLAGS_logtostderr = 1;
     google::InitGoogleLogging(argv[0]);
@@ -126,7 +126,7 @@ MyNewLogSink::WaitTillSent
 
 如果觉得不想调用glog默认方法，就使用另外一个宏`LOG_TO_SINK_BUT_NOT_TO_LOGFILE`:
 
-```
+```cpp
 int main(int argc, char* argv[]) {
     FLAGS_logtostderr = 1;
     google::InitGoogleLogging(argv[0]);
@@ -144,7 +144,7 @@ int main(int argc, char* argv[]) {
 
 基于`base::Logger`我们可以实现自定义的输出Logger，替换掉目前默认使用的`LogFileObject`
 
-```
+```cpp
 class MyInfoLogger : public google::base::Logger {
 public:
     virtual void Write(bool force_flush,
@@ -170,7 +170,7 @@ public:
 
 使用`SetLogger`替换
 
-```
+```cpp
 int main(int argc, char* argv[]) {
     google::InitGoogleLogging(argv[0]);
 

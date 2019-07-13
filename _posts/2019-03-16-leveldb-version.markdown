@@ -53,7 +53,7 @@ Version + Delta = New-Version
 
 `VersionEdit`即 delta，最重要的两个成员变量就是新增与删除文件:
 
-```
+```cpp
   DeletedFileSet deleted_files_;//待删除文件
   //新增文件，例如immutable memtable dump后就会添加到new_files_
   std::vector< std::pair<int, FileMetaData> > new_files_;
@@ -61,7 +61,7 @@ Version + Delta = New-Version
 
 对外接口上，例如`AddFile`就是更新`new_files_`
 
-```
+```cpp
   // Add the specified file at the specified number.
   // REQUIRES: This version has not been saved (see VersionSet::SaveTo)
   // REQUIRES: "smallest" and "largest" are smallest and largest keys in file
@@ -83,7 +83,7 @@ Version + Delta = New-Version
 
 `Version`用于表示某次 compaction 后的数据库状态，管理当前的文件集合，因此最重要一个成员变量`files_`表示每一层的全部 sstable 文件。
 
-```
+```cpp
   // List of files per level
   std::vector<FileMetaData*> files_[config::kNumLevels];
 ```
@@ -99,7 +99,7 @@ Version + Delta = New-Version
 3. 如果放到 level + 1层，与 level + 2层的文件重叠很大，就会导致 compact 到该文件时，压力过大，则不再尝试。这算是一个预测，放到 level 层能够缓冲这一点。  
 4. 最大返回 level 2，这大概是个经验值。
 
-```
+```cpp
 // 找一个合适的level放置新从memtable dump出的sstable
 // 注：不一定总是放到level 0，尽量放到更大的level
 // 如果[small, large]与0层有重叠，则直接返回0
@@ -148,7 +148,7 @@ int Version::PickLevelForMemTableOutput(
 
 成员变量也是记录所有的 delta，`levels_`存储了每一层的`added_files`及`deleted_files`:
 
-```
+```cpp
   typedef std::set<FileMetaData*, BySmallestKey> FileSet;
   struct LevelState {
     std::set<uint64_t> deleted_files;
@@ -165,7 +165,7 @@ int Version::PickLevelForMemTableOutput(
 
 `Apply`主要就是更新新增及删除文件的集合，首先是删除文件：
 
-```
+```cpp
   // 记录edit中可删除及新增文件到levels_
   void Apply(VersionEdit* edit) {
     // Update compaction pointers
@@ -193,7 +193,7 @@ int Version::PickLevelForMemTableOutput(
 
 接下来的执行则是更新对应 level 的`added_files`：
 
-```
+```cpp
     // Add new files
     // 记录新增文件到added_files，并计算该文件的allowed_seeks(用于触发compact)
     for (size_t i = 0; i < edit->new_files_.size(); i++) {
@@ -214,7 +214,7 @@ int Version::PickLevelForMemTableOutput(
 
 `SaveTo`就是将`levels_`记录的 deleted/added files 作用于原来的，生成新的version v，就是遍历每一层，将 delta 的文件更新到合适位置。
 
-```
+```cpp
   // Save the current state in *v.
   // 将levels_记录的deleted/added files作用于base，生成新的version v
   void SaveTo(Version* v) {
@@ -260,14 +260,14 @@ int Version::PickLevelForMemTableOutput(
 
 随着`Builder`不断执行，新的`version`被构造出来。`VersionSet`就负责管理多个版本，对应的变量全局唯一，在`DBImpl`构造函数里初始化：
 
-```
+```cpp
       versions_(new VersionSet(dbname_, &options_, table_cache_,
                                &internal_comparator_)) {
 ```
 
 管理一个双向链表
 
-```
+```cpp
   Version dummy_versions_;  // Head of circular doubly-linked list of versions.
   Version* current_;        // == dummy_versions_.prev_
 ```
@@ -278,7 +278,7 @@ int Version::PickLevelForMemTableOutput(
 
 因此`class Version`实际上还有三个重要的链表相关成员变量：
 
-```
+```cpp
   VersionSet* vset_;            // VersionSet to which this Version belongs
   Version* next_;               // Next version in linked list
   Version* prev_;               // Previous version in linked list
@@ -295,7 +295,7 @@ int Version::PickLevelForMemTableOutput(
 
 首先是生成新`Version`:
 
-```
+```cpp
   Version* v = new Version(this);
   {
     Builder builder(this, current_);
@@ -306,13 +306,13 @@ int Version::PickLevelForMemTableOutput(
 
 接着调用`Finalize`计算下次 major compact 时要处理的层，参考[size_compaction](https://izualzhy.cn/leveldb-version-for-compaction#2-size_compaction)
 
-```
+```cpp
   Finalize(v);
 ```
 
 更新`manifest`写入`current_`
 
-```
+```cpp
   // Initialize new descriptor log file if necessary by creating
   // a temporary file that contains a snapshot of the current version.
   std::string new_manifest_file;
@@ -335,7 +335,7 @@ int Version::PickLevelForMemTableOutput(
 
 写入`edit`
 
-```
+```cpp
   // Unlock during expensive MANIFEST log write
   {
     mu->Unlock();
@@ -359,7 +359,7 @@ int Version::PickLevelForMemTableOutput(
 
 接着在`CURRENT`文件里明文写入`manifest`文件名。
 
-```
+```cpp
     // 将manifest_file_number_写入CURRENT文件
     if (s.ok() && !new_manifest_file.empty()) {
       s = SetCurrentFile(env_, dbname_, manifest_file_number_);
@@ -370,7 +370,7 @@ int Version::PickLevelForMemTableOutput(
 
 最后就是调用`AppendVersion(v);`将新版本更新到链表，修改`current_`：
 
-```
+```cpp
 // v加到链表里
 void VersionSet::AppendVersion(Version* v) {
   // Make "v" current
@@ -398,14 +398,13 @@ void VersionSet::AppendVersion(Version* v) {
 
 #### 3.4.2. PickCompaction
 
-
 ## 4. 例子
 
 ### 4.1. 读取 MANIFEST 文件
 
 MANIFEST 文件是跟日志格式一样，因此，我们按照读取日志的方式读取该文件。查看打开一个 db 下的文件
 
-```
+```cpp
 int main() {
     leveldb::SequentialFile* file;
     //MANIFEST files

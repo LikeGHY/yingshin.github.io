@@ -8,7 +8,7 @@ tags: [compiler, SFINAE]
 
 想写这篇文章主要是偶然看到很多代码使用[protobuf里的反射](http://izualzhy.cn/protobuf-message-reflection)，例如我们想要获取字段`common.logid`对应的value，很多实现使用`GetReflection/GetString/field/HasFeild`这些接口来获取。
 
-```
+```cpp
 /*
 部分schema定义
 message Common {
@@ -48,7 +48,7 @@ C++编译过程中，如果模板实例化后的某个模板函数（模板类�
 
 说着比较绕口，实际编程中我们或多或少都使用过这个原则，看个例子：
 
-```
+```cpp
 struct Test {
     typedef int foo;
 };
@@ -88,7 +88,7 @@ SFINAE原则最开始被设计出来，是应用于上面C++模板实例化的�
 
 例如我们想查看类T是否有`T::iterator`这个类型
 
-```
+```cpp
 #include <iostream>
 #include <vector>
 
@@ -136,7 +136,7 @@ int main() {
 
 上面的功能，C++11的语法实现上要更简洁一些
 
-```
+```cpp
 #include <iostream>
 #include <vector>
 #include <type_traits>
@@ -172,7 +172,7 @@ int main() {
 
 boost.mpl提供了BOOST_MPL_HAS_XXX_TRAIT_DEF，可以协助我们方便的测试类型T是否定义了某个内嵌类型。
 
-```
+```cpp
 #include <iostream>
 #include <vector>
 #include "boost/mpl/has_xxx.hpp"
@@ -194,7 +194,7 @@ int main() {
 
 这里介绍下boost里tti的用法   。
 
-```
+```cpp
 #include <vector>
 #include <iostream>
 #include "boost/tti/has_member_function.hpp"
@@ -231,7 +231,7 @@ boost与std里都有定义，接下来的例子可能都有用到。
 
 首先从cppreference的例子看下enable_if的两种用法
 
-```
+```cpp
 // enable_if example: two ways of using enable_if
 #include <iostream>
 #include <type_traits>
@@ -269,7 +269,7 @@ int main() {
 
 比如如果我们增加这么一句
 
-```
+```cpp
 std::cout << "i is even: " << is_even(100.0) << std::endl;
 ```
 
@@ -299,7 +299,7 @@ test_enable_if.cpp:27:12: error: no type named ‘type’ in ‘struct std::enab
 
 C++模板元编程里的定义
 
-```
+```cpp
 template <bool, typename T=void>
 struct enable_if {
 };
@@ -316,7 +316,7 @@ struct enable_if<true, T> {
 
 boost里的实现位于core/enable_if.cpp
 
-```
+```cpp
 namespace boost
 {
 
@@ -376,7 +376,7 @@ namespace boost
 
 将/不将某种类型加入到我们模板实例化决议集合里。
 
-```
+```cpp
 #include <boost/utility/enable_if.hpp>
 #include <type_traits>
 #include <string>
@@ -409,7 +409,7 @@ boost里type_traits还有例如`is_class has_trival_copy has_virtual_detructor`�
 
 回到最开始的想法，假设我们希望只有传入的对象，有`logid`这个成员函数时就调用logid，应该怎么做？
 
-```
+```cpp
 #include <iostream>
 #include "boost/tti/has_member_function.hpp"
 
@@ -453,21 +453,15 @@ int main() {
 
 ## 5. 更多应用
 
-实际上SFINAE在大型项目里非常常见，例如protobuf里的[type_traits.h](https://github.com/google/protobuf/blob/master/src/google/protobuf/stubs/type_traits.h)有大量使用:
+实际上SFINAE在大型项目里非常常见，例如[protobuf](https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/compiler/cpp/cpp_helpers.h)有大量使用:
 
-```
-# code in template_util.h
-typedef integral_constant<bool, true>  true_type;
-typedef integral_constant<bool, false> false_type;
-
-// is_pointer is false except for pointer types. A cv-qualified type (e.g.
-// "int* const", as opposed to "int const*") is cv-qualified if and only if
-// the underlying type is.
-template <class T> struct is_pointer : false_type { };
-template <class T> struct is_pointer<T*> : true_type { };
-template <class T> struct is_pointer<const T> : is_pointer<T> { };
-template <class T> struct is_pointer<volatile T> : is_pointer<T> { };
-template <class T> struct is_pointer<const volatile T> : is_pointer<T> { };
+```cpp
+  ...
+  template <typename I, typename = typename std::enable_if<
+                            std::is_integral<I>::value>::type>
+  static std::string ToString(I x) {
+    return StrCat(x);
+  }
 ```
 
 ## 6. 参考

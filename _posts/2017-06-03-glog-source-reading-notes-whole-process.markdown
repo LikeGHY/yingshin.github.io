@@ -150,7 +150,7 @@ void LogMessage::Flush() {
 
 例如这段代码
 
-```
+```cpp
 FLAGS_minlogleve = 1;
 int a = 1;
 LOG(INFO) << a++;
