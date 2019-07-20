@@ -15,7 +15,7 @@ tags: [leveldb]
 
 写入的`key value`首先被封装到`WriteBatch`
 
-```
+```cpp
 // Default implementations of convenience methods that subclasses of DB
 // can call if they wish
 Status DB::Put(const WriteOptions& opt, const Slice& key, const Slice& value) {
@@ -28,7 +28,7 @@ Status DB::Put(const WriteOptions& opt, const Slice& key, const Slice& value) {
 
 `WriterBatch`封装了数据，`DBImpl::Writer`则继续封装了 mutex cond 等同步原语
 
-```
+```cpp
 // Information kept for every waiting writer
 struct DBImpl::Writer {
   Status status;
@@ -43,7 +43,7 @@ struct DBImpl::Writer {
 
 写入流程实际上调用的是`DBImpl::Write`
 
-```
+```cpp
 //调用流程: DBImpl::Put -> DB::Put -> DBImpl::Write
 Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
   //一次Write写入内容会首先封装到Writer里，Writer同时记录是否完成写入、触发Writer写入的条件变量等
@@ -57,7 +57,7 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
 1. 其他线程已经帮忙完成了`w`的写入  
 2. 抢到锁并且位于`writers_`首部  
 
-```
+```cpp
   MutexLock l(&mutex_);//多个线程调用的写入操作通过mutex_串行化
   writers_.push_back(&w);
   //数据先放到queue里，如果不在queue顶部则等待
@@ -73,14 +73,14 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
 
 接着查看是否有足够空间写入，例如`mem_`是否写满，是否必须触发 minor compaction 等
 
-```
+```cpp
   // May temporarily unlock and wait.
   Status status = MakeRoomForWrite(my_batch == nullptr);
 ```
 
 取出`writers_`的数据，统一记录到`updates`
 
-```
+```cpp
   uint64_t last_sequence = versions_->LastSequence();//本次写入的SequenceNumber
   Writer* last_writer = &w;
   if (status.ok() && my_batch != nullptr) {  // nullptr batch is for compactions
@@ -92,7 +92,7 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
 
 然后[写入日志](https://izualzhy.cn/leveldb-log)，[写入内存](https://izualzhy.cn/memtable-leveldb):
 
-```
+```cpp
       //WriterBatch写入log文件，包括:sequence,操作count,每次操作的类型(Put/Delete)，key/value及其长度
       status = log_->AddRecord(WriteBatchInternal::Contents(updates));
       bool sync_error = false;
@@ -111,7 +111,7 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
 
 写入完成后，逐个唤醒等待的线程:
 
-```
+```cpp
   //last_writer记录了writers_里合并的最后一个Writer
   //逐个遍历弹出writers_里的元素，并环形等待write的线程，直到遇到last_writer
   while (true) {
@@ -138,7 +138,7 @@ Status DBImpl::Write(const WriteOptions& options, WriteBatch* my_batch) {
 
 批量写入一个典型问题就是一致性，例如这么调用：
 
-```
+```cpp
 leveldb::WriteBatch batch;
 batch.Put("company", "Google");
 batch.Put(...);
@@ -151,7 +151,7 @@ db->Write(write_option, &batch);
 
 写入时，`sequence`递增的更新到 memtable，但是一次性的记录到`versions_`:
 
-```
+```cpp
   uint64_t last_sequence = versions_->LastSequence();//本次写入的SequenceNumber
   ...
     WriteBatchInternal::SetSequence(updates, last_sequence + 1);
@@ -171,7 +171,7 @@ db->Write(write_option, &batch);
 
 第一节介绍，写入的`key/value`数据，都记录到了`WriteBatch`，更具体的，记录到了:
 
-```
+```cpp
   //rep_存储了所有Put/Delete接口传入的数据
   //按照一定格式记录了:sequence, count, 操作类型(Put or Delete)，key/value的长度及key/value本身
   std::string rep_;  // See comment in write_batch.cc for the format of rep_
@@ -187,7 +187,7 @@ db->Write(write_option, &batch);
 
 按照`mem -> imm -> sstable files`的顺序读取，读不到则从下一个介质读取。因此 leveldb 更适合读取最近写入的数据。
 
-```
+```cpp
   // Unlock while reading from files and memtables
   {
     mutex_.Unlock();
@@ -211,14 +211,14 @@ db->Write(write_option, &batch);
 
 `GetStats`则记录了第一个 seek 但是没有查找到 key 的文件，之后[major compaction之筛选文件](https://izualzhy.cn/leveldb-PickCompaction)会用到。
 
-```
+```cpp
   struct GetStats {
     FileMetaData* seek_file;
     int seek_file_level;
   };
 ```
 
-```
+```cpp
   if (have_stat_update && current->UpdateStats(stats)) {
     MaybeScheduleCompaction();
   }

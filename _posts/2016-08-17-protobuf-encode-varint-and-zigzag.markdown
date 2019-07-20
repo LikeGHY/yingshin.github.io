@@ -79,13 +79,13 @@ Varint就是一种对数字进行编码的方法，编码后二进制数据是�
 
 可以看到对于较大的数字(1<<28)，使用的字节数由4个变成了5个，同时对于负数也有影响。pb里也有对应的解决方案。不过让我们先来解释下本文最开始编码字符`08 96 01`如何产生的问题。
 
-### 2. message数据格式
+### 2. 序列化的数据格式
 
-pb数据是一种[key, value]的数据格式，在序列化时也是如此，其中key使用的是该字段的field\_number与wire type取\|后的值。
+pb数据是一种[key, value]的数据格式，在序列化时也是如此，其中key需要使用字段的field\_number与wire type值。
 
 field\_number就是定义proto时使用的tag序号，比如对前面的proto字段`a`，对应的field\_number=1。
 
-wire type的取值有很多
+wire type的取值有很多，跟定义的类型有关:
 
 |Type  |Meaning  |Used For|
 |------|---------|--------|
@@ -96,7 +96,7 @@ wire type的取值有很多
 |4  |End group  |groups(deprecated)  |
 |5  |32-bit  |fixed32, sfixed32, float  |
 
-key的计算方式为`(field_number << 3) | wire_type`，即低位记录`wire_type`，高位记录`field_number`。
+序列化key部分时，首先计算`(field_number << 3) | wire_type`，即低位记录`wire_type`，高位记录`field_number`。
 
 ```cpp
 // Number of bits in a tag which identify the wire type.
@@ -109,11 +109,9 @@ static const int kTagTypeBits = 3;
 
 ```
 
-然后再进行varint编码。
+然后再进行varint编码，因此 key 编码后为`varint(1 << 3 | 0) = 0x08`，第一节里可以看到 value 为`0x96 0x01`。
 
-因此我们可以得到前面的例子里key为`varint(1 << 3 | 0) = 0x08`，value为`0x96 0x01`。
-
-序列化key-value采用直接连接的方式，因此编码后的数据为`0x08 0x96 0x01`。
+直接连接key value就是序列化后的最终格式了，因此编码后的数据为`0x08 0x96 0x01`。
 
 注意到varint编码也应用在了key的计算上，使用非常频繁，或许是基于这个原因，pb里实现了一种性能更高的方案（`coded_stream.cc`）。
 
@@ -228,6 +226,8 @@ protobuf里提供了一种sint32/sint64来使用ZigZag编码。
 
 ### 6. TIPS
 
+#### 6.1. 序列化-类型/tag
+
 由于序列化后的数据跟字段名无关，因此不同格式的 message 只要类型/tag相同，是可以互转的，例如：
 
 ```cpp
@@ -248,7 +248,47 @@ message B {
 
 从经验出发, 使用 varint 编码，整型只需要`int32/int64/uint32/uint64`就可以了，一般不需要考虑编码后的大小。同时对于负数、大整数较多的业务场景要注意对应 proto 类型的设计。
 
-pb 序列化这种紧凑的编码方式，也可以应用在我们自己的序列化方案里，例如存储的场景。
+#### 6.2. 序列化-wiretype
+
+严格来讲，序列化后的数据并没有记录类型，而是一种编码的方式(如第2节表格所示)。因此不再同一行的类型，转换时也不会报错（为什么这么设计？）
+
+```
+message LinkV1 {
+    optional bytes url = 1;
+    optional int32 yota = 2;
+    optional int32 currying = 3;
+}
+
+message LinkV2 {
+    optional bytes url = 1;
+    optional int32 yota = 2;
+    optional string currying = 3;
+}
+```
+
+例如`LinkV1`和`LinkV2`序列化后的数据是可以互相反序列化的，只是无法解析出`curring`这个字段的值。
+
+增加一个`LinkV3`
+
+```
+message Currying = {
+    optional int32 currying = 1;
+}
+
+message LinkV3 {
+    optional bytes url = 1;
+    optional int32 yota = 2;
+    optional Currying currying = 3;
+}
+```
+
+LinkV3 序列化后的数据，`LinkV2::ParseFromString`时不会报错，只是解析不出正确的 currying 的值。
+
+而 LinkV2 序列化后的数据，`LinkV3::ParseFromString`可能报错，取决于`LinkV2::set_currying(...)`字符串的写法，感兴趣可以从序列化的过程想下为什么。
+
+不过明显不推荐这么更新 proto，这个 TIP 仅用于加强对序列化的理解。
+
+pb 序列化这种紧凑的编码方式，也可以应用在我们自己的序列化方案里，例如存储的场景，在[leveldb 笔记](https://izualzhy.cn/tags.html#leveldb)里可以看到使用非常广泛。
 
 ### 7. 问题
 

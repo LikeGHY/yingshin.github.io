@@ -14,7 +14,7 @@ tags: [IPC, mmap]
 
 ## 1. 函数原型
 
-```
+```c
 #include <sys/mman.h>
 
 void* mmap(void* start, size_t length, int prot, int flags, int fd, off_t offset)
@@ -40,7 +40,7 @@ void* mmap(void* start, size_t length, int prot, int flags, int fd, off_t offset
 
 具体值定义在/usr/include/bits/mman.h可以找到
 
-```
+```c
 /* Protections are chosen from these bits, OR'd together.  The
    implementation does not necessarily support PROT_EXEC or PROT_WRITE
    without PROT_READ.  The only guarantees are that no writing will be
@@ -64,7 +64,7 @@ void* mmap(void* start, size_t length, int prot, int flags, int fd, off_t offset
 
 先看一个单进程的例子，代码通过mmap映射自身文件的内存，打印指定位置处的字符。
 
-```
+```c
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -129,7 +129,7 @@ mmap映射时，按照系统虚存页的长度整数倍映射。假定文件长1
 而我的系统里，这个系统虚存页的大小就是4096字节。   
 系统虚存页的大小获取方式：  
 
-```
+```c
     printf("%ld\n", getpagesize());
     printf("%ld\n", sysconf(_SC_PAGESIZE));
 ```
@@ -138,7 +138,7 @@ mmap映射时，按照系统虚存页的长度整数倍映射。假定文件长1
 
 先看下两段代码:
 
-```
+```c
 //map_normalfile1.cpp
 #include <stdio.h>
 #include <string.h>
@@ -182,7 +182,7 @@ int main(int argc, char* argv[]) {
 }
 ```
 
-```
+```c
 //map_normalfile2.cpp
 #include <stdio.h>
 #include <string.h>
@@ -263,7 +263,7 @@ name: age:0
 
 匿名映射是指参数fd=-1的映射，此时不通过文件共享内存，适用于父子进程之间。在父进程中先调用mmap()，然后调用 fork()。那么在调用fork()之后，子进程继承父进程匿名映射后的地址空间，同样也继承mmap()返回的地址，这样，父子进程就可以通过映射区 域进行通信了。注意，这里不是一般的继承关系。一般来说，子进程单独维护从父进程继承下来的一些变量。而mmap()返回的地址，却由父子进程共同维护。 对于具有亲缘关系的进程实现共享内存最好的方式应该是采用匿名内存映射的方式。
 
-```
+```c
 #include <sys/mman.h>
 #include <sys/types.h>
 #include <fcntl.h>
@@ -332,7 +332,7 @@ parent read name:a age:100
 
 *test_mmap1.cpp*
 
-```
+```c
 const int mem_size = sizeof(sem_t);
 
 int main() {
@@ -367,7 +367,7 @@ int main() {
 
 *test_mmap2.cpp*
 
-```
+```c
 const int mem_size = sizeof(bin_sem);
 
 int main() {

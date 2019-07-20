@@ -31,7 +31,7 @@ your browser does not support the video tag
 + partial_sort  
 + nth_element  
 
-```
+```cpp
 // Quick Sort
 template<class FwdIt, class Compare = std::less<>>
 void quickSort(FwdIt first, FwdIt last, Compare cmp = Compare{})
@@ -49,7 +49,7 @@ void quickSort(FwdIt first, FwdIt last, Compare cmp = Compare{})
 + inplace_merge   
 + partition  
 
-```
+```cpp
 // Gather
 template <typename BiIt, typename UnPred> 
 auto gather(BiIt f, BiIt l, BiIt p, UnPred s) -> std::pair <BiIt, BiIt>
@@ -61,7 +61,7 @@ auto gather(BiIt f, BiIt l, BiIt p, UnPred s) -> std::pair <BiIt, BiIt>
 + partition_point  
 + rotate  
 
-```
+```cpp
 // Insertion Sort
 for (auto i = start; i != end; ++i)
     std::rotate(std::upper_bound(start, i, *i), i, std::next(i));
@@ -78,7 +78,7 @@ auto slide(It first, It last, It pos) -> std::pair<It, It>
 + shuffle  
 + next_permutation  
 
-```
+```cpp
 while (std::next_permutation(start, end));
 ```
 + prev_permutation  
@@ -86,7 +86,7 @@ while (std::next_permutation(start, end));
 
 #### 2.1.3. SECRET RUNES
 
-```
+```cpp
 stable_*  ->  stable_sort
               stable_partition
 is_*      ->  is_sorted
@@ -176,7 +176,7 @@ search a relative value:
 
 with runes:
 
-```
+```cpp
 *_copy      -> remove_copy
                replace_copy
                reverse_copy
@@ -233,7 +233,7 @@ std::string trimRight(const std::string &s) {
 
 with runes
 
-```
+```cpp
 *_n        -> copy_n
               fill_n
               generate_n

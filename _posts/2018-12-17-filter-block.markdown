@@ -40,7 +40,7 @@ filter block的想法其实很简单，就是拿空间换时间，例如我们�
 
 `AddKey`的实现非常简单，就是记录下传入的参数 `key`.
 
-```
+```cpp
 void FilterBlockBuilder::AddKey(const Slice& key) {
   Slice k = key;
   //start_记录key在keys的offset，因此可以还原出key
@@ -56,7 +56,7 @@ void FilterBlockBuilder::AddKey(const Slice& key) {
 
 ### 4.2. StartBlock(uint64_t block_offset)
 
-```
+```cpp
 void FilterBlockBuilder::StartBlock(uint64_t block_offset) {
   //每2KB一个filter，计算当前数据大小总共需要多少个filter
   uint64_t filter_index = (block_offset / kFilterBase);
@@ -75,7 +75,7 @@ void FilterBlockBuilder::StartBlock(uint64_t block_offset) {
 
 `GenerateFilter`主要是更新`result_`和`filter_offsets_`，即数据格式里的1 2部分。
 
-```
+```cpp
 void FilterBlockBuilder::GenerateFilter() {
   const size_t num_keys = start_.size();
   //如果相比上一个filter data没有新的key
@@ -124,7 +124,7 @@ filter 数据会追加到`result_`，同时在`filter_offsets_`记录起始位�
 
 ### 4.3. Finish
 
-```
+```cpp
 Slice FilterBlockBuilder::Finish() {
   if (!start_.empty()) {
     GenerateFilter();
@@ -158,7 +158,7 @@ Slice FilterBlockBuilder::Finish() {
 
 构造函数传按照数据格式依次解析记录到`base_lg_ data_ offset_ num_`.
 
-```
+```cpp
 FilterBlockReader::FilterBlockReader(const FilterPolicy* policy,
                                      const Slice& contents)
     : policy_(policy),
@@ -185,7 +185,7 @@ FilterBlockReader::FilterBlockReader(const FilterPolicy* policy,
 
 另外一个参数是`block_offset`，跟`FilterBlockBuilder::StartBlock`一样，这里也是 sstable 里 data block 的偏移量。
 
-```
+```cpp
 bool FilterBlockReader::KeyMayMatch(uint64_t block_offset, const Slice& key) {
   //位于哪个filter data
   uint64_t index = block_offset >> base_lg_;
@@ -218,7 +218,7 @@ bool FilterBlockReader::KeyMayMatch(uint64_t block_offset, const Slice& key) {
 
 照常写了一个单独测试的例子，辅助理解
 
-```
+```cpp
 int main() {
     const leveldb::FilterPolicy* bloom_filter = leveldb::NewBloomFilterPolicy(10);
     leveldb::FilterBlockBuilder filter_block_builder(bloom_filter);

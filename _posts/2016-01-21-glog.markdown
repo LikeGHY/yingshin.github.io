@@ -23,7 +23,7 @@ glog是google的的一个C++轻量日志库，支持常用的日志功能：例�
 
 日志级别有4种，INFO WARNING ERROR FATAL，在`glog/log_severity.h`中定义，数值越大级别越高(severity)。
 
-```
+```cpp
 const int GLOG_INFO = 0, GLOG_WARNING = 1, GLOG_ERROR = 2, GLOG_FATAL = 3, NUM_SEVERITIES = 4;
 const int INFO = GLOG_INFO, WARNING = GLOG_WARNING, ERROR = GLOG_ERROR, FATAL = GLOG_FATA;
 ```
@@ -48,7 +48,7 @@ X级别的日志会输出到所有<=X的日志文件里，例如error日志在.I
 
 注意还有一种日志级别是DFATAL，当定义NDEBUG宏时是ERROR，否则是FATAL。主要通过在NDEBUG下定义为ERROR，否则为FATAL来实现。  
 
-```
+```cpp
 // glog/log_severity.h
 // DFATAL is FATAL in debug mode, ERROR in normal mode
 #ifdef NDEBUG
@@ -60,7 +60,7 @@ X级别的日志会输出到所有<=X的日志文件里，例如error日志在.I
 
 例如：
 
-```
+```cpp
 LOG(DFATAL) << "Hello, glog fatal.";
 ```
 
@@ -97,7 +97,7 @@ glog有很多配置项，这些配置项都是通过gflags设置的，关于gfla
 
 注意第三种方法需要安装了gflags库，我在编译安装glog时手动指定了gflags的位置：`--with-gflags=gflags安装路径`。编译的glog库是否支持gflags可以参考下logging.h这一行
 
-```
+```cpp
 //1表示支持，0表示不支持
 #if 1
 #include <gflags/gflags.h>
@@ -124,7 +124,7 @@ glog有很多配置项，这些配置项都是通过gflags设置的，关于gfla
 
 一个测试demo如下：  
 
-```
+```cpp
 #include "glog/logging.h"
 
 int main(int argc, char* argv[]) {
@@ -160,23 +160,24 @@ I0110 23:19:16.891405 17039 demo1.cpp:24] LOG_IF i > 5 i:9
 I0110 23:19:16.891409 17039 demo1.cpp:25] LOG_EVERY_N 3 i:9 google::COUNTER:10
 ```
 
-注意`google::COUNTER`并不总是生效的，实际使用时见过这样的例子，没有意义，数据全为0：
+注意`google::COUNTER`只有条件输出时才生效的，实际使用时见过这样的例子，没有意义，数据全为0：
 
-```
+```cpp
         if (tera::ErrorCode::kOK != code) {
             if (tera::ErrorCode::kNotFound != code) {
                 tera_failed = true;
                 time_t t = time(NULL);
-                LOG(WARNING) <<  
+                LOG(WARNING) <<
                     "printall read failed but ret code is not kNotFound count:" << google::COUNTER;
-            }   
-        }  
+            }
+        }
 ```
 
 ### 5. DEBUG日志
+
 在debug模式下可用的日志输出的宏  
 
-```
+```cpp
    DLOG(INFO) << "Found cookies";
    DLOG_IF(INFO, num_cookies > 10) << "Got lots of cookies";
    DLOG_EVERY_N(INFO, 10) << "Got the " << google::COUNTER << "th cookie";
@@ -187,7 +188,7 @@ I0110 23:19:16.891409 17039 demo1.cpp:25] LOG_EVERY_N 3 i:9 google::COUNTER:10
 glog提供了VLOG宏用于自定义日志的输出，用户可以使用--v=数字来指定自定义的日志级别。  
 与系统日志级别不同的是，vlog数值越低，级别越高。例如：  
 
-```
+```cpp
     VLOG(1) << "I'm printed when you run the program with --v=1 or higher";
     VLOG(2) << "I'm printed when you run the program with --v=2 or higher";
 ```
@@ -205,7 +206,7 @@ I0119 22:53:19.023130 26871 vlog_main.cpp:24] I'm printed when you run the progr
 同时，更精彩的是自定义日志可以定义到文件级别，使用--vmodule=mapreduce=2,file=1,gfs*=3这种形式。  
 例如有两个文件main.c,hello.h，代码如下：  
 
-```
+```cpp
 //main.cpp
 #include <glog/logging.h>
 #include "hello.h"
@@ -225,7 +226,7 @@ int main(int argc, char* argv[]) {
 }
 ```
 
-```
+```cpp
 //hello.h
 #ifndef _HELLO_H
 #define _HELLO_H
@@ -253,6 +254,7 @@ VLOG\_IS\_ON(n)用于判断级别n是否会输出到日志，即当--v指定的�
 VLOG\_IF, VLOG\_EVERY\_N，VLOG\_IF\_EVERY\_N与LOG\_XXX一致，只不过参数里的级别为自定义级别。  
 
 ### 7. CHECK宏
+
 CHECK系列的宏跟assert很像，都是检测某个表达式是否为真，不过不受NDEBUG影响  
 `CHEKCK(expression) << "check failed description"`  
 检测expression如果不为真，则打印后面的description和栈上的信息，然后退出程序，出错后的处理过程和FATAL比较像。  

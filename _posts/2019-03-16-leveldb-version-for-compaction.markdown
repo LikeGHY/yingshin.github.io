@@ -9,7 +9,7 @@ major compaction 一个首要问题，就是要 compact 哪个文件。这个计
 
 ## 1. seek_compaction
 
-一个直观的想法是如果文件多次 seek 但是没有查找到数据，那么就应该被 compact 了，否则否则会浪费更多的 seek。用一次 compact 来解决长久空 seek 的问题，本质上，还是如何平衡读写的思想。
+一个直观的想法是如果文件多次 seek 但是没有查找到数据，那么就应该被 compact 了，否则会浪费更多的 seek。用一次 compact 来解决长久空 seek 的问题，本质上，还是如何平衡读写的思想。
 
 具体的，当一个新文件更新进入版本管理，计算该文件允许 seek 但是没有查到数据的最大次数，当超过该次数后，就应该 compact 该文件了。
 
@@ -17,7 +17,7 @@ major compaction 一个首要问题，就是要 compact 哪个文件。这个计
 
 主要用到的变量是`allowed_seeks`
 
-```
+```cpp
       // We arrange to automatically compact this file after
       // a certain number of seeks.  Let's assume:
       //   (1) One seek costs 10ms
@@ -46,7 +46,7 @@ major compaction 一个首要问题，就是要 compact 哪个文件。这个计
 
 当查找文件而没有查找到时，`allowed_seeks--`，降为0时该文件标记到`file_to_compact_`：
 
-```
+```cpp
 bool Version::UpdateStats(const GetStats& stats) {
   FileMetaData* f = stats.seek_file;
   if (f != nullptr) {
@@ -72,7 +72,7 @@ level 越大，我们可以认为数据越“冷”，读取的几率越小，�
 
 这个步骤，在[VersionSet::Finalize](https://izualzhy.cn/leveldb-version#341-logandapply)完成。
 
-```
+```cpp
 //计算compact的level和score，更新到compaction_level_&&compaction_score_
 void VersionSet::Finalize(Version* v) {
   // Precomputed best level for next compaction
@@ -140,7 +140,7 @@ void VersionSet::Finalize(Version* v) {
 
 major compact 选择文件时就会用到上述两个条件。
 
-```
+```cpp
   // We prefer compactions triggered by too much data in a level over
   // the compactions triggered by seeks.
   const bool size_compaction = (current_->compaction_score_ >= 1);//文件数过多

@@ -10,13 +10,11 @@ tags: [chrome, StringPiece]
 
 本文是对阅读过程中的一些笔记的整理。
 
-<!--more-->
-
 ### 1. 为什么需要StringPiece
 
 先看一个例子（摘自boost关于[string_ref的介绍](http://www.boost.org/doc/libs/1_61_0/libs/utility/doc/html/string_ref.html#string_ref.examples)）
 
-```
+```cpp
 std::string extract_part ( const std::string &bar ) {
     return bar.substr ( 2, 3 );
     }
@@ -58,18 +56,19 @@ boost里string_ref的实现跟`StringPiece`的想法是完全一致的，参考�
 
 `StringPiece`实际上是`BasicStringPiece`的特化，相关定义如下：
 
-```
+```cpp
 template <typename STRING_TYPE> class BaseStringPiece;
 typedef BasicStringPiece<std::string> StringPiece;
 typedef BasicStringPiece<string16> StringPiece16;
 ```
+
 其中`string16`封装的是`std::wstring wchar_t`
 
 #### 2.1 构造及析构
 
 根据上面提到的需求，BasicStringPiece的构造函数有多个，可以接收`const char*`，`const std::string&`：
 
-```
+```cpp
   BasicStringPiece() : ptr_(NULL), length_(0) {}
   BasicStringPiece(const value_type* str)
       : ptr_(str),
@@ -88,7 +87,7 @@ typedef BasicStringPiece<string16> StringPiece16;
 
 同时成员变量只有两个:
 
-```
+```cpp
   const value_type* ptr_;
   size_type     length_;
 ```
@@ -101,7 +100,7 @@ typedef BasicStringPiece<string16> StringPiece16;
 
 BasicStringPiece支持string的常见操作
 
-```
+```cpp
 const value_type* data() const { return ptr_; }
 void remove_prefix(size_type n);
 void remove_suffix(size_type n);
@@ -114,7 +113,7 @@ bool ends_with(const BasicStringPiece& x);
 ```
 注意像`remove_prefix`这种操作都是常数级别的，因为只是在操作`ptr_`和`length_`
 
-```
+```cpp
   void remove_prefix(size_type n) {
     ptr_ += n;
     length_ -= n;
@@ -123,7 +122,7 @@ bool ends_with(const BasicStringPiece& x);
 
 行为上跟容器也很像，有自己的迭代器
 
-```
+```cpp
   value_type operator[](size_type i) const { return ptr_[i]; }
   const_iterator begin() const { return ptr_; }
   const_iterator end() const { return ptr_ + length_; }
@@ -139,7 +138,7 @@ bool ends_with(const BasicStringPiece& x);
 
 同时支持find系列的需求
 
-```
+```cpp
 size_type find(const BasicStringPiece<STRING_TYPE>& s,
     size_type pos = 0) const;
 size_type rfind(const BasicStringPiece& s,
@@ -163,7 +162,7 @@ BasicStringPiece<STRING_TYPE>::npos =
 + 大小\>1的情况下，则建表查询，也就是以空间换时间的做法，  
 
 
-```
+```cpp
   bool lookup[UCHAR_MAX + 1] = { false };
   BuildLookupTable(s, lookup);
   for (size_t i = pos; i < self.size(); ++i) {
@@ -175,7 +174,7 @@ BasicStringPiece<STRING_TYPE>::npos =
 
 BuildLookupTable则是遍历`s`建表
 
-```
+```cpp
 // For each character in characters_wanted, sets the index corresponding
 // to the ASCII code of that character to 1 in table.  This is used by
 // the find_.*_of methods below to tell whether or not a character is in
@@ -196,7 +195,7 @@ inline void BuildLookupTable(const StringPiece& characters_wanted,
 
 原因可能是stl的`find_first_of`的实现经常被简化为这样的伪代码：
 
-```
+```cpp
 template<class ForwardIterator1, class ForwardIterator2>
   ForwardIterator1 find_first_of ( ForwardIterator1 first1, ForwardIterator1 last1,
                                    ForwardIterator2 first2, ForwardIterator2 last2)
@@ -219,7 +218,7 @@ template<class ForwardIterator1, class ForwardIterator2>
 
 其实不太理解为什么字符串的hash值需要封装到StringPiece的接口里来
 
-```
+```cpp
 std::size_t operator()(const base::StringPiece& sp) const;
 ```
 
