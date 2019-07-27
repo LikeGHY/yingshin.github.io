@@ -9,9 +9,9 @@ tags: [leveldb]
 
 ## 1. 作用
 
-随着数据合并到更大的 level，一个非常明显的好处就是冗余数据的清理。
+随着数据合并到更大的 level，一个明显的好处就是清理冗余数据。
 
-如果不同 level 的 sst 文件里，存在相同的 key，那么更底层的数据就可以删除不再保留（不考虑 snapshot的情况下）。为了充分利用磁盘高性能的顺序写，删除数据也是顺序写入删除标记，而真正删除数据，也是在 major compact 的过程中。
+如果不同 level 的 sst 文件里，存在相同的 key，那么更底层的数据就可以删除不再保留（不考虑 snapshot的情况下）。为了充分利用磁盘高性能的顺序写，删除数据也是顺序写入删除标记，而真正删除数据，是在 major compact 的过程中。
 
 所以，一个作用是能够节省磁盘空间。
 
@@ -27,7 +27,7 @@ compact 的 完整操作在`DBImpl::BackgroundCompaction`实现，包含了 mino
 
 首先是查看是否需要 compact memetable.
 
-```
+```cpp
 //实际Compact
 void DBImpl::BackgroundCompaction() {
   mutex_.AssertHeld();
@@ -41,7 +41,7 @@ void DBImpl::BackgroundCompaction() {
 
 接着就是调用[PickCompaction](https://izualzhy.cn/leveldb-PickCompaction)筛选合适的 level 及 文件。注意也可以手动指定 range，原理是类似的，不再赘述。
 
-```
+```cpp
   //如果immutable memtable不存在，则合并各层level的文件，称为Major Compaction
   Compaction* c;
   bool is_manual = (manual_compaction_ != nullptr);
@@ -74,7 +74,7 @@ void DBImpl::BackgroundCompaction() {
 
 那就是`IsTrivialMove`:
 
-```
+```cpp
 bool Compaction::IsTrivialMove() const {
   const VersionSet* vset = input_version_->vset_;
   // Avoid a move if there is lots of overlapping grandparent data.
@@ -93,7 +93,7 @@ bool Compaction::IsTrivialMove() const {
 
 由于跟 level + 1 层文件没有重叠，直接 mv 到下一层并不会导致错误。
 
-```
+```cpp
   Status status;
   if (c == nullptr) {
     // Nothing to do
@@ -125,7 +125,7 @@ bool Compaction::IsTrivialMove() const {
 
 正常情况下，通过`DoCompactionWork`完成文件的归并操作。
 
-```
+```cpp
   } else {
     CompactionState* compact = new CompactionState(c);
     status = DoCompactionWork(compact);
@@ -138,7 +138,7 @@ bool Compaction::IsTrivialMove() const {
   }
 ```
 
-```
+```cpp
 //真正的compaction，compact里记录了本次所有参与compact的文件
 Status DBImpl::DoCompactionWork(CompactionState* compact) {
 ```
@@ -147,7 +147,7 @@ Status DBImpl::DoCompactionWork(CompactionState* compact) {
 
 第一步，获取遍历所有文件用到的 `Iterator*`.
 
-```
+```cpp
   //input用于遍历compact里所有文件的key
   Iterator* input = versions_->MakeInputIterator(compact->compaction);
   input->SeekToFirst();
@@ -157,7 +157,7 @@ Status DBImpl::DoCompactionWork(CompactionState* compact) {
 
 `MakeInputIterator`返回的是[MergeIterator](https://izualzhy.cn/leveldb-iterator#4-mergingiterator)，包含了对`c->inputs_`两层文件的迭代器。
 
-```
+```cpp
   // level 0：文件是无序的，有多少个sstable file，就需要多少Iterator
   // level >0：文件是有序的，1个Iterator就可以了
   const int space = (c->level() == 0 ? c->inputs_[0].size() + 1 : 2);
@@ -197,7 +197,7 @@ iterator 返回的 key 全部有序，遍历过程可以清理掉一些 key。
 
 因此，每次都会调用`ShouldStopBefore`来判断是否满足上述条件：
 
-```
+```cpp
   //从小到大遍历
   for (; input->Valid() && !shutting_down_.Acquire_Load(); ) {
     // Prioritize immutable compaction work
@@ -227,7 +227,7 @@ iterator 返回的 key 全部有序，遍历过程可以清理掉一些 key。
 
 `drop`用于判断数据是否可以丢弃：
 
-```
+```cpp
     // Handle key/value, add to state, etc.
     bool drop = false;
     if (!ParseInternalKey(key, &ikey)) {
@@ -275,7 +275,7 @@ iterator 返回的 key 全部有序，遍历过程可以清理掉一些 key。
 
 如果`drop = false`，说明 key 需要保留，写入新的文件。写入跟 memetable->sstable 一样，通过[TableBuilder](https://izualzhy.cn/leveldb-sstable#4-class-leveldbtablebuilder)完成。
 
-```
+```cpp
     if (!drop) {
       // Open output file if necessary
       // 如果builder为空，则打开文件构造builder，用于数据写入
@@ -304,7 +304,7 @@ iterator 返回的 key 全部有序，遍历过程可以清理掉一些 key。
 
 最后通过`InstallCompactionResults`将结果记录到 version，本质上也还是调用的我们之前介绍过的[LogAndApply](https://izualzhy.cn/leveldb-version#341-logandapply).
 
-```
+```cpp
 Status DBImpl::InstallCompactionResults(CompactionState* compact) {
   mutex_.AssertHeld();
   Log(options_.info_log,  "Compacted %d@%d + %d@%d files => %lld bytes",

@@ -7,7 +7,6 @@ tags: [core, smartptr]
 ---
 
 [上篇文章](http://izualzhy.cn/how-to-write-safe-callback)介绍了在回调时使用智能指针。可能因为智能指针太智能了，使用起来需要思考的很少。本文试图稍微总结一下“使用很自然但仔细想想很巧妙”的地方，所有例子均使用`boost::shared_ptr`。
-[上篇文章](http://izualzhy.cn/how-to-write-safe-callback)介绍了在回调时使用智能指针。可能因为智能指针太智能了，使用起来需要思考的很少。本文试图稍微总结一下“使用很自然但仔细想想很巧妙”的地方，所有例子均使用`boost::shared_ptr`。
 
 <!--more-->
 
@@ -15,7 +14,7 @@ tags: [core, smartptr]
 
 智能指针之间的类型转换遵循原始指针之间的转换原则，如果原始指针可以互相转换，智能指针就可以。
 
-```
+```cpp
 class Base {
 };//Base
 
@@ -40,7 +39,7 @@ int main() {
 
 摘抄了构造函数相关的源码
 
-```
+```cpp
 template<class T> class shared_ptr
 {
     template<class Y>
@@ -55,7 +54,7 @@ template<class T> class shared_ptr
     {
         boost::detail::sp_assert_convertible< Y, T >();//能够转换
     }
-    
+
     typedef typename boost::detail::sp_element< T >::type element_type;
     element_type * px;                 // contained pointer
     ...
@@ -65,7 +64,7 @@ template<class T> class shared_ptr
 
 `sp_assert_convertible`实现在编译时断言
 
-```
+```cpp
 template< class Y, class T > inline void sp_assert_convertible()
 {
 #if !defined( BOOST_SP_NO_SP_CONVERTIBLE )
@@ -84,7 +83,7 @@ template< class Y, class T > inline void sp_assert_convertible()
 
 在gdb时，`print`一个智能指针我们得到这样的结果：
 
-```
+```cpp
 $1 = {
   px = 0x603030,
   pn = {
@@ -95,7 +94,7 @@ $1 = {
 
 而我们的目的往往是想看下指针位置或者指向的对象的值。`px pn`分别代表什么呢？
 
-```
+```cpp
     element_type * px;                 // contained pointer
     boost::detail::shared_count pn;    // reference counter
 ```
@@ -105,7 +104,7 @@ $1 = {
 
 例如`shared_count`重载`operator =`的源码可以对应出上面的设计：
 
-```
+```cpp
     shared_count & operator= (shared_count const & r) // nothrow
     {
         sp_counted_base * tmp = r.pi_;
@@ -126,7 +125,7 @@ $1 = {
 
 上段代码中的`pi_->release()`可能会调用`dispose`
 
-```
+```cpp
     virtual void dispose() // nothrow
     {
         del( ptr );
@@ -135,14 +134,14 @@ $1 = {
 
 `del`在构造函数里传入
 
-```
+```cpp
     sp_counted_impl_pd( P p, D & d ): ptr( p ), del( d )    {    }
     sp_counted_impl_pd( P p ): ptr( p ), del()    {    }
 ```
 
 `sp_counted_impl_pd`是`sp_counted_base`的子类，在`shared_counter`构造，再上层则是`shared_ptr`的构造函数
 
-```
+```cpp
     template<class Y, class D> shared_ptr( Y * p, D d ): px( p ), pn( p, d )
     {
         boost::detail::sp_deleter_construct( this, p );
@@ -153,7 +152,7 @@ $1 = {
 
 例如我们可以这样打开文件而不用担心句柄的泄露。
 
-```
+```cpp
 boost::shared_ptr<FILE> fp(fopen("./1.txt", "r"), fclose);
 ```
 
@@ -163,7 +162,7 @@ boost::shared_ptr<FILE> fp(fopen("./1.txt", "r"), fclose);
 
 `smart_ptr`提供了一个工厂函数`make_shared`，可以接收若干参数new对象出来，借助于`auto`关键字，我们可以写出这样的代码：
 
-```
+```cpp
 #include "boost/smart_ptr.hpp"
 
 auto pfoo = boost::make_shared<Foo>("xiaoming", 6);
@@ -178,7 +177,7 @@ auto pv = boost::make_shared<std::vector<int> >(10, 2);
 
 智能指针的声明允许前置声明，例如
 
-```
+```cpp
 class Foo;
 typedef boost::shared_ptr<Foo> FooSharedPtr;
 ```
@@ -189,7 +188,7 @@ typedef boost::shared_ptr<Foo> FooSharedPtr;
 
 实现编译时断言的代码如下
 
-```
+```cpp
 template<class T> inline void checked_delete(T * x)
 {
     // intentionally complex - simplification causes regressions
@@ -207,7 +206,7 @@ template<class T> inline void checked_delete(T * x)
 
 有时候你需要确认下当前是否只有自己持有了原始指针的内存管理权，可以使用`unique`接口
 
-```
+```cpp
 //shared_ptr
     bool unique() const BOOST_NOEXCEPT {
         return pn.unique();
@@ -225,7 +224,7 @@ template<class T> inline void checked_delete(T * x)
 
 不要试图写出这样的代码：
 
-```
+```cpp
 class B;
 
 class A {
@@ -245,7 +244,7 @@ public:
 
 会导致内存泄露，例如
 
-```
+```cpp
         boost::shared_ptr<A> a(boost::make_shared<A>());
         boost::shared_ptr<B> b(boost::make_shared<B>());
         a->_b = b;
@@ -268,7 +267,7 @@ public:
 
 对同一块内存，不同的`shared-ptr`可以管理不同 offset，例如一段字符串，传入不同接口时，提供不同的 substr.
 
-```
+```cpp
     std::shared_ptr<char> p(new char[1024]);
     strncpy(p.get(), "hello world.", 1024);
     //p:hello world. use_count:1
