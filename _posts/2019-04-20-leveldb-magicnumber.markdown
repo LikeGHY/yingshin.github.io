@@ -25,7 +25,7 @@ level 0 的文件是无序的，每次查找 level 0都需要查找所有文件�
 
 compact 会有一个 score 的筛选，其中 level 0 的计算公式为：
 
-```
+```cpp
       score = v->files_[level].size() /
           static_cast<double>(config::kL0_CompactionTrigger);
 ```
@@ -64,7 +64,7 @@ table 由多个 block 组成，其中每个 data block 最大为 4K，该值定�
 
 `Footer`最后8个字节固定是`0xdb4775248b80fb57ull`，这几个字节的由来是：
 
-```
+```cpp
 // kTableMagicNumber was picked by running
 //    echo http://code.google.com/p/leveldb/ | sha1sum
 // and taking the leading 64 bits.
@@ -76,7 +76,7 @@ data block 的缓存：总大小默认 8M，单个 data block 为 4K，一共大
 
 leveldb 控制最多占用 1000 个文件句柄，而缓存的 sst 文件`File*`则最多是 9990 个
 
-```
+```cpp
 static int TableCacheSize(const Options& sanitized_options) {
   // Reserve ten files or so for other uses and give the rest to TableCache.
   // max_open_files 默认1000
@@ -92,7 +92,7 @@ static int TableCacheSize(const Options& sanitized_options) {
 
 log 跟 memtable 周期相同，因此也可以近似的认为 ~ 4M
 
-```
+```cpp
      // Attempt to switch to a new memtable and trigger compaction of old
       assert(versions_->PrevLogNumber() == 0);
       uint64_t new_log_number = versions_->NewFileNumber();
@@ -116,6 +116,6 @@ log 跟 memtable 周期相同，因此也可以近似的认为 ~ 4M
 
 log 结构由多个 block 组成，每个大小为 32k，这样的好处是，读取时可以固定使用 32k 来不断读取：
 
-```
+```cpp
 static const int kBlockSize = 32768;//32k
 ```

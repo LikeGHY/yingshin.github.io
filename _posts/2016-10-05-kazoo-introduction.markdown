@@ -36,7 +36,7 @@ pip install kazoo
 
 ### 2. 连接建立和断开
 
-```
+```python
 from kazoo.client import KazooClient
 
 zk = KazooClient(hosts='127.0.0.1:2181')
@@ -47,7 +47,7 @@ zk.start()
 
 也可以使用异步的方式
 
-```
+```python
 start_event = zk.asysc_start()
 start_event.wait()
 ```
@@ -55,7 +55,7 @@ start_event.wait()
 连接的状态可以查看`KazooClient.state`，Kazoo定义了三种状态来描述服务集群：
 SUSPENDED CONNECTED LOST，通过`kazoo.client.KazooState`可以查看。跟c lib里`zookeeper_init`传入一个global的回调函数相同，我们也可以监视服务集群状态
 
-```
+```python
 from kazoo.client import KazooState
 
 def my_listener(state):
@@ -77,7 +77,7 @@ listener可以有多个，使用`add_listener`添加即可，同时`remove_liste
 
 在初始化之前配置log即可：
 
-```
+```python
 import logging
 logging.basicConfig()
 ```
@@ -94,7 +94,7 @@ logging.basicConfig()
 
 比如
 
-```
+```python
 zk.create('/ps/spider/dlb-receiver/0001')
 ```
 
@@ -121,7 +121,7 @@ Kazoo提供了两种方式的监视。
 
 以下几种接口支持设置监视点：
 
-```
+```python
 get(path, watch=None)
 get_children(path, watch=None, include_data=False)
 exists(path, watch=None)
@@ -129,7 +129,7 @@ exists(path, watch=None)
 
 例如：
 
-```
+```python
 def watch_func(event):
     ...
 
@@ -143,14 +143,14 @@ stat = zk.exists("/my/favorite", watch=watch_func)
 以上set watch参数跟c客户端相同，都是单次触发。其实并不难理解，因为何时通知是在服务端确定的。但是借助python[装饰器](http://izualzhy.cn/python-decorator-notes)，Kazoo在客户端实现了触发后自动继续注册监视点的方式。
 以上set watch参数跟c客户端相同，都是单次触发。其实并不难理解，因为何时通知是在服务端确定的。但是借助python[装饰器](http://izualzhy.cn/python-decorator-notes)，Kazoo在客户端实现了触发后自动继续注册监视点的方式。
 
-```
+```python
 class kazoo.recipe.watchers.DataWatch(client, path, func=None, *args, **kwargs)
 class kazoo.recipe.watchers.ChildrenWatch(client, path, func=None, allow_session_lost=True, send_event=False)
 ```
 
 举个例子：
 
-```
+```python
 @zk.ChildrenWatch('/my/favorite')
 def watch_children(children):
     print 'watch_children', children
@@ -170,7 +170,7 @@ def watch_data(data, stat, event):
 
 之前在[c客户端的介绍里]()提到过java的`multitop`的方式，多个修改在同一个事务里提交，保证了原子性，kazoo同样提供了`transaction`实现该功能。
 
-```
+```python
 transaction = zk.transaction()
 transaction.check('/node/a', version=3)
 transaction.create('/node/b', b"a value")
@@ -181,7 +181,7 @@ results = transaction.commit()
 
 应用中我们经常有多个进程抢锁的需求，使用原始的c lib我们经常采用竞争建立同一临时节点抢锁的形式。Kazoo提供了一组`lock`接口实现该功能。
 
-```
+```python
 zk = KazooClient()
 zk.start()
 lock = zk.Lock("/lockpath", "my-identifier")
@@ -201,7 +201,7 @@ identifier用于指定抢锁者的身份，`contenders()`获取当前所有的�
 
 摘抄个例子：
 
-```
+```python
 zk = KazooClient(hosts='127.0.0.1:2181')
 zk.start()
 # blocks until the election is won, then calls

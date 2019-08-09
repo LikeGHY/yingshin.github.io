@@ -259,11 +259,11 @@ public:
 
 ### 10. shared_ptr<void>
 
-`shared_ptr<void>`能够存储`void*`的指针，而`void*`可以指向任意类型，因此我们可以通过`shared_ptr<void>`指向任意一块内存。
+`shared_ptr<void>`能够存储`void*`的指针，而`void*`可以指向任意类型，因此我们可以通过`shared_ptr<void>`指向任意一块内存，原因可以参考[How does shared_ptr<void> know which destructor to use?](https://stackoverflow.com/questions/57344571/how-does-shared-ptrvoid-know-which-destructor-to-use)。而`unique_ptr<void>`会[导致编译错误](https://stackoverflow.com/questions/39288891/why-is-shared-ptrvoid-legal-while-unique-ptrvoid-is-ill-formed?rq=1)。
 
-我觉得这种应用在不关心应用数据类型的lib里比较有用，例如异步线程里的上下文默认为`shared_ptr<void>`，具体的转化为各种不同类型，则在应用层决定。
+不关心应用数据类型的场景比较有用，例如异步线程里的上下文默认为`shared_ptr<void>`，具体的转化为各种不同类型，则在应用层决定。
 
-### 11. 统一内存的不同offset
+### 11. 同一内存的不同offset
 
 对同一块内存，不同的`shared-ptr`可以管理不同 offset，例如一段字符串，传入不同接口时，提供不同的 substr.
 
