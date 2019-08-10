@@ -1,3 +1,8 @@
+- title: 'Working Hard to Keep It Simple'
+  url: 'https://www.youtube.com/watch?reload=9&v=3jg1AheF4n0'
+  tag: 'scala'
+  note: 'Martin Odersky 在2011年的一篇演讲，关于 Scala 的一个简短的介绍。最近真的快要被函数式编程圈粉了，高效、简洁还不易出错。这个题目我也很喜欢，感觉自己总是 Working Hard，却没有做到 Keep It Simple，工作上绩效的结果也不尽如人意。原文在这里:https://www.slideshare.net/Odersky/oscon-keynote-working-hard-to-keep-it-simple'
+
 - title: '架构设计与架构师 林仕鼎'
   url: 'http://djt.qq.com/video/1058'
   tag: 'architect'
