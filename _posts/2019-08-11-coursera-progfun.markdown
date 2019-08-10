@@ -114,4 +114,3 @@ def nqueens(n: Int): Set[List[Int]] = {
 3. <https://www.coursera.org/learn/progfun1/supplement/KPiGt/scala-style-guide>
 4. <https://www.scala-lang.org/api/current/index.html>
 5. <http://twitter.github.io/scala_school/>
-6. http://twitter.github.io/scala_school/
