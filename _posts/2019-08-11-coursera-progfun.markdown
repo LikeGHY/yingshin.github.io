@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Coursera上完成的第一门课《Functional Programming Principles in Scala》"
+title: "《Functional Programming Principles in Scala》"
 date: 2019-08-01 16:43:33
 tags: [scala]
 ---
