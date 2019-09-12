@@ -1,3 +1,10 @@
+- name: 斯坦福大学人生设计课
+  cover: https://img3.doubanio.com/lpic/s29639731.jpg
+  start_date: 2019.9.9
+  finish_date: 
+  douban_link: https://book.douban.com/subject/27601926
+  note: 
+
 - name: Scala谜题
   cover: https://img3.doubanio.com/lpic/s29652200.jpg
   start_date: 2019.8.9
