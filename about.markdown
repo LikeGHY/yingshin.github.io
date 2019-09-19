@@ -13,6 +13,7 @@ Work Experience:
 1. 多看阅读kindle端系统开发
 2. 百度Aladdin架构
 3. 百度Spider架构
+4. TBD
 
 Langs：
 C/C++/python/shell/go/scala
