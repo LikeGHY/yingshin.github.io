@@ -1,3 +1,10 @@
+- name: 半小时漫画经济学-生活常识篇
+  cover: https://img3.doubanio.com/lpic/s33467982.jpg
+  start_date: 2019.9.22
+  finish_date: 2019.9.24
+  douban_link: https://book.douban.com/subject/34800351/
+  note: 
+
 - name: 斯坦福大学人生设计课
   cover: https://img3.doubanio.com/lpic/s29639731.jpg
   start_date: 2019.9.9
