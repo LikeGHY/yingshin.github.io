@@ -13,7 +13,7 @@ tags: [scala]
 
 笔记按照题目顺序整理。
 
-```
+```scala
 //scalaVersion:2.12
 package numericOps
 
