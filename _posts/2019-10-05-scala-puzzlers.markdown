@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Scala谜题读书笔记"
+title: "《Scala谜题》读书笔记"
 date: 2019-10-05 20:07:25
 tags: [scala]
 ---
