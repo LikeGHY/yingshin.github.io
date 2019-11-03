@@ -1,3 +1,17 @@
+- name: 西游八十一案-大唐泥犁狱
+  cover: https://img1.doubanio.com/lpic/s29645267.jpg
+  start_date: 2019.10.31
+  finish_date: 
+  douban_link: https://book.douban.com/subject/27609563/
+  note: 
+
+- name: Spark Streaming实时流式大数据处理实战
+  cover: https://img3.doubanio.com/lpic/s32312663.jpg
+  start_date: 2019.10.13
+  finish_date: 
+  douban_link: https://book.douban.com/subject/33436902/
+  note: 
+
 - name: 半小时漫画中国史
   cover: https://img3.doubanio.com/lpic/s29492853.jpg
   start_date: 2019.9.29
