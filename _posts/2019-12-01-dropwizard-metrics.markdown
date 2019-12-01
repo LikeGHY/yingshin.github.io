@@ -1,13 +1,11 @@
 ---
 layout: post
-title: "Dropwizard Metrics 初步"
+title: "Dropwizard Metrics 介绍"
 date: 2019-10-05 20:07:25
 tags: [scala]
 ---
 
-Spark 的 metrics 基于[Dropwizard Metrics Library](http://metrics.dropwizard.io/)，这篇文章介绍下 Dropwizard Metrics 提供的功能。
-
-Metrics 是一个 java 的监控工具包，提供了一系列的算法及封装，使得我们可以通过仅仅几行代码，就可以实现诸如数据分布、延时统计、计数等统计需求。借助 Metrics ，程序能够将内部状态暴露出来。因此，Metrics 实际上包含了两部分，监控的指标以及指标如何导出。
+[Dropwizard Metrics Library](http://metrics.dropwizard.io/) 是一个 java 的监控工具包，Spark 就将其作为 monitor 系统的基础实现。借助 Dropwizard Metrics 我们可以通过仅仅几行代码，就可以实现诸如数据分布、延时统计、计数等统计需求，将内部状态暴露出来。对应的，Metrics 实际上包含了两部分，监控的指标(Metric)以及指标如何导出(Reporter)。
 
 ## 1. Metric
 
