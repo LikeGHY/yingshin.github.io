@@ -5,7 +5,7 @@ date: 2019-10-05 20:07:25
 tags: [scala]
 ---
 
-[Dropwizard Metrics Library](http://metrics.dropwizard.io/) 是一个 java 的监控工具包，Spark 就将其作为 monitor 系统的基础实现。借助 Dropwizard Metrics 我们可以通过仅仅几行代码，就可以实现诸如数据分布、延时统计、计数等统计需求，将内部状态暴露出来。对应的，Metrics 实际上包含了两部分，监控的指标(Metric)以及指标如何导出(Reporter)。
+[Dropwizard Metrics Library](http://metrics.dropwizard.io/) 是一个 java 的监控工具包，Spark 将其作为 monitor 系统的基础实现。借助 Dropwizard Metrics 我们可以通过仅仅几行代码，就可以实现诸如数据分布、延时统计、计数等统计需求，将内部状态暴露出来。对应的，Metrics 实际上包含了两部分，监控的指标(Metric)以及指标如何导出(Reporter)。
 
 ## 1. Metric
 
@@ -149,7 +149,7 @@ Histograms 用于提供一个数据的分布值，简单讲就是数据的分位
 
 官方介绍参考[Histograms](https://metrics.dropwizard.io/4.1.1/manual/core.html#histograms)
 
-1. UniformReservoir
+#### 1.4.1. UniformReservoir
 
 内部为`DEFAULT_SIZE = 1028`的一个数组
 
@@ -171,7 +171,7 @@ Histograms 用于提供一个数据的分布值，简单讲就是数据的分位
 
 来源于这篇论文：[Vitter's R](http://www.cs.umd.edu/~samir/498/vitter.pdf)
 
-2. SlidingWindowReservoir
+#### 1.4.2. SlidingWindowReservoir
 
 保留最近的 N 个值，N 可以在构造函数指定
 
@@ -182,7 +182,7 @@ Histograms 用于提供一个数据的分布值，简单讲就是数据的分位
 
 ```
 
-3. SlidingTimeWindowReservoir
+#### 1.4.3. SlidingTimeWindowReservoir
 
 保留最近 N 秒的数据，N 可以在构造函数指定
 
@@ -197,9 +197,9 @@ Histograms 用于提供一个数据的分布值，简单讲就是数据的分位
 
 缺点是如果瞬间流量很大，该数据结构内存不可控，因此还提供了`SlidingTimeWindowArrayReservoir`这个替代的基础结构。
 
-4. ExponentiallyDecayingReservoir
+#### 1.4.4. ExponentiallyDecayingReservoir
 
-内部为`DEFAULT_SIZE = 1028`的一个跳表
+`MetericRegistry::histogram`默认创建为为该类型，内部为`DEFAULT_SIZE = 1028`的一个跳表
 
 ```
     public void update(long value, long timestamp) {
@@ -269,9 +269,9 @@ Timer 用于时间统计，例如一个接口的相应时间，相当于 Meter +
 
 Reporter 支持 JMX/HTTP 等[Reporter](https://metrics.dropwizard.io/4.1.1/getting-started.html#other-reporting)，Spark 环境下则对应到多种的[sink 实现](http://spark.apache.org/docs/latest/monitoring.html)
 
-一个简单的使用例子[MetricsSample](https://github.com/yingshin/ScalaLearning/blob/master/ScalaRecipe/src/main/scala/recipe/MetricsSample.scala)
+`MetricRegistry`用于连接各`Metric`和`Reporter`，写了一个简单的使用例子[MetricsSample](https://github.com/yingshin/ScalaLearning/blob/master/ScalaRecipe/src/main/scala/recipe/MetricsSample.scala)
 
-PS：如果有像我一样从 C++ 转过来的 Scala 新手的话，会发现 Metrics 部分跟 brpc 里的 bvar 很像，而 Metrics 里广泛使用的`LongAdder`则同样是避免线程竞争，空间换时间的处理方式，适合于写多读少的监控场景。
+PS：如果有像我一样从 C++ 转过来的 Scala 新手的话，会发现 Metrics 部分跟 brpc 里的 bvar 很像，而 Metrics 里广泛使用的`LongAdder`则同样是避免线程竞争，以空间换时间的处理方式，适合于写多读少的监控场景。
 
 参考：
 https://metrics.dropwizard.io/4.1.1/index.html
