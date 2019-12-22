@@ -88,7 +88,7 @@ void Foo::foo() {
 
 接着是动态库的接口和实现：
 
-```
+```cpp
 //bar.h
 #ifndef _BAR_H
 #define _BAR_H
@@ -100,7 +100,7 @@ extern "C" {
 #endif  //_BAR_H
 ```
 
-```
+```cpp
 //bar.cpp
 #include "foo.h"
 #include "bar.h"
@@ -112,7 +112,7 @@ void bar() {
 
 `main`的实现如下：
 
-```
+```cpp
 #include <iostream>
 #include "foo.h"
 #include "bar.h"
